@@ -1,0 +1,16 @@
+query FindUserByEmail(
+    $organization_id: User.organization_id,
+    $email: User.email,
+) {
+    many users from User
+        where organization_id == $organization_id
+          && email == $email
+        order by user_id asc
+        take 1
+
+    return Found {
+        users: users { user_id name email email_verified image created_at updated_at }
+    }
+
+    outcomes Found
+}

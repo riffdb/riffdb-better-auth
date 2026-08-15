@@ -1,0 +1,15 @@
+query FindVerificationById(
+    $organization_id: Verification.organization_id,
+    $id: Verification.verification_id,
+) {
+    one verification from Verification
+        where organization_id == $organization_id
+          && verification_id == $id
+        else Missing
+
+    return Found {
+        verification: verification { verification_id identifier value expires_at created_at updated_at }
+    }
+
+    outcomes Found | Missing
+}

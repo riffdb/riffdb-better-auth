@@ -1,0 +1,15 @@
+query FindUserById(
+    $organization_id: User.organization_id,
+    $id: User.user_id,
+) {
+    one user from User
+        where organization_id == $organization_id
+          && user_id == $id
+        else Missing
+
+    return Found {
+        user: user { user_id name email email_verified image created_at updated_at }
+    }
+
+    outcomes Found | Missing
+}

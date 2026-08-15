@@ -1,0 +1,17 @@
+query FindVerificationsByIdentifier(
+    $organization_id: Verification.organization_id,
+    $identifier: Verification.identifier,
+    $after: Cursor?,
+) {
+    many verifications from Verification
+        where organization_id == $organization_id
+          && identifier == $identifier
+        order by created_at desc, verification_id desc
+        take 32 after $after
+
+    return Found {
+        verifications: verifications { verification_id identifier value expires_at created_at updated_at }
+    }
+
+    outcomes Found
+}

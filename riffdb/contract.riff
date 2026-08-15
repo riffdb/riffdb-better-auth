@@ -1,0 +1,281 @@
+contract RiffDBBetterAuthCore version 1 {
+  entity User {
+    key (organization_id: uuid, user_id: uuid)
+    field name: string<256>
+    field email: string<320>
+    field email_verified: bool
+    field image: optional<string<2048>>
+    field created_at: timestamp
+    field updated_at: timestamp
+    unique user_email (organization_id, email)
+    index by_email (organization_id, email, user_id)
+  }
+
+  entity Account {
+    key (organization_id: uuid, user_id: uuid, id: uuid)
+    field account_id: string<256>
+    field provider_id: string<64>
+    field secret access_token: optional<string<4096>>
+    field secret refresh_token: optional<string<4096>>
+    field access_token_expires_at: optional<timestamp>
+    field refresh_token_expires_at: optional<timestamp>
+    field scope: optional<string<2048>>
+    field secret id_token: optional<string<8192>>
+    field secret password: optional<string<1024>>
+    field created_at: timestamp
+    field updated_at: timestamp
+    unique provider_identity (organization_id, provider_id, account_id)
+    index by_user (organization_id, user_id, id)
+    index by_user_provider (organization_id, user_id, provider_id, id)
+    reference account_user (organization_id, user_id) -> User(organization_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity Session {
+    key (organization_id: uuid, user_id: uuid, id: uuid)
+    field secret token: string<512>
+    field expires_at: timestamp
+    field ip_address: optional<string<128>>
+    field user_agent: optional<string<2048>>
+    field created_at: timestamp
+    field updated_at: timestamp
+    unique session_token (organization_id, token)
+    unique session_id (organization_id, id)
+    index by_token (organization_id, token, user_id, id)
+    index by_id (organization_id, id, user_id)
+    index by_user (organization_id, user_id, id)
+    reference session_user (organization_id, user_id) -> User(organization_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity Verification {
+    key (organization_id: uuid, verification_id: uuid)
+    field identifier: string<1024>
+    field secret value: string<4096>
+    field expires_at: timestamp
+    field created_at: timestamp
+    field updated_at: timestamp
+    index by_identifier_created (organization_id, identifier, created_at, verification_id)
+    delete_policy no_inbound
+  }
+
+  entity AccountPasswordUpdate {
+    key (organization_id: uuid, user_id: uuid, account_id: uuid)
+    field provider_id: string<64>
+    field secret password: optional<string<1024>>
+    field updated_at: timestamp
+  }
+
+  aggregate UserAuthData {
+    root User
+    child Account
+    child Session
+    child AccountPasswordUpdate
+    partition_by organization_id
+    conflict_key (organization_id, user_id)
+  }
+
+  aggregate VerificationData {
+    root Verification
+    partition_by organization_id
+    conflict_key (organization_id, verification_id)
+  }
+
+  command CreateUser {
+    input request_id: uuid
+    input organization_id: uuid
+    input id: uuid
+    input name: string<256>
+    input email: string<320>
+    input email_verified: bool
+    input image: optional<string<2048>>
+    input created_at: timestamp
+    input updated_at: timestamp
+    idempotency_key request_id
+    create User(organization_id, id) as user else UserAlreadyExists {}
+    set user.name = name
+    set user.email = email
+    set user.email_verified = email_verified
+    set user.image = image
+    set user.created_at = created_at
+    set user.updated_at = updated_at
+    return UserCreated {}
+  }
+
+  command CreateAccount {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input id: uuid
+    input account_id: string<256>
+    input provider_id: string<64>
+    input access_token: optional<string<4096>>
+    input refresh_token: optional<string<4096>>
+    input access_token_expires_at: optional<timestamp>
+    input refresh_token_expires_at: optional<timestamp>
+    input scope: optional<string<2048>>
+    input id_token: optional<string<8192>>
+    input password: optional<string<1024>>
+    input created_at: timestamp
+    input updated_at: timestamp
+    idempotency_key request_id
+    read User(organization_id, user_id) as owner else AccountUserMissing {}
+    create Account(organization_id, user_id, id) as account else AccountAlreadyExists {}
+    set account.account_id = account_id
+    set account.provider_id = provider_id
+    set account.access_token = access_token
+    set account.refresh_token = refresh_token
+    set account.access_token_expires_at = access_token_expires_at
+    set account.refresh_token_expires_at = refresh_token_expires_at
+    set account.scope = scope
+    set account.id_token = id_token
+    set account.password = password
+    set account.created_at = created_at
+    set account.updated_at = updated_at
+    return AccountCreated {}
+  }
+
+  command CreateSession {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input id: uuid
+    input token: string<512>
+    input expires_at: timestamp
+    input ip_address: optional<string<128>>
+    input user_agent: optional<string<2048>>
+    input created_at: timestamp
+    input updated_at: timestamp
+    idempotency_key request_id
+    read User(organization_id, user_id) as owner else SessionUserMissing {}
+    create Session(organization_id, user_id, id) as session else SessionAlreadyExists {}
+    set session.token = token
+    set session.expires_at = expires_at
+    set session.ip_address = ip_address
+    set session.user_agent = user_agent
+    set session.created_at = created_at
+    set session.updated_at = updated_at
+    return SessionCreated {}
+  }
+
+  command CreateVerification {
+    input request_id: uuid
+    input organization_id: uuid
+    input id: uuid
+    input identifier: string<1024>
+    input value: string<4096>
+    input expires_at: timestamp
+    input created_at: timestamp
+    input updated_at: timestamp
+    idempotency_key request_id
+    create Verification(organization_id, id) as verification else VerificationAlreadyExists {}
+    set verification.identifier = identifier
+    set verification.value = value
+    set verification.expires_at = expires_at
+    set verification.created_at = created_at
+    set verification.updated_at = updated_at
+    return VerificationCreated {}
+  }
+
+  command CreateSignupGraph {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input user_name: string<256>
+    input user_email: string<320>
+    input user_email_verified: bool
+    input user_image: optional<string<2048>>
+    input user_created_at: timestamp
+    input user_updated_at: timestamp
+    input account_id: uuid
+    input external_account_id: string<256>
+    input provider_id: string<64>
+    input account_password: optional<string<1024>>
+    input account_created_at: timestamp
+    input account_updated_at: timestamp
+    input session_id: uuid
+    input session_token: string<512>
+    input session_expires_at: timestamp
+    input session_ip_address: optional<string<128>>
+    input session_user_agent: optional<string<2048>>
+    input session_created_at: timestamp
+    input session_updated_at: timestamp
+    idempotency_key request_id
+    create User(organization_id, user_id) as user else SignupUserExists {}
+    create Account(organization_id, user_id, account_id) as account else SignupAccountExists {}
+    create Session(organization_id, user_id, session_id) as session else SignupSessionExists {}
+    set user.name = user_name
+    set user.email = user_email
+    set user.email_verified = user_email_verified
+    set user.image = user_image
+    set user.created_at = user_created_at
+    set user.updated_at = user_updated_at
+    set account.account_id = external_account_id
+    set account.provider_id = provider_id
+    set account.access_token = null
+    set account.refresh_token = null
+    set account.access_token_expires_at = null
+    set account.refresh_token_expires_at = null
+    set account.scope = null
+    set account.id_token = null
+    set account.password = account_password
+    set account.created_at = account_created_at
+    set account.updated_at = account_updated_at
+    set session.token = session_token
+    set session.expires_at = session_expires_at
+    set session.ip_address = session_ip_address
+    set session.user_agent = session_user_agent
+    set session.created_at = session_created_at
+    set session.updated_at = session_updated_at
+    return SignupGraphCreated {}
+  }
+
+  bulk command DeleteSession {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input session_ids: list<uuid, 1..8>
+    idempotency_key request_id
+    for session_id in session_ids {
+      delete Session(organization_id, user_id, session_id) as session else SessionMissing {}
+    }
+    return SessionDeleted {}
+  }
+
+  bulk command DeleteVerification {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_ids: list<uuid, 1..8>
+    idempotency_key request_id
+    for verification_id in verification_ids {
+      delete Verification(organization_id, verification_id) as verification else VerificationMissing {}
+    }
+    return VerificationDeleted {}
+  }
+
+  bulk command ConsumeVerificationSet {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for verification_id in verification_ids {
+      delete Verification(organization_id, verification_id) as verification else VerificationConsumeMissing {}
+    }
+    return VerificationSetConsumed {}
+  }
+
+  bulk command UpdateAccountPasswords {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input updates: list<AccountPasswordUpdate, 1..8>
+    idempotency_key request_id
+    for update in updates {
+      mutate Account(organization_id, user_id, update.account_id) as account else PasswordAccountMissing {}
+      require provider_matches: account.provider_id == update.provider_id else PasswordProviderMismatch {}
+      set account.password = update.password
+      set account.updated_at = update.updated_at
+    }
+    return AccountPasswordsUpdated {}
+  }
+}

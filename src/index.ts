@@ -11,3 +11,10 @@ export {
   type RiffDBBetterAuthCoreProfileInput,
   type RiffDBContractIdentity,
 } from "./profile.js";
+
+export {
+  RiffDBBetterAuthCallError,
+  riffdbAdapter,
+  type RiffDBBetterAuthAdapterConfig,
+  type RiffDBBetterAuthCallErrorCode,
+} from "./adapter.js";

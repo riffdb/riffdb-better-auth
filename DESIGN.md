@@ -20,6 +20,7 @@ The adapter project must cover the current `createAdapterFactory` interface:
 - `findOne`
 - `findMany`
 - `count`
+- `incrementOne`
 
 The Better Auth API presents these as generic model/where/update requests.
 The RiffDB adapter must instead recognize a finite reviewed call shape and
@@ -72,6 +73,26 @@ References:
 - arbitrary joins, offsets, predicates, or sort fields;
 - Better Auth database hooks that imply additional database mutations; and
 - secondary storage implemented by RiffDB.
+
+The core profile also does not yet provide user deletion. `User` has two
+independent inbound reference families (`Account` and `Session`), while the
+current RiffDB delete policy can name only one reverse index that must cover
+every inbound relationship. RiffDB has no compiled cascade delete. Removing
+those references merely to enable deletion would weaken the profile's stored
+integrity and is not an acceptable adapter-side workaround. This limitation
+needs a reviewed RiffDB capability or a different compiled data model before
+Better Auth account deletion can be declared supported.
+
+## Real-service blocker
+
+The first loopback conformance run deploys the exact contract and role and
+connects through `riffdb-driverd`, then fails on the initial empty
+`FindUserByEmail` result. The server returns the valid initial application head
+`0`; `@riffdb/client@0.1.0-dev.3` decodes query heads with a positive-only
+integer helper. This is a protocol implementation mismatch in RiffDB, not a
+Better Auth call-shape failure. The adapter does not issue an unrelated warmup
+write because doing so would hide the broken empty-database contract and add
+an application-visible mutation.
 
 These exclusions describe the first profile, not permanent product limits.
 Each addition needs an explicit bounded contract and semantic tests.

@@ -1,0 +1,67 @@
+{
+  "schema": "riffdb.application-source/v6",
+  "application": "riffdb-better-auth-core",
+  "contract": {
+    "source": "riffdb/contract.riff",
+    "lineage": "RiffDBBetterAuthCore",
+    "version": 1
+  },
+  "generation": {
+    "go": "generated/go/client.go",
+    "rust": "generated/rust/client.rs",
+    "typescript": "src/generated/client.ts",
+    "python": "generated/python/client.py",
+    "mcp": "generated/mcp/tools.json"
+  },
+  "migrations": [],
+  "query_modules": [
+    {
+      "name": "riffdb_better_auth_core",
+      "version": 1,
+      "queries": [
+        { "name": "FindUserByEmail", "source": "riffdb/queries/find_user_by_email.riffq" },
+        { "name": "FindUserById", "source": "riffdb/queries/find_user_by_id.riffq" },
+        { "name": "FindSessionByToken", "source": "riffdb/queries/find_session_by_token.riffq" },
+        { "name": "FindSessionById", "source": "riffdb/queries/find_session_by_id.riffq" },
+        { "name": "FindAccountsByUserId", "source": "riffdb/queries/find_accounts_by_user_id.riffq" },
+        { "name": "FindLatestVerification", "source": "riffdb/queries/find_latest_verification.riffq" },
+        { "name": "FindVerificationById", "source": "riffdb/queries/find_verification_by_id.riffq" },
+        { "name": "FindVerificationsByIdentifier", "source": "riffdb/queries/find_verifications_by_identifier.riffq" }
+      ]
+    }
+  ],
+  "reactive_modules": [],
+  "roles": [
+    {
+      "name": "BetterAuthServer",
+      "environment": "development",
+      "tenant_scope": "global",
+      "queries": [
+        "FindUserByEmail",
+        "FindUserById",
+        "FindSessionByToken",
+        "FindSessionById",
+        "FindAccountsByUserId",
+        "FindLatestVerification",
+        "FindVerificationById",
+        "FindVerificationsByIdentifier"
+      ],
+      "commands": [
+        "CreateUser",
+        "CreateAccount",
+        "CreateSession",
+        "CreateVerification",
+        "CreateSignupGraph",
+        "DeleteSession",
+        "DeleteVerification",
+        "ConsumeVerificationSet",
+        "UpdateAccountPasswords"
+      ],
+      "event_streams": [],
+      "watch_queries": [],
+      "agent_subscriptions": [],
+      "row_policies": []
+    }
+  ],
+  "seed_inputs": []
+}

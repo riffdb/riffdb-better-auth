@@ -1,0 +1,16 @@
+query FindSessionById(
+    $organization_id: Session.organization_id,
+    $id: Session.id,
+) {
+    many sessions from Session
+        where organization_id == $organization_id
+          && id == $id
+        order by user_id asc
+        take 1
+
+    return Found {
+        sessions: sessions { id user_id token expires_at ip_address user_agent created_at updated_at }
+    }
+
+    outcomes Found
+}

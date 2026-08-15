@@ -1,0 +1,21 @@
+query FindAccountsByUserId(
+    $organization_id: Account.organization_id,
+    $user_id: Account.user_id,
+    $after: Cursor?,
+) {
+    many accounts from Account
+        where organization_id == $organization_id
+          && user_id == $user_id
+        order by id asc
+        take 100 after $after
+
+    return Found {
+        accounts: accounts {
+            id user_id account_id provider_id access_token refresh_token
+            access_token_expires_at refresh_token_expires_at scope id_token
+            password created_at updated_at
+        }
+    }
+
+    outcomes Found
+}
