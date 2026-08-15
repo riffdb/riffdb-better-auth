@@ -73,23 +73,20 @@ npm ci
 npm run check
 ```
 
-The current lock is pinned to `@riffdb/client@0.1.0-dev.3`. If the RiffDB
+The current lock is pinned to `@riffdb/client@0.1.0-dev.4`. If the RiffDB
 driver changes, publish a new immutable build number and update that exact
 dependency deliberately. `npm start` is the development-only runner used by
 `riffdb dev --run`; ordinary applications import the package instead.
 
-## Current RiffDB blocker
+## Empty-database frontier
 
 On a fresh database, the first named query correctly has application head
-`0`. The published `@riffdb/client@0.1.0-dev.3` decoder accepts only positive
-`application_head` values and throws `invalid RiffDB driver message` before
-returning the empty result. Better Auth must query for an existing email before
-the first signup command, so the adapter cannot legitimately warm the database
-with a write to avoid this condition. The RiffDB driver must accept a
-non-negative query frontier (including zero), followed by a new immutable
-local-registry build of the CLI and client packages.
+`0`. Immutable `@riffdb/client@0.1.0-dev.4` accepts that non-negative query
+frontier without relaxing positive-only commit sequences or contract versions.
+Better Auth can therefore perform its required existing-email lookup before
+the first signup command without an unrelated warmup write.
 
-After that driver fix, rerun:
+Run the real loopback flow with:
 
 ```bash
 riffdb dev --run
@@ -98,5 +95,10 @@ riffdb dev --run
 The included runner exercises signup, sign-in, password reset, changed-password
 sign-in, and single-use reset-token replay against the real Rust service and
 driver host.
+
+The dev.4 loopback run now completes the empty lookup and compiled signup, then
+stops on `FindAccountsByUserId` with `RDB-AUTH-0214` even though the exact role
+lock names that query. That authorization mismatch is a separate RiffDB runtime
+issue; full real-service conformance is not claimed until it is resolved.
 
 See [DESIGN.md](./DESIGN.md) for the method and safety inventory.
