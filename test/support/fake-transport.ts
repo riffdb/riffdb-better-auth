@@ -167,8 +167,10 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
         value = {
           outcome: "Found",
           sessions: this.sessions
-            .filter((row) => row.organization_id === organizationId && row.token === token)
-            .map(({ token: _token, organization_id: _organizationId, ...row }) => row),
+            .filter(
+              (row) => row.organization_id === organizationId && row.token === token,
+            )
+            .map(({ organization_id: _organizationId, ...row }) => row),
         };
         break;
       }
@@ -268,45 +270,52 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
   ): Promise<TypedCommandResult<R>> {
     const input = inputRecord(request.input);
     this.commandLog.push(request.commandName);
-    let outcome: string;
+    let outcome: Record<string, unknown>;
     switch (request.commandName) {
       case "CreateUser":
-        outcome = this.createUser(input);
+        outcome = { outcome: this.createUser(input) };
         break;
       case "CreateAccount":
-        outcome = this.createAccount(input);
+        outcome = { outcome: this.createAccount(input) };
         break;
       case "CreateSession":
-        outcome = this.createSession(input);
+        outcome = { outcome: this.createSession(input) };
         break;
       case "CreateVerification":
-        outcome = this.createVerification(input);
+        outcome = { outcome: this.createVerification(input) };
         break;
       case "CreateSignupGraph":
-        outcome = this.createSignupGraph(input);
+        outcome = { outcome: this.createSignupGraph(input) };
         break;
       case "DeleteSession":
-        outcome = this.deleteSessions(input);
+        outcome = { outcome: this.deleteSessions(input) };
         break;
       case "DeleteVerification":
-        outcome = this.deleteVerifications(input, "VerificationDeleted", "VerificationMissing");
+        outcome = {
+          outcome: this.deleteVerifications(input, "VerificationDeleted", "VerificationMissing"),
+        };
+        break;
+      case "DeleteUser":
+        outcome = { outcome: this.deleteUser(input) };
         break;
       case "ConsumeVerificationSet":
-        outcome = this.deleteVerifications(
-          input,
-          "VerificationSetConsumed",
-          "VerificationConsumeMissing",
-        );
+        outcome = {
+          outcome: this.deleteVerifications(
+            input,
+            "VerificationSetConsumed",
+            "VerificationConsumeMissing",
+          ),
+        };
         break;
       case "UpdateAccountPasswords":
-        outcome = this.updateAccountPasswords(input);
+        outcome = { outcome: this.updateAccountPasswords(input) };
         break;
       default:
         throw new Error(`unsupported fake command: ${request.commandName}`);
     }
     this.sequence += 1n;
     return {
-      outcome: { outcome } as R,
+      outcome: outcome as R,
       commitSequence: this.sequence,
       contractVersion: request.contractVersion,
       planHash: request.planHash,
@@ -511,6 +520,37 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
     if (this.createAccount(accountInput) !== "AccountCreated") throw new Error("fake signup account");
     if (this.createSession(sessionInput) !== "SessionCreated") throw new Error("fake signup session");
     return "SignupGraphCreated";
+  }
+
+  private deleteUser(input: Readonly<Record<string, unknown>>): string {
+    const organizationId = stringField(input, "organization_id");
+    const ids = stringListField(input, "user_ids");
+    const userId = ids[0]!;
+    const userIndex = this.users.findIndex(
+      (row) => row.organization_id === organizationId && row.user_id === userId,
+    );
+    if (userIndex < 0) return "DeleteUserMissing";
+    const accountCount = this.accounts.filter(
+      (row) => row.organization_id === organizationId && row.user_id === userId,
+    ).length;
+    const sessionCount = this.sessions.filter(
+      (row) => row.organization_id === organizationId && row.user_id === userId,
+    ).length;
+    if (accountCount > 32 || sessionCount > 32) return "DeleteUserCascadeLimitExceeded";
+    for (let index = this.accounts.length - 1; index >= 0; index -= 1) {
+      const row = this.accounts[index]!;
+      if (row.organization_id === organizationId && row.user_id === userId) {
+        this.accounts.splice(index, 1);
+      }
+    }
+    for (let index = this.sessions.length - 1; index >= 0; index -= 1) {
+      const row = this.sessions[index]!;
+      if (row.organization_id === organizationId && row.user_id === userId) {
+        this.sessions.splice(index, 1);
+      }
+    }
+    this.users.splice(userIndex, 1);
+    return "UserDeleted";
   }
 
   private deleteSessions(input: Readonly<Record<string, unknown>>): string {

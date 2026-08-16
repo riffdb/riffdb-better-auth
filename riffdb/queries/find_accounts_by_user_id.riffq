@@ -11,9 +11,13 @@ query FindAccountsByUserId(
 
     return Found {
         accounts: accounts {
-            id user_id account_id provider_id access_token refresh_token
-            access_token_expires_at refresh_token_expires_at scope id_token
-            password created_at updated_at
+            id user_id account_id provider_id
+            access_token reveals accounts.access_token
+            refresh_token reveals accounts.refresh_token
+            access_token_expires_at refresh_token_expires_at scope
+            id_token reveals accounts.id_token
+            password reveals accounts.password
+            created_at updated_at
         }
     }
 

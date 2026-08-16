@@ -9,7 +9,11 @@ query FindLatestVerification(
         take 1
 
     return Found {
-        verifications: verifications { verification_id identifier value expires_at created_at updated_at }
+        verifications: verifications {
+            verification_id identifier
+            value reveals verifications.value
+            expires_at created_at updated_at
+        }
     }
 
     outcomes Found

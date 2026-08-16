@@ -266,12 +266,11 @@ function mapUser(row: FindUserByIdFound["user"]): Record<string, unknown> {
 
 function mapSession(
   row: FindSessionByTokenFound["sessions"][number] | FindSessionByIdFound["sessions"][number],
-  token: string,
 ): Record<string, unknown> {
   return {
     id: row.id,
     userId: row.user_id,
-    token,
+    token: row.token,
     expiresAt: fromTimestamp(row.expires_at),
     ipAddress: row.ip_address,
     userAgent: row.user_agent,
@@ -382,12 +381,13 @@ class CoreDispatcher {
       return { ...data };
     }
     if (model === "session") {
+      const token = requiredString(data, "token", "create session");
       const result = await this.client.createSession({
         request_id: nextRequestId(),
         organization_id: this.organizationId,
         id: requiredString(data, "id", "create session"),
         user_id: requiredString(data, "userId", "create session"),
-        token: requiredString(data, "token", "create session"),
+        token,
         expires_at: toTimestamp(requiredDate(data, "expiresAt", "create session")),
         ip_address: nullableString(data, "ipAddress", "create session"),
         user_agent: nullableString(data, "userAgent", "create session"),
@@ -450,7 +450,7 @@ class CoreDispatcher {
         this.queryOptions(),
       );
       const row = (result.value as FindSessionByTokenFound).sessions[0];
-      return row === undefined ? null : mapSession(row, token);
+      return row === undefined ? null : mapSession(row);
     }
     if (model === "session" && exactWhere(where, ["id"])) {
       const result = await this.client.findSessionById(
@@ -461,7 +461,7 @@ class CoreDispatcher {
         this.queryOptions(),
       );
       const row = (result.value as FindSessionByIdFound).sessions[0];
-      return row === undefined ? null : mapSession(row, row.token);
+      return row === undefined ? null : mapSession(row);
     }
     if (model === "verification" && exactWhere(where, ["id"])) {
       const result = await this.client.findVerificationById(
@@ -472,7 +472,9 @@ class CoreDispatcher {
         this.queryOptions(),
       );
       const value: FindVerificationByIdResult = result.value;
-      return value.outcome === "Missing" ? null : mapVerification(value.verification);
+      return value.outcome === "Missing"
+        ? null
+        : mapVerification(value.verification);
     }
     return fail("unsupported_call_shape", `findOne ${model}`);
   }
@@ -533,6 +535,21 @@ class CoreDispatcher {
   }
 
   public async delete(model: string, where: readonly CleanedWhere[]): Promise<void> {
+    if (model === "user" && exactWhere(where, ["id"])) {
+      const result = await this.client.deleteUser({
+        request_id: nextRequestId(),
+        organization_id: this.organizationId,
+        user_ids: [whereValue(where, "id", "delete user")],
+      });
+      this.observeCommit(result);
+      if (result.outcome.outcome === "DeleteUserCascadeLimitExceeded") {
+        fail("result_bound_exceeded", "delete user", result.outcome.outcome);
+      }
+      if (!new Set(["UserDeleted", "DeleteUserMissing"]).has(result.outcome.outcome)) {
+        fail("declared_outcome", "delete user", result.outcome.outcome);
+      }
+      return;
+    }
     if (model === "verification" && exactWhere(where, ["id"])) {
       const result = await this.client.deleteVerification({
         request_id: nextRequestId(),
@@ -657,6 +674,7 @@ class CoreDispatcher {
     const account = byModel.get("account")!;
     const session = byModel.get("session")!;
     const userId = requiredString(user, "id", "transaction signup");
+    const sessionToken = requiredString(session, "token", "transaction signup");
     if (
       requiredString(account, "userId", "transaction signup") !== userId ||
       requiredString(session, "userId", "transaction signup") !== userId
@@ -680,7 +698,7 @@ class CoreDispatcher {
       account_created_at: toTimestamp(requiredDate(account, "createdAt", "transaction signup")),
       account_updated_at: toTimestamp(requiredDate(account, "updatedAt", "transaction signup")),
       session_id: requiredString(session, "id", "transaction signup"),
-      session_token: requiredString(session, "token", "transaction signup"),
+      session_token: sessionToken,
       session_expires_at: toTimestamp(requiredDate(session, "expiresAt", "transaction signup")),
       session_ip_address: nullableString(session, "ipAddress", "transaction signup"),
       session_user_agent: nullableString(session, "userAgent", "transaction signup"),

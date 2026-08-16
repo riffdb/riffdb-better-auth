@@ -74,28 +74,22 @@ References:
 - Better Auth database hooks that imply additional database mutations; and
 - secondary storage implemented by RiffDB.
 
-The core profile also does not yet provide user deletion. `User` has two
-independent inbound reference families (`Account` and `Session`), while the
-current RiffDB delete policy can name only one reverse index that must cover
-every inbound relationship. RiffDB has no compiled cascade delete. Removing
-those references merely to enable deletion would weaken the profile's stored
-integrity and is not an acceptable adapter-side workaround. This limitation
-needs a reviewed RiffDB capability or a different compiled data model before
-Better Auth account deletion can be declared supported.
-
-## Empty-database frontier
+## Closed RiffDB blockers
 
 The loopback conformance run deploys the exact contract and role and connects
 through `riffdb-driverd`. The initial empty `FindUserByEmail` result carries the
-valid application head `0`; immutable `@riffdb/client@0.1.0-dev.4` preserves it
+valid application head `0`; immutable `@riffdb/client@0.1.0-dev.6` preserves it
 as `0n`. The adapter does not issue an unrelated warmup write, so the first
 application-visible mutation remains the compiled signup graph.
 
-The same run proceeds through that signup and then receives `RDB-AUTH-0214` for
-`FindAccountsByUserId`, although the query, module hash, plan hash, and role
-definition are present in the exact lock. This is tracked as a distinct RiffDB
-runtime authorization mismatch, not as a continuation of the frontier decoder
-defect or an adapter-side reason to broaden authority.
+RiffDB now supports bounded cascade deletion across the `Account` and `Session`
+inbound relationships, so user deletion retains stored referential integrity
+and executes as one compiled command.
+
+Named RiffQL queries now support exact compiler-declared secret output leaves.
+The application role derives dedicated secret-field visibility from each
+selected immutable query, which closes the former `RDB-AUTH-0214` failure
+without using read-only commands or broadening the role manually.
 
 These exclusions describe the first profile, not permanent product limits.
 Each addition needs an explicit bounded contract and semantic tests.
@@ -104,7 +98,10 @@ Each addition needs an explicit bounded contract and semantic tests.
 
 Session tokens, verification values, passwords, OAuth access/refresh tokens,
 and ID tokens require deliberate secret classification in the generated
-RiffDB contract. The Better Auth server role must receive only the operations
-and field visibility required by the adapter. End-user identity and session
+RiffDB contract. Every named RiffQL result leaf that returns one carries an
+exact `reveals` annotation. That declaration participates in immutable query
+and role identity, while the generated Better Auth server role receives only
+the corresponding secret-field visibility. These queries are typed SDK reads
+and are omitted from MCP tool generation. End-user identity and session
 semantics remain Better Auth's responsibility; the adapter must not turn them
 into RiffDB capability administration.

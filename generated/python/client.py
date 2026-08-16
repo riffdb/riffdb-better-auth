@@ -17,8 +17,8 @@ from riffdb_application._binding import decode_variant, encode_record
 
 CONTRACT_LINEAGE: Final[str] = "RiffDBBetterAuthCore"
 CONTRACT_VERSION: Final[int] = 1
-CONTRACT_BUNDLE_HASH: Final[str] = "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2"
-QUERY_MODULE_HASH: Final[str] = "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3"
+CONTRACT_BUNDLE_HASH: Final[str] = "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa"
+QUERY_MODULE_HASH: Final[str] = "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -79,7 +79,14 @@ class AccountPasswordUpdate:
     provider_id: str
     organization_id: UUID
 
-FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "450dd5e2690206d0bcbecbe2a29cc95f3093eafcedc800c66d42ab184aa31ad6"
+FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "ab17fccfbf20c57e6491a9068667cd695bde8397e543f61bba9a15ca9894255d"
+FIND_ACCOUNTS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindAccountsByUserId", "Account", "access_token"),
+    ("FindAccountsByUserId", "Account", "refresh_token"),
+    ("FindAccountsByUserId", "Account", "id_token"),
+    ("FindAccountsByUserId", "Account", "password"),
+)
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindAccountsByUserIdParams:
@@ -89,28 +96,32 @@ class FindAccountsByUserIdParams:
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindAccountsByUserIdFoundAccounts:
-    id: UUID
-    user_id: UUID
-    account_id: str
-    provider_id: str
-    access_token: str | None
-    refresh_token: str | None
-    access_token_expires_at: Timestamp | None
-    refresh_token_expires_at: Timestamp | None
-    scope: str | None
-    id_token: str | None
-    password: str | None
-    created_at: Timestamp
-    updated_at: Timestamp
+    id: UUID = field(repr=False)
+    user_id: UUID = field(repr=False)
+    account_id: str = field(repr=False)
+    provider_id: str = field(repr=False)
+    access_token: str | None = field(repr=False)
+    refresh_token: str | None = field(repr=False)
+    access_token_expires_at: Timestamp | None = field(repr=False)
+    refresh_token_expires_at: Timestamp | None = field(repr=False)
+    scope: str | None = field(repr=False)
+    id_token: str | None = field(repr=False)
+    password: str | None = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindAccountsByUserIdFound:
-    accounts: tuple[FindAccountsByUserIdFoundAccounts, ...]
+    accounts: tuple[FindAccountsByUserIdFoundAccounts, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
 FindAccountsByUserIdResult: TypeAlias = FindAccountsByUserIdFound
 
-FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "6bc3720292013818bf772bad7ba80e728861da2fe127deb205630cbd457eb1e8"
+FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "b870856de144c38775a48124a305048389b14ce8e3c756504dc7a44e404510e2"
+FIND_LATEST_VERIFICATION_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindLatestVerification", "Verification", "value"),
+)
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindLatestVerificationParams:
@@ -119,21 +130,25 @@ class FindLatestVerificationParams:
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindLatestVerificationFoundVerifications:
-    verification_id: UUID
-    identifier: str
-    value: str
-    expires_at: Timestamp
-    created_at: Timestamp
-    updated_at: Timestamp
+    verification_id: UUID = field(repr=False)
+    identifier: str = field(repr=False)
+    value: str = field(repr=False)
+    expires_at: Timestamp = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindLatestVerificationFound:
-    verifications: tuple[FindLatestVerificationFoundVerifications, ...]
+    verifications: tuple[FindLatestVerificationFoundVerifications, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
 FindLatestVerificationResult: TypeAlias = FindLatestVerificationFound
 
-FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "427b4a4904effe506bddf22498b7a377dffddd17674d718c5ea8a6e74bf445ee"
+FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "795a1c0382e07a6728359e9386fc023326b24c46e7b9a0620899ee4b6f704400"
+FIND_SESSION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindSessionById", "Session", "token"),
+)
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindSessionByIdParams:
@@ -142,23 +157,27 @@ class FindSessionByIdParams:
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindSessionByIdFoundSessions:
-    id: UUID
-    user_id: UUID
-    token: str
-    expires_at: Timestamp
-    ip_address: str | None
-    user_agent: str | None
-    created_at: Timestamp
-    updated_at: Timestamp
+    id: UUID = field(repr=False)
+    user_id: UUID = field(repr=False)
+    token: str = field(repr=False)
+    expires_at: Timestamp = field(repr=False)
+    ip_address: str | None = field(repr=False)
+    user_agent: str | None = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindSessionByIdFound:
-    sessions: tuple[FindSessionByIdFoundSessions, ...]
+    sessions: tuple[FindSessionByIdFoundSessions, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
 FindSessionByIdResult: TypeAlias = FindSessionByIdFound
 
-FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "70a11384b34a49b1620b2c6347f2939b21a94db4db922f5b68e49e1ff1079c30"
+FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "298cfc1cca2f74865d3c5267b3819b2f894bbfd8230a16f6c612594ae838f989"
+FIND_SESSION_BY_TOKEN_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindSessionByToken", "Session", "token"),
+)
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindSessionByTokenParams:
@@ -167,22 +186,23 @@ class FindSessionByTokenParams:
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindSessionByTokenFoundSessions:
-    id: UUID
-    user_id: UUID
-    expires_at: Timestamp
-    ip_address: str | None
-    user_agent: str | None
-    created_at: Timestamp
-    updated_at: Timestamp
+    id: UUID = field(repr=False)
+    user_id: UUID = field(repr=False)
+    token: str = field(repr=False)
+    expires_at: Timestamp = field(repr=False)
+    ip_address: str | None = field(repr=False)
+    user_agent: str | None = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindSessionByTokenFound:
-    sessions: tuple[FindSessionByTokenFoundSessions, ...]
+    sessions: tuple[FindSessionByTokenFoundSessions, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
 FindSessionByTokenResult: TypeAlias = FindSessionByTokenFound
 
-FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "ffc4c4163c82384328dc39540685cb8bc20ea24323e962bee3e223c7e88501b8"
+FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "c56ce0a4727bbb24835a18becbd868f3c8b3c080082140d72db320c01cb70d7c"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByEmailParams:
@@ -206,7 +226,7 @@ class FindUserByEmailFound:
 
 FindUserByEmailResult: TypeAlias = FindUserByEmailFound
 
-FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "1b029b24182530d8e7da037adf2db293dbaea0da66d15da17accc000506ee820"
+FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "d73507273885a13f5f908673bc13e947151e143cdfd51368b33fbfaaca4674a5"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByIdParams:
@@ -234,7 +254,11 @@ class FindUserByIdMissing:
 
 FindUserByIdResult: TypeAlias = FindUserByIdFound | FindUserByIdMissing
 
-FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "4fb3587d8bcba21dc2cf7b23ad569abad37277384d287209059b65f422ba271c"
+FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "db5b50368c99f2e9d412ad07bfcb4a03d6f9425ff7e2df13bbaa5b6020e38b7f"
+FIND_VERIFICATION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindVerificationById", "Verification", "value"),
+)
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindVerificationByIdParams:
@@ -243,16 +267,16 @@ class FindVerificationByIdParams:
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindVerificationByIdFoundVerification:
-    verification_id: UUID
-    identifier: str
-    value: str
-    expires_at: Timestamp
-    created_at: Timestamp
-    updated_at: Timestamp
+    verification_id: UUID = field(repr=False)
+    identifier: str = field(repr=False)
+    value: str = field(repr=False)
+    expires_at: Timestamp = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindVerificationByIdFound:
-    verification: FindVerificationByIdFoundVerification
+    verification: FindVerificationByIdFoundVerification = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
 @dataclass(frozen=True, slots=True, kw_only=True)
@@ -261,7 +285,11 @@ class FindVerificationByIdMissing:
 
 FindVerificationByIdResult: TypeAlias = FindVerificationByIdFound | FindVerificationByIdMissing
 
-FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "3dd64fdad1a5be36f896783ac89a7b1976e30c47aac865694acb11f090f90d58"
+FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "6a191858a1c1213b0dbbeb2daca2f5dd85046004d63a0113b76feb805fd5290b"
+FIND_VERIFICATIONS_BY_IDENTIFIER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindVerificationsByIdentifier", "Verification", "value"),
+)
+
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindVerificationsByIdentifierParams:
@@ -271,16 +299,16 @@ class FindVerificationsByIdentifierParams:
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindVerificationsByIdentifierFoundVerifications:
-    verification_id: UUID
-    identifier: str
-    value: str
-    expires_at: Timestamp
-    created_at: Timestamp
-    updated_at: Timestamp
+    verification_id: UUID = field(repr=False)
+    identifier: str = field(repr=False)
+    value: str = field(repr=False)
+    expires_at: Timestamp = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindVerificationsByIdentifierFound:
-    verifications: tuple[FindVerificationsByIdentifierFoundVerifications, ...]
+    verifications: tuple[FindVerificationsByIdentifierFoundVerifications, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
 FindVerificationsByIdentifierResult: TypeAlias = FindVerificationsByIdentifierFound
@@ -291,7 +319,7 @@ class ConsumeVerificationSetInput:
     organization_id: UUID
     verification_ids: tuple[UUID, ...]
 
-CONSUME_VERIFICATION_SET_PLAN_HASH: Final[str] = "25eda2648d09c2eeab5d30555565979d153c9562133196a0441c4733184f06d7"
+CONSUME_VERIFICATION_SET_PLAN_HASH: Final[str] = "298227c9ec3ba1113c9913e8078e875a225c43ab79363b95057d73079e7d00cd"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ConsumeVerificationSetVerificationSetConsumed:
     outcome: Literal["VerificationSetConsumed"] = field(default="VerificationSetConsumed", init=False)
@@ -320,7 +348,7 @@ class CreateAccountInput:
     access_token_expires_at: Timestamp | None
     refresh_token_expires_at: Timestamp | None
 
-CREATE_ACCOUNT_PLAN_HASH: Final[str] = "49d670def2b1cc410cba570f7967359a0922627e8932d0dad5f3395c4a327224"
+CREATE_ACCOUNT_PLAN_HASH: Final[str] = "3f6afc9d8cbc0ff64aa4d3551366fdfc890158706e1093f4df5b9bfcb90a109f"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateAccountAccountCreated:
     outcome: Literal["AccountCreated"] = field(default="AccountCreated", init=False)
@@ -348,7 +376,7 @@ class CreateSessionInput:
     user_agent: str | None
     organization_id: UUID
 
-CREATE_SESSION_PLAN_HASH: Final[str] = "7a446dfe07ee00e2bfab906114b7b4982132a747fa7c5af2fbffbd2fcf929781"
+CREATE_SESSION_PLAN_HASH: Final[str] = "834ede9c61dca92de80fb1157522b875bf3da6fd56d0f4ea12dc6dc7e62c9900"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSessionSessionCreated:
     outcome: Literal["SessionCreated"] = field(default="SessionCreated", init=False)
@@ -388,7 +416,7 @@ class CreateSignupGraphInput:
     external_account_id: str
     user_email_verified: bool
 
-CREATE_SIGNUP_GRAPH_PLAN_HASH: Final[str] = "758e671ec8dad9e3f55874a22b91848056442852bdc8290ed9ddd44eed1f598b"
+CREATE_SIGNUP_GRAPH_PLAN_HASH: Final[str] = "6a0b84a32a5d29b9a391783fe819402acac7569c8a167aa3e002d3697ab8f7ae"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSignupGraphSignupUserExists:
     outcome: Literal["SignupUserExists"] = field(default="SignupUserExists", init=False)
@@ -441,7 +469,7 @@ class CreateVerificationInput:
     updated_at: Timestamp
     organization_id: UUID
 
-CREATE_VERIFICATION_PLAN_HASH: Final[str] = "3573cb6e6e846e6d535f5b4106555eed3cd449bc15dbc4c92fa2d72f614a554a"
+CREATE_VERIFICATION_PLAN_HASH: Final[str] = "1271b029c766f74f0dd91764fb564a086183c504a42949b3f61fe8db4fd823ca"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateVerificationVerificationCreated:
     outcome: Literal["VerificationCreated"] = field(default="VerificationCreated", init=False)
@@ -459,7 +487,7 @@ class DeleteSessionInput:
     session_ids: tuple[UUID, ...]
     organization_id: UUID
 
-DELETE_SESSION_PLAN_HASH: Final[str] = "3be5de199c93e4293058bcddef2726a1b264cc92ec418c500ffc5d3fd9d36588"
+DELETE_SESSION_PLAN_HASH: Final[str] = "62580515a9e5bc493addb410cb11c2114aab35a9899e1a9c5c26a335f02cedda"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteSessionSessionDeleted:
     outcome: Literal["SessionDeleted"] = field(default="SessionDeleted", init=False)
@@ -471,12 +499,33 @@ class DeleteSessionSessionMissing:
 DeleteSessionOutcome: TypeAlias = DeleteSessionSessionDeleted | DeleteSessionSessionMissing
 
 @dataclass(frozen=True, slots=True, kw_only=True)
+class DeleteUserInput:
+    user_ids: tuple[UUID, ...]
+    request_id: UUID
+    organization_id: UUID
+
+DELETE_USER_PLAN_HASH: Final[str] = "13b941c8a75bb1d359ab1dfd136de826c96073d71a600d2695372438bac40477"
+@dataclass(frozen=True, slots=True, kw_only=True)
+class DeleteUserUserDeleted:
+    outcome: Literal["UserDeleted"] = field(default="UserDeleted", init=False)
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class DeleteUserDeleteUserMissing:
+    outcome: Literal["DeleteUserMissing"] = field(default="DeleteUserMissing", init=False)
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class DeleteUserDeleteUserCascadeLimitExceeded:
+    outcome: Literal["DeleteUserCascadeLimitExceeded"] = field(default="DeleteUserCascadeLimitExceeded", init=False)
+
+DeleteUserOutcome: TypeAlias = DeleteUserUserDeleted | DeleteUserDeleteUserMissing | DeleteUserDeleteUserCascadeLimitExceeded
+
+@dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteVerificationInput:
     request_id: UUID
     organization_id: UUID
     verification_ids: tuple[UUID, ...]
 
-DELETE_VERIFICATION_PLAN_HASH: Final[str] = "6ab07e03a4916b7ec4d6d6f52ce0517fbe174fdcba33547793d2d1bdf226a66a"
+DELETE_VERIFICATION_PLAN_HASH: Final[str] = "631edda3617d0b206fd3f4f5889bfbbde6546901ff5f9994cef583ffdf5c3f6e"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteVerificationVerificationDeleted:
     outcome: Literal["VerificationDeleted"] = field(default="VerificationDeleted", init=False)
@@ -494,7 +543,7 @@ class UpdateAccountPasswordsInput:
     request_id: UUID
     organization_id: UUID
 
-UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: Final[str] = "a44e688e012629ea12e30587275cd499bb56fa1cc51a03b5c2e37843d6afdc02"
+UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: Final[str] = "d3d65de38de470e2d3e0a403afefdc94e039c6a946b29c696004b0d6411a6041"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountPasswordsPasswordAccountMissing:
     outcome: Literal["PasswordAccountMissing"] = field(default="PasswordAccountMissing", init=False)
@@ -751,6 +800,30 @@ class RiffDBBetterAuthCoreClient:
             if not 1 <= len(input.session_ids) <= 8:
                 raise ValueError("invalid bounded collection length for DeleteSession.session_ids")
         return self._transport._command_batch(inputs, options, self.delete_session, progress)
+
+    def delete_user(self, input: DeleteUserInput) -> TypedCommandResult[DeleteUserOutcome]:
+        if not 1 <= len(input.user_ids) <= 1:
+            raise ValueError("invalid bounded collection length for DeleteUser.user_ids")
+        raw = self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="DeleteUser", plan_hash=DELETE_USER_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "UserDeleted": DeleteUserUserDeleted,
+            "DeleteUserMissing": DeleteUserDeleteUserMissing,
+            "DeleteUserCascadeLimitExceeded": DeleteUserDeleteUserCascadeLimitExceeded,
+        }
+        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+
+    def delete_user_batch(
+        self, inputs: Sequence[DeleteUserInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[DeleteUserOutcome]:
+        for input in inputs:
+            if not 1 <= len(input.user_ids) <= 1:
+                raise ValueError("invalid bounded collection length for DeleteUser.user_ids")
+        return self._transport._command_batch(inputs, options, self.delete_user, progress)
 
     def delete_verification(self, input: DeleteVerificationInput) -> TypedCommandResult[DeleteVerificationOutcome]:
         if not 1 <= len(input.verification_ids) <= 8:
@@ -1041,6 +1114,30 @@ class AsyncRiffDBBetterAuthCoreClient:
             if not 1 <= len(input.session_ids) <= 8:
                 raise ValueError("invalid bounded collection length for DeleteSession.session_ids")
         return await self._transport._command_batch(inputs, options, self.delete_session, progress)
+
+    async def delete_user(self, input: DeleteUserInput) -> TypedCommandResult[DeleteUserOutcome]:
+        if not 1 <= len(input.user_ids) <= 1:
+            raise ValueError("invalid bounded collection length for DeleteUser.user_ids")
+        raw = await self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="DeleteUser", plan_hash=DELETE_USER_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "UserDeleted": DeleteUserUserDeleted,
+            "DeleteUserMissing": DeleteUserDeleteUserMissing,
+            "DeleteUserCascadeLimitExceeded": DeleteUserDeleteUserCascadeLimitExceeded,
+        }
+        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+
+    async def delete_user_batch(
+        self, inputs: Sequence[DeleteUserInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[DeleteUserOutcome]:
+        for input in inputs:
+            if not 1 <= len(input.user_ids) <= 1:
+                raise ValueError("invalid bounded collection length for DeleteUser.user_ids")
+        return await self._transport._command_batch(inputs, options, self.delete_user, progress)
 
     async def delete_verification(self, input: DeleteVerificationInput) -> TypedCommandResult[DeleteVerificationOutcome]:
         if not 1 <= len(input.verification_ids) <= 8:

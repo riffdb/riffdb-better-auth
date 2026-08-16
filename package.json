@@ -34,15 +34,15 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@riffdb/client": "0.1.0-dev.4",
+    "@riffdb/client": "0.1.0-dev.6",
     "better-auth": "1.6.29"
   },
   "dependencies": {
-    "@riffdb/client": "0.1.0-dev.4"
+    "@riffdb/client": "0.1.0-dev.6"
   },
   "devDependencies": {
     "@better-auth/test-utils": "1.6.29",
-    "@riffdb/cli": "0.1.0-dev.4",
+    "@riffdb/cli": "0.1.0-dev.6",
     "@types/node": "26.2.0",
     "better-auth": "1.6.29",
     "typescript": "7.0.2",

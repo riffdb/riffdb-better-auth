@@ -5,11 +5,11 @@ use riffdb_client_rust::{ApplicationCardinality, ApplicationClientError, Applica
 pub use riffdb_client_rust::QueryOptions;
 use riffdb_client_rust::v1::value::Kind as WireKind;
 
-pub const QUERY_MODULE_HASH: [u8; 32] = [0x8e, 0xfc, 0xe8, 0xc5, 0x5b, 0x61, 0xfd, 0x16, 0xbc, 0xc3, 0x1c, 0x58, 0x63, 0x07, 0x94, 0x84, 0x3b, 0xfd, 0x36, 0x58, 0x5f, 0x98, 0xd7, 0x09, 0xc4, 0x54, 0x78, 0x62, 0x6a, 0x9d, 0x63, 0xa3];
+pub const QUERY_MODULE_HASH: [u8; 32] = [0xf8, 0x68, 0xcf, 0x35, 0xe4, 0xd2, 0x6b, 0xb3, 0x5d, 0x70, 0x5e, 0x0a, 0x67, 0x91, 0x48, 0x60, 0x76, 0xd7, 0x6f, 0x93, 0x86, 0x9a, 0x95, 0xfd, 0x56, 0x02, 0xdb, 0xae, 0x7e, 0x22, 0x26, 0x27];
 pub const CONTRACT_LINEAGE: &str = "RiffDBBetterAuthCore";
 pub const CONTRACT_VERSION: u64 = 1;
 
-pub const CONTRACT_BUNDLE_HASH: [u8; 32] = [0x7a, 0xa7, 0x95, 0x82, 0xd1, 0xda, 0x66, 0xa5, 0x87, 0xac, 0x46, 0xad, 0xa2, 0x17, 0xde, 0xdb, 0xcd, 0x3e, 0x46, 0x4d, 0x03, 0x6d, 0xb4, 0x43, 0xad, 0x3c, 0x4b, 0xae, 0xa4, 0xf2, 0x24, 0xe2];
+pub const CONTRACT_BUNDLE_HASH: [u8; 32] = [0xc2, 0x76, 0x30, 0x8c, 0x2b, 0x3a, 0x42, 0x7e, 0x1d, 0x33, 0x84, 0x6f, 0xf5, 0x27, 0xb8, 0x2c, 0xd0, 0xdd, 0x8d, 0x01, 0x86, 0x46, 0x6e, 0xca, 0x3a, 0x34, 0x75, 0x93, 0xc3, 0x9d, 0xaa, 0xaa];
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct DecimalValue {
@@ -35,7 +35,14 @@ pub struct FindAccountsByUserIdParams {
     pub after: Option<String>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+pub const FIND_ACCOUNTS_BY_USER_ID_SECRET_OUTPUTS: &[(&str, &str, &str)] = &[
+    ("FindAccountsByUserId", "Account", "access_token"),
+    ("FindAccountsByUserId", "Account", "refresh_token"),
+    ("FindAccountsByUserId", "Account", "id_token"),
+    ("FindAccountsByUserId", "Account", "password"),
+];
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindAccountsByUserIdFoundAccounts {
     pub id: String,
     pub user_id: String,
@@ -52,9 +59,21 @@ pub struct FindAccountsByUserIdFoundAccounts {
     pub updated_at: TimestampValue,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+impl std::fmt::Debug for FindAccountsByUserIdFoundAccounts {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindAccountsByUserIdFoundAccounts { <secret outputs redacted> }")
+    }
+}
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindAccountsByUserIdFound {
     pub accounts: Vec<FindAccountsByUserIdFoundAccounts>,
+}
+
+impl std::fmt::Debug for FindAccountsByUserIdFound {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindAccountsByUserIdFound { <secret outputs redacted> }")
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -62,7 +81,7 @@ pub enum FindAccountsByUserIdResult {
     Found(Box<FindAccountsByUserIdFound>),
 }
 
-pub const FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: [u8; 32] = [0x45, 0x0d, 0xd5, 0xe2, 0x69, 0x02, 0x06, 0xd0, 0xbc, 0xbe, 0xcb, 0xe2, 0xa2, 0x9c, 0xc9, 0x5f, 0x30, 0x93, 0xea, 0xfc, 0xed, 0xc8, 0x00, 0xc6, 0x6d, 0x42, 0xab, 0x18, 0x4a, 0xa3, 0x1a, 0xd6];
+pub const FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: [u8; 32] = [0xab, 0x17, 0xfc, 0xcf, 0xbf, 0x20, 0xc5, 0x7e, 0x64, 0x91, 0xa9, 0x06, 0x86, 0x67, 0xcd, 0x69, 0x5b, 0xde, 0x83, 0x97, 0xe5, 0x43, 0xf6, 0x1b, 0xba, 0x9a, 0x15, 0xca, 0x98, 0x94, 0x25, 0x5d];
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FindAccountsByUserIdQuery(pub FindAccountsByUserIdParams);
 impl GeneratedQuery for FindAccountsByUserIdQuery {
@@ -127,7 +146,11 @@ pub struct FindLatestVerificationParams {
     pub identifier: String,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+pub const FIND_LATEST_VERIFICATION_SECRET_OUTPUTS: &[(&str, &str, &str)] = &[
+    ("FindLatestVerification", "Verification", "value"),
+];
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindLatestVerificationFoundVerifications {
     pub verification_id: String,
     pub identifier: String,
@@ -137,9 +160,21 @@ pub struct FindLatestVerificationFoundVerifications {
     pub updated_at: TimestampValue,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+impl std::fmt::Debug for FindLatestVerificationFoundVerifications {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindLatestVerificationFoundVerifications { <secret outputs redacted> }")
+    }
+}
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindLatestVerificationFound {
     pub verifications: Vec<FindLatestVerificationFoundVerifications>,
+}
+
+impl std::fmt::Debug for FindLatestVerificationFound {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindLatestVerificationFound { <secret outputs redacted> }")
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -147,7 +182,7 @@ pub enum FindLatestVerificationResult {
     Found(Box<FindLatestVerificationFound>),
 }
 
-pub const FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: [u8; 32] = [0x6b, 0xc3, 0x72, 0x02, 0x92, 0x01, 0x38, 0x18, 0xbf, 0x77, 0x2b, 0xad, 0x7b, 0xa8, 0x0e, 0x72, 0x88, 0x61, 0xda, 0x2f, 0xe1, 0x27, 0xde, 0xb2, 0x05, 0x63, 0x0c, 0xbd, 0x45, 0x7e, 0xb1, 0xe8];
+pub const FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: [u8; 32] = [0xb8, 0x70, 0x85, 0x6d, 0xe1, 0x44, 0xc3, 0x87, 0x75, 0xa4, 0x81, 0x24, 0xa3, 0x05, 0x04, 0x83, 0x89, 0xb1, 0x4c, 0xe8, 0xe3, 0xc7, 0x56, 0x50, 0x4d, 0xc7, 0xa4, 0x4e, 0x40, 0x45, 0x10, 0xe2];
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FindLatestVerificationQuery(pub FindLatestVerificationParams);
 impl GeneratedQuery for FindLatestVerificationQuery {
@@ -204,7 +239,11 @@ pub struct FindSessionByIdParams {
     pub id: String,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+pub const FIND_SESSION_BY_ID_SECRET_OUTPUTS: &[(&str, &str, &str)] = &[
+    ("FindSessionById", "Session", "token"),
+];
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindSessionByIdFoundSessions {
     pub id: String,
     pub user_id: String,
@@ -216,9 +255,21 @@ pub struct FindSessionByIdFoundSessions {
     pub updated_at: TimestampValue,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+impl std::fmt::Debug for FindSessionByIdFoundSessions {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindSessionByIdFoundSessions { <secret outputs redacted> }")
+    }
+}
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindSessionByIdFound {
     pub sessions: Vec<FindSessionByIdFoundSessions>,
+}
+
+impl std::fmt::Debug for FindSessionByIdFound {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindSessionByIdFound { <secret outputs redacted> }")
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -226,7 +277,7 @@ pub enum FindSessionByIdResult {
     Found(Box<FindSessionByIdFound>),
 }
 
-pub const FIND_SESSION_BY_ID_QUERY_PLAN_HASH: [u8; 32] = [0x42, 0x7b, 0x4a, 0x49, 0x04, 0xef, 0xfe, 0x50, 0x6b, 0xdd, 0xf2, 0x24, 0x98, 0xb7, 0xa3, 0x77, 0xdf, 0xfd, 0xdd, 0x17, 0x67, 0x4d, 0x71, 0x8c, 0x5e, 0xa8, 0xa6, 0xe7, 0x4b, 0xf4, 0x45, 0xee];
+pub const FIND_SESSION_BY_ID_QUERY_PLAN_HASH: [u8; 32] = [0x79, 0x5a, 0x1c, 0x03, 0x82, 0xe0, 0x7a, 0x67, 0x28, 0x35, 0x9e, 0x93, 0x86, 0xfc, 0x02, 0x33, 0x26, 0xb2, 0x4c, 0x46, 0xe7, 0xb9, 0xa0, 0x62, 0x08, 0x99, 0xee, 0x4b, 0x6f, 0x70, 0x44, 0x00];
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FindSessionByIdQuery(pub FindSessionByIdParams);
 impl GeneratedQuery for FindSessionByIdQuery {
@@ -285,10 +336,15 @@ pub struct FindSessionByTokenParams {
     pub token: String,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+pub const FIND_SESSION_BY_TOKEN_SECRET_OUTPUTS: &[(&str, &str, &str)] = &[
+    ("FindSessionByToken", "Session", "token"),
+];
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindSessionByTokenFoundSessions {
     pub id: String,
     pub user_id: String,
+    pub token: String,
     pub expires_at: TimestampValue,
     pub ip_address: Option<String>,
     pub user_agent: Option<String>,
@@ -296,9 +352,21 @@ pub struct FindSessionByTokenFoundSessions {
     pub updated_at: TimestampValue,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+impl std::fmt::Debug for FindSessionByTokenFoundSessions {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindSessionByTokenFoundSessions { <secret outputs redacted> }")
+    }
+}
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindSessionByTokenFound {
     pub sessions: Vec<FindSessionByTokenFoundSessions>,
+}
+
+impl std::fmt::Debug for FindSessionByTokenFound {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindSessionByTokenFound { <secret outputs redacted> }")
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -306,7 +374,7 @@ pub enum FindSessionByTokenResult {
     Found(Box<FindSessionByTokenFound>),
 }
 
-pub const FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: [u8; 32] = [0x70, 0xa1, 0x13, 0x84, 0xb3, 0x4a, 0x49, 0xb1, 0x62, 0x0b, 0x2c, 0x63, 0x47, 0xf2, 0x93, 0x9b, 0x21, 0xa9, 0x4d, 0xb4, 0xdb, 0x92, 0x2f, 0x5b, 0x68, 0xe4, 0x9e, 0x1f, 0xf1, 0x07, 0x9c, 0x30];
+pub const FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: [u8; 32] = [0x29, 0x8c, 0xfc, 0x1c, 0xca, 0x2f, 0x74, 0x86, 0x5d, 0x3c, 0x52, 0x67, 0xb3, 0x81, 0x9b, 0x2f, 0x89, 0x4b, 0xbf, 0xd8, 0x23, 0x0a, 0x16, 0xf6, 0xc6, 0x12, 0x59, 0x4a, 0xe8, 0x38, 0xf9, 0x89];
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FindSessionByTokenQuery(pub FindSessionByTokenParams);
 impl GeneratedQuery for FindSessionByTokenQuery {
@@ -348,6 +416,7 @@ fn decode_find_session_by_token_found_sessions_record(mut record: ApplicationRec
     let value = FindSessionByTokenFoundSessions {
         id: application_uuid(take_application_value(&mut record.fields, "id")?)?,
         user_id: application_uuid(take_application_value(&mut record.fields, "user_id")?)?,
+        token: application_string(take_application_value(&mut record.fields, "token")?)?,
         expires_at: application_timestamp(take_application_value(&mut record.fields, "expires_at")?)?,
         ip_address: match take_application_value(&mut record.fields, "ip_address")? { ApplicationValue::Null => None, value => Some(application_string(value)?) },
         user_agent: match take_application_value(&mut record.fields, "user_agent")? { ApplicationValue::Null => None, value => Some(application_string(value)?) },
@@ -385,7 +454,7 @@ pub enum FindUserByEmailResult {
     Found(Box<FindUserByEmailFound>),
 }
 
-pub const FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: [u8; 32] = [0xff, 0xc4, 0xc4, 0x16, 0x3c, 0x82, 0x38, 0x43, 0x28, 0xdc, 0x39, 0x54, 0x06, 0x85, 0xcb, 0x8b, 0xc2, 0x0e, 0xa2, 0x43, 0x23, 0xe9, 0x62, 0xbe, 0xe3, 0xe2, 0x23, 0xc7, 0xe8, 0x85, 0x01, 0xb8];
+pub const FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: [u8; 32] = [0xc5, 0x6c, 0xe0, 0xa4, 0x72, 0x7b, 0xbb, 0x24, 0x83, 0x5a, 0x18, 0xbe, 0xcb, 0xd8, 0x68, 0xf3, 0xc8, 0xb3, 0xc0, 0x80, 0x08, 0x21, 0x40, 0xd7, 0x2d, 0xb3, 0x20, 0xc0, 0x1c, 0xb7, 0x0d, 0x7c];
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FindUserByEmailQuery(pub FindUserByEmailParams);
 impl GeneratedQuery for FindUserByEmailQuery {
@@ -469,7 +538,7 @@ pub enum FindUserByIdResult {
     Missing(Box<FindUserByIdMissing>),
 }
 
-pub const FIND_USER_BY_ID_QUERY_PLAN_HASH: [u8; 32] = [0x1b, 0x02, 0x9b, 0x24, 0x18, 0x25, 0x30, 0xd8, 0xe7, 0xda, 0x03, 0x7a, 0xdf, 0x2d, 0xb2, 0x93, 0xdb, 0xae, 0xa0, 0xda, 0x66, 0xd1, 0x5d, 0xa1, 0x7a, 0xcc, 0xc0, 0x00, 0x50, 0x6e, 0xe8, 0x20];
+pub const FIND_USER_BY_ID_QUERY_PLAN_HASH: [u8; 32] = [0xd7, 0x35, 0x07, 0x27, 0x38, 0x85, 0xa1, 0x3f, 0x5f, 0x90, 0x86, 0x73, 0xbc, 0x13, 0xe9, 0x47, 0x15, 0x1e, 0x14, 0x3c, 0xdf, 0xd5, 0x13, 0x68, 0xb3, 0x3f, 0xbf, 0xaa, 0xca, 0x46, 0x74, 0xa5];
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FindUserByIdQuery(pub FindUserByIdParams);
 impl GeneratedQuery for FindUserByIdQuery {
@@ -533,7 +602,11 @@ pub struct FindVerificationByIdParams {
     pub id: String,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+pub const FIND_VERIFICATION_BY_ID_SECRET_OUTPUTS: &[(&str, &str, &str)] = &[
+    ("FindVerificationById", "Verification", "value"),
+];
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindVerificationByIdFoundVerification {
     pub verification_id: String,
     pub identifier: String,
@@ -543,13 +616,31 @@ pub struct FindVerificationByIdFoundVerification {
     pub updated_at: TimestampValue,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+impl std::fmt::Debug for FindVerificationByIdFoundVerification {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindVerificationByIdFoundVerification { <secret outputs redacted> }")
+    }
+}
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindVerificationByIdFound {
     pub verification: FindVerificationByIdFoundVerification,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+impl std::fmt::Debug for FindVerificationByIdFound {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindVerificationByIdFound { <secret outputs redacted> }")
+    }
+}
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindVerificationByIdMissing {
+}
+
+impl std::fmt::Debug for FindVerificationByIdMissing {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindVerificationByIdMissing { <secret outputs redacted> }")
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -558,7 +649,7 @@ pub enum FindVerificationByIdResult {
     Missing(Box<FindVerificationByIdMissing>),
 }
 
-pub const FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: [u8; 32] = [0x4f, 0xb3, 0x58, 0x7d, 0x8b, 0xcb, 0xa2, 0x1d, 0xc2, 0xcf, 0x7b, 0x23, 0xad, 0x56, 0x9a, 0xba, 0xd3, 0x72, 0x77, 0x38, 0x4d, 0x28, 0x72, 0x09, 0x05, 0x9b, 0x65, 0xf4, 0x22, 0xba, 0x27, 0x1c];
+pub const FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: [u8; 32] = [0xdb, 0x5b, 0x50, 0x36, 0x8c, 0x99, 0xf2, 0xe9, 0xd4, 0x12, 0xad, 0x07, 0xbf, 0xcb, 0x4a, 0x03, 0xd6, 0xf9, 0x42, 0x5f, 0xf7, 0xe2, 0xdf, 0x13, 0xbb, 0xaa, 0x5b, 0x60, 0x20, 0xe3, 0x8b, 0x7f];
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FindVerificationByIdQuery(pub FindVerificationByIdParams);
 impl GeneratedQuery for FindVerificationByIdQuery {
@@ -622,7 +713,11 @@ pub struct FindVerificationsByIdentifierParams {
     pub after: Option<String>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+pub const FIND_VERIFICATIONS_BY_IDENTIFIER_SECRET_OUTPUTS: &[(&str, &str, &str)] = &[
+    ("FindVerificationsByIdentifier", "Verification", "value"),
+];
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindVerificationsByIdentifierFoundVerifications {
     pub verification_id: String,
     pub identifier: String,
@@ -632,9 +727,21 @@ pub struct FindVerificationsByIdentifierFoundVerifications {
     pub updated_at: TimestampValue,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+impl std::fmt::Debug for FindVerificationsByIdentifierFoundVerifications {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindVerificationsByIdentifierFoundVerifications { <secret outputs redacted> }")
+    }
+}
+
+#[derive(Clone, Eq, PartialEq)]
 pub struct FindVerificationsByIdentifierFound {
     pub verifications: Vec<FindVerificationsByIdentifierFoundVerifications>,
+}
+
+impl std::fmt::Debug for FindVerificationsByIdentifierFound {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str("FindVerificationsByIdentifierFound { <secret outputs redacted> }")
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -642,7 +749,7 @@ pub enum FindVerificationsByIdentifierResult {
     Found(Box<FindVerificationsByIdentifierFound>),
 }
 
-pub const FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: [u8; 32] = [0x3d, 0xd6, 0x4f, 0xda, 0xd1, 0xa5, 0xbe, 0x36, 0xf8, 0x96, 0x78, 0x3a, 0xc8, 0x9a, 0x7b, 0x19, 0x76, 0xe3, 0x0c, 0x47, 0xaa, 0xc8, 0x65, 0x69, 0x4a, 0xcb, 0x11, 0xf0, 0x90, 0xf9, 0x0d, 0x58];
+pub const FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: [u8; 32] = [0x6a, 0x19, 0x18, 0x58, 0xa1, 0xc1, 0x21, 0x3b, 0x0d, 0xbb, 0xeb, 0x2d, 0xac, 0xa2, 0xf5, 0xdd, 0x85, 0x04, 0x60, 0x04, 0xd6, 0x3a, 0x01, 0x13, 0xb7, 0x6f, 0xeb, 0x80, 0x5f, 0xd5, 0x29, 0x0b];
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FindVerificationsByIdentifierQuery(pub FindVerificationsByIdentifierParams);
 impl GeneratedQuery for FindVerificationsByIdentifierQuery {
@@ -931,7 +1038,7 @@ pub enum ConsumeVerificationSetOutcome {
     VerificationConsumeMissing,
 }
 
-const CONSUME_VERIFICATION_SET_PLAN_HASH: [u8; 32] = [0x25, 0xed, 0xa2, 0x64, 0x8d, 0x09, 0xc2, 0xee, 0xab, 0x5d, 0x30, 0x55, 0x55, 0x65, 0x97, 0x9d, 0x15, 0x3c, 0x95, 0x62, 0x13, 0x31, 0x96, 0xa0, 0x44, 0x1c, 0x47, 0x33, 0x18, 0x4f, 0x06, 0xd7];
+const CONSUME_VERIFICATION_SET_PLAN_HASH: [u8; 32] = [0x29, 0x82, 0x27, 0xc9, 0xec, 0x3b, 0xa1, 0x11, 0x3c, 0x99, 0x13, 0xe8, 0x07, 0x8e, 0x87, 0x5a, 0x22, 0x5c, 0x43, 0xab, 0x79, 0x36, 0x3b, 0x95, 0x05, 0x7d, 0x73, 0x07, 0x9e, 0x7d, 0x00, 0xcd];
 impl GeneratedCommand for ConsumeVerificationSetInput {
     type Outcome = ConsumeVerificationSetOutcome;
 
@@ -995,7 +1102,7 @@ pub enum CreateAccountOutcome {
     AccountAlreadyExists,
 }
 
-const CREATE_ACCOUNT_PLAN_HASH: [u8; 32] = [0x49, 0xd6, 0x70, 0xde, 0xf2, 0xb1, 0xcc, 0x41, 0x0c, 0xba, 0x57, 0x0f, 0x79, 0x67, 0x35, 0x9a, 0x09, 0x22, 0x62, 0x7e, 0x89, 0x32, 0xd0, 0xda, 0xd5, 0xf3, 0x39, 0x5c, 0x4a, 0x32, 0x72, 0x24];
+const CREATE_ACCOUNT_PLAN_HASH: [u8; 32] = [0x3f, 0x6a, 0xfc, 0x9d, 0x8c, 0xbc, 0x0f, 0xf6, 0x4a, 0xa4, 0xd3, 0x55, 0x13, 0x66, 0xfd, 0xfc, 0x89, 0x01, 0x58, 0x70, 0x6e, 0x10, 0x93, 0xf4, 0xdf, 0x5b, 0x9b, 0xfc, 0xb9, 0x0a, 0x10, 0x9f];
 impl GeneratedCommand for CreateAccountInput {
     type Outcome = CreateAccountOutcome;
 
@@ -1066,7 +1173,7 @@ pub enum CreateSessionOutcome {
     SessionAlreadyExists,
 }
 
-const CREATE_SESSION_PLAN_HASH: [u8; 32] = [0x7a, 0x44, 0x6d, 0xfe, 0x07, 0xee, 0x00, 0xe2, 0xbf, 0xab, 0x90, 0x61, 0x14, 0xb7, 0xb4, 0x98, 0x21, 0x32, 0xa7, 0x47, 0xfa, 0x7c, 0x5a, 0xf2, 0xfb, 0xff, 0xbd, 0x2f, 0xcf, 0x92, 0x97, 0x81];
+const CREATE_SESSION_PLAN_HASH: [u8; 32] = [0x83, 0x4e, 0xde, 0x9c, 0x61, 0xdc, 0xa9, 0x2d, 0xe8, 0x0f, 0xb1, 0x15, 0x75, 0x22, 0xb8, 0x75, 0xbf, 0x3d, 0xa6, 0xfd, 0x56, 0xd0, 0xf4, 0xea, 0x12, 0xdc, 0x6d, 0xc7, 0xe6, 0x2c, 0x99, 0x00];
 impl GeneratedCommand for CreateSessionInput {
     type Outcome = CreateSessionOutcome;
 
@@ -1146,7 +1253,7 @@ pub enum CreateSignupGraphOutcome {
     SignupSessionExists,
 }
 
-const CREATE_SIGNUP_GRAPH_PLAN_HASH: [u8; 32] = [0x75, 0x8e, 0x67, 0x1e, 0xc8, 0xda, 0xd9, 0xe3, 0xf5, 0x58, 0x74, 0xa2, 0x2b, 0x91, 0x84, 0x80, 0x56, 0x44, 0x28, 0x52, 0xbd, 0xc8, 0x29, 0x0e, 0xd9, 0xdd, 0xd4, 0x4e, 0xed, 0x1f, 0x59, 0x8b];
+const CREATE_SIGNUP_GRAPH_PLAN_HASH: [u8; 32] = [0x6a, 0x0b, 0x84, 0xa3, 0x2a, 0x5d, 0x29, 0xb9, 0xa3, 0x91, 0x78, 0x3f, 0xe8, 0x19, 0x40, 0x2a, 0xca, 0xc7, 0x56, 0x9c, 0x8a, 0x16, 0x7a, 0xa3, 0xe0, 0x02, 0xd3, 0x69, 0x7a, 0xb8, 0xf7, 0xae];
 impl GeneratedCommand for CreateSignupGraphInput {
     type Outcome = CreateSignupGraphOutcome;
 
@@ -1282,7 +1389,7 @@ pub enum CreateVerificationOutcome {
     VerificationAlreadyExists,
 }
 
-const CREATE_VERIFICATION_PLAN_HASH: [u8; 32] = [0x35, 0x73, 0xcb, 0x6e, 0x6e, 0x84, 0x6e, 0x6d, 0x53, 0x5f, 0x5b, 0x41, 0x06, 0x55, 0x5e, 0xed, 0x3c, 0xd4, 0x49, 0xbc, 0x15, 0xdb, 0xc4, 0xc9, 0x2f, 0xa2, 0xd7, 0x2f, 0x61, 0x4a, 0x55, 0x4a];
+const CREATE_VERIFICATION_PLAN_HASH: [u8; 32] = [0x12, 0x71, 0xb0, 0x29, 0xc7, 0x66, 0xf7, 0x4f, 0x0d, 0xd9, 0x17, 0x64, 0xfb, 0x56, 0x4a, 0x08, 0x61, 0x83, 0xc5, 0x04, 0xa4, 0x29, 0x49, 0xb3, 0xf6, 0x1f, 0xe8, 0xdb, 0x4f, 0xd8, 0x23, 0xca];
 impl GeneratedCommand for CreateVerificationInput {
     type Outcome = CreateVerificationOutcome;
 
@@ -1337,7 +1444,7 @@ pub enum DeleteSessionOutcome {
     SessionMissing,
 }
 
-const DELETE_SESSION_PLAN_HASH: [u8; 32] = [0x3b, 0xe5, 0xde, 0x19, 0x9c, 0x93, 0xe4, 0x29, 0x30, 0x58, 0xbc, 0xdd, 0xef, 0x27, 0x26, 0xa1, 0xb2, 0x64, 0xcc, 0x92, 0xec, 0x41, 0x8c, 0x50, 0x0f, 0xfc, 0x5d, 0x3f, 0xd9, 0xd3, 0x65, 0x88];
+const DELETE_SESSION_PLAN_HASH: [u8; 32] = [0x62, 0x58, 0x05, 0x15, 0xa9, 0xe5, 0xbc, 0x49, 0x3a, 0xdd, 0xb4, 0x10, 0xcb, 0x11, 0xc2, 0x11, 0x4a, 0xab, 0x35, 0xa9, 0x89, 0x9e, 0x1a, 0x9c, 0x5c, 0x26, 0xa3, 0x35, 0xf0, 0x2c, 0xed, 0xda];
 impl GeneratedCommand for DeleteSessionInput {
     type Outcome = DeleteSessionOutcome;
 
@@ -1374,6 +1481,59 @@ impl GeneratedCommand for DeleteSessionInput {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct DeleteUserInput {
+    pub user_ids: Vec<String>,
+    pub request_id: String,
+    pub organization_id: String,
+}
+
+#[allow(clippy::large_enum_variant)]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum DeleteUserOutcome {
+    UserDeleted,
+
+    DeleteUserMissing,
+
+    DeleteUserCascadeLimitExceeded,
+}
+
+const DELETE_USER_PLAN_HASH: [u8; 32] = [0x13, 0xb9, 0x41, 0xc8, 0xa7, 0x5b, 0xb1, 0xd3, 0x59, 0xab, 0x1d, 0xfd, 0x13, 0x6d, 0xe8, 0x26, 0xc9, 0x60, 0x73, 0xd7, 0x1a, 0x60, 0x0d, 0x26, 0x95, 0x37, 0x24, 0x38, 0xba, 0xc4, 0x04, 0x77];
+impl GeneratedCommand for DeleteUserInput {
+    type Outcome = DeleteUserOutcome;
+
+    fn idempotent_command(&self) -> Result<IdempotentCommand, GeneratedCommandError> {
+
+        if self.user_ids.is_empty() || self.user_ids.len() > 1 { return Err(GeneratedCommandError::InvalidInputShape); }
+        let fields = vec![
+            wire_named_field("user_ids", v1::Value { kind: Some(WireKind::ListValue(v1::ValueList { values: (self.user_ids).iter().map(|value| wire_uuid(value)).collect::<Result<Vec<_>, GeneratedCommandError>>()? })) }),
+            wire_named_field("request_id", wire_uuid(&self.request_id)?),
+            wire_named_field("organization_id", wire_uuid(&self.organization_id)?),
+        ];
+        IdempotentCommand::new("DeleteUser", Some(CONTRACT_VERSION), wire_record(fields)).map_err(Into::into)
+    }
+
+    fn outcome_request(&self, request_id: riffdb_client_rust::RequestId) -> Result<v1::GetOutcomeRequest, GeneratedCommandError> {
+        Ok(v1::GetOutcomeRequest {
+            request_id: request_id.into_bytes().to_vec(),
+            contract_lineage: CONTRACT_LINEAGE.to_owned(),
+            command_name: "DeleteUser".to_owned(),
+            idempotency_key: self.request_id.clone(),
+            outcome_uri: None,
+        })
+    }
+
+    fn decode_outcome(&self, response: &v1::ExecuteCommandResponse) -> Result<Self::Outcome, GeneratedCommandError> {
+        let fields = wire_outcome_fields(response, &DELETE_USER_PLAN_HASH)?;
+        match response.outcome_type.as_str() {
+            "UserDeleted" => if fields.is_empty() { Ok(Self::Outcome::UserDeleted) } else { Err(GeneratedCommandError::InvalidOutcomeShape) },
+            "DeleteUserMissing" => if fields.is_empty() { Ok(Self::Outcome::DeleteUserMissing) } else { Err(GeneratedCommandError::InvalidOutcomeShape) },
+            "DeleteUserCascadeLimitExceeded" => if fields.is_empty() { Ok(Self::Outcome::DeleteUserCascadeLimitExceeded) } else { Err(GeneratedCommandError::InvalidOutcomeShape) },
+            _ => Err(GeneratedCommandError::InvalidOutcomeShape),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct DeleteVerificationInput {
     pub request_id: String,
     pub organization_id: String,
@@ -1388,7 +1548,7 @@ pub enum DeleteVerificationOutcome {
     VerificationMissing,
 }
 
-const DELETE_VERIFICATION_PLAN_HASH: [u8; 32] = [0x6a, 0xb0, 0x7e, 0x03, 0xa4, 0x91, 0x6b, 0x7e, 0xc4, 0xd6, 0xd6, 0xf5, 0x2c, 0xe0, 0x51, 0x7f, 0xbe, 0x17, 0x4f, 0xdc, 0xba, 0x33, 0x54, 0x77, 0x93, 0xd2, 0xd1, 0xbd, 0xf2, 0x26, 0xa6, 0x6a];
+const DELETE_VERIFICATION_PLAN_HASH: [u8; 32] = [0x63, 0x1e, 0xdd, 0xa3, 0x61, 0x7d, 0x0b, 0x20, 0x6f, 0xd3, 0xf4, 0xf5, 0x88, 0x9b, 0xfb, 0xbd, 0xe6, 0x54, 0x69, 0x01, 0xff, 0x5f, 0x99, 0x94, 0xce, 0xf5, 0x83, 0xff, 0xdf, 0x5c, 0x3f, 0x6e];
 impl GeneratedCommand for DeleteVerificationInput {
     type Outcome = DeleteVerificationOutcome;
 
@@ -1441,7 +1601,7 @@ pub enum UpdateAccountPasswordsOutcome {
     PasswordProviderMismatch,
 }
 
-const UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: [u8; 32] = [0xa4, 0x4e, 0x68, 0x8e, 0x01, 0x26, 0x29, 0xea, 0x12, 0xe3, 0x05, 0x87, 0x27, 0x5c, 0xd4, 0x99, 0xbb, 0x56, 0xfa, 0x1c, 0xc5, 0x1a, 0x03, 0xb5, 0xc2, 0xe3, 0x78, 0x43, 0xd6, 0xaf, 0xdc, 0x02];
+const UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: [u8; 32] = [0xd3, 0xd6, 0x5d, 0xe3, 0x8d, 0xe4, 0x70, 0xe2, 0xd3, 0xe0, 0xa4, 0x03, 0xaf, 0xef, 0xdc, 0x94, 0xe0, 0x39, 0xc6, 0xa9, 0x46, 0xb2, 0x9c, 0x69, 0x60, 0x04, 0xb0, 0xd6, 0x41, 0x1a, 0x60, 0x41];
 impl GeneratedCommand for UpdateAccountPasswordsInput {
     type Outcome = UpdateAccountPasswordsOutcome;
 
@@ -1691,6 +1851,21 @@ impl RiffDBBetterAuthCoreClient {
     }
 
     pub async fn delete_session_batch_with_progress<F>(&self, inputs: Vec<DeleteSessionInput>, options: GeneratedBatchOptions, progress: F) -> Result<GeneratedBatchResult<DeleteSessionOutcome>, GeneratedBatchError>
+    where
+        F: FnMut(GeneratedBatchProgress),
+    {
+        self.client.execute_generated_command_batch_with_progress(inputs, options, self.command_attempts, &self.metadata, progress).await
+    }
+
+    pub async fn delete_user(&mut self, input: DeleteUserInput) -> Result<TypedCommandResult<DeleteUserOutcome>, ApplicationClientError> {
+        self.client.execute_generated_command(&input, self.command_attempts, &self.metadata).await.map_err(Into::into)
+    }
+
+    pub async fn delete_user_batch(&self, inputs: Vec<DeleteUserInput>, options: GeneratedBatchOptions) -> Result<GeneratedBatchResult<DeleteUserOutcome>, GeneratedBatchError> {
+        self.client.execute_generated_command_batch(inputs, options, self.command_attempts, &self.metadata).await
+    }
+
+    pub async fn delete_user_batch_with_progress<F>(&self, inputs: Vec<DeleteUserInput>, options: GeneratedBatchOptions, progress: F) -> Result<GeneratedBatchResult<DeleteUserOutcome>, GeneratedBatchError>
     where
         F: FnMut(GeneratedBatchProgress),
     {

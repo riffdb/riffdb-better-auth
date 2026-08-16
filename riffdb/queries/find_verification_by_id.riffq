@@ -8,7 +8,11 @@ query FindVerificationById(
         else Missing
 
     return Found {
-        verification: verification { verification_id identifier value expires_at created_at updated_at }
+        verification: verification {
+            verification_id identifier
+            value reveals verification.value
+            expires_at created_at updated_at
+        }
     }
 
     outcomes Found | Missing

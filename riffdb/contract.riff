@@ -9,6 +9,10 @@ contract RiffDBBetterAuthCore version 1 {
     field updated_at: timestamp
     unique user_email (organization_id, email)
     index by_email (organization_id, email, user_id)
+    delete_policy cascade {
+      relationship Account.account_user using Account.by_user maximum 32
+      relationship Session.session_user using Session.by_user maximum 32
+    }
   }
 
   entity Account {
@@ -251,6 +255,18 @@ contract RiffDBBetterAuthCore version 1 {
       delete Verification(organization_id, verification_id) as verification else VerificationMissing {}
     }
     return VerificationDeleted {}
+  }
+
+  bulk command DeleteUser {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_ids: list<uuid, 1..1>
+    idempotency_key request_id
+    for user_id in user_ids {
+      delete User(organization_id, user_id) as user else DeleteUserMissing {}
+        cascade DeleteUserCascadeLimitExceeded {}
+    }
+    return UserDeleted {}
   }
 
   bulk command ConsumeVerificationSet {

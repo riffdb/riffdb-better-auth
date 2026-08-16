@@ -4,8 +4,8 @@ An external Better Auth database adapter for RiffDB.
 
 Status: pre-alpha core-profile implementation. The adapter and its complete
 compiled RiffDB application are implemented, generated, and pass Better Auth's
-official core authentication-flow suite. A real loopback run currently stops
-on the RiffDB TypeScript driver's empty-database frontier bug described below.
+official core authentication-flow suite. The real loopback suite also passes
+against the Rust service and driver host.
 
 ## Architecture boundary
 
@@ -57,9 +57,18 @@ continues to own users, sessions, passwords, sign-in, and reset flows.
 The implemented profile supports the core email/password flow, including
 atomic user/account/session signup, session and account reads, single-use
 verification consumption, verification-set cleanup, password update, and
-read-after-commit fencing. Unknown predicates, joins, models, fields, plugins,
+read-after-commit fencing. User deletion is one compiled command with bounded
+cascade deletion of its account and session rows. Unknown predicates, joins,
+models, fields, plugins,
 transaction graphs, counts, and increments fail closed before a dynamic query
 or mutation can be sent.
+
+Secret account credentials, session tokens, and verification values are read
+by named RiffQL queries whose exact returned leaves carry compiler-checked
+`reveals` declarations. The generated application role derives authority only
+for those leaves. Reads never dispatch a reveal-shaped command; commands are
+reserved for writes and atomic state transitions. Secret-output queries are
+excluded from generated MCP tools by RiffDB.
 
 ## Local development
 
@@ -69,19 +78,27 @@ the loopback Verdaccio endpoint in `.npmrc`; Better Auth and ordinary tooling
 continue to resolve from npm.
 
 ```bash
-npm ci
+npm install
 npm run check
 ```
 
-The current lock is pinned to `@riffdb/client@0.1.0-dev.4`. If the RiffDB
+The current lock is pinned to `@riffdb/client@0.1.0-dev.6`. If the RiffDB
 driver changes, publish a new immutable build number and update that exact
 dependency deliberately. `npm start` is the development-only runner used by
 `riffdb dev --run`; ordinary applications import the package instead.
 
-## Empty-database frontier
+Development build 6 has one registry packaging limitation: its x64-only
+publication still leaves the unpublished ARM64 CLI package in `@riffdb/cli`'s
+optional dependency metadata. `npm install` correctly selects the available
+x64 package, but npm rejects a newly generated lock during `npm ci` as missing
+the ARM64 entry. RiffDB's development publication must prune unavailable
+platform packages (or publish the complete optional package set) before clean
+external npm installs are reproducible with `npm ci`.
+
+## Real loopback conformance
 
 On a fresh database, the first named query correctly has application head
-`0`. Immutable `@riffdb/client@0.1.0-dev.4` accepts that non-negative query
+`0`. Immutable `@riffdb/client@0.1.0-dev.6` accepts that non-negative query
 frontier without relaxing positive-only commit sequences or contract versions.
 Better Auth can therefore perform its required existing-email lookup before
 the first signup command without an unrelated warmup write.
@@ -93,12 +110,7 @@ riffdb dev --run
 ```
 
 The included runner exercises signup, sign-in, password reset, changed-password
-sign-in, and single-use reset-token replay against the real Rust service and
-driver host.
-
-The dev.4 loopback run now completes the empty lookup and compiled signup, then
-stops on `FindAccountsByUserId` with `RDB-AUTH-0214` even though the exact role
-lock names that query. That authorization mismatch is a separate RiffDB runtime
-issue; full real-service conformance is not claimed until it is resolved.
+sign-in, single-use reset-token replay rejection, and bounded cascading user
+deletion against the real Rust service and driver host.
 
 See [DESIGN.md](./DESIGN.md) for the method and safety inventory.

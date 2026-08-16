@@ -42,8 +42,9 @@ const driver = await DriverApplicationTransport.connect({
 
 try {
   let resetToken = "";
-  const auth = betterAuth({
-    database: riffdbAdapter({ driver, organizationId: ORGANIZATION_ID }),
+  const databaseAdapter = riffdbAdapter({ driver, organizationId: ORGANIZATION_ID });
+  const authOptions = {
+    database: databaseAdapter,
     baseURL: "http://localhost:3000",
     secret: "riffdb-better-auth-development-only-secret-value",
     advanced: { database: { generateId: "uuid" } },
@@ -57,7 +58,8 @@ try {
         resetToken = token;
       },
     },
-  });
+  };
+  const auth = betterAuth(authOptions);
 
   const email = `real-${crypto.randomUUID()}@example.test`;
   const originalPassword = `${crypto.randomUUID()}-old`;
@@ -90,6 +92,19 @@ try {
     auth.api.resetPassword({
       body: { token: resetToken, newPassword: `${crypto.randomUUID()}-replay` },
     }),
+  );
+
+  const directAdapter = databaseAdapter(authOptions);
+  await directAdapter.delete({
+    model: "user",
+    where: [{ field: "id", value: signup.user.id }],
+  });
+  assert.equal(
+    await directAdapter.findOne({
+      model: "user",
+      where: [{ field: "id", value: signup.user.id }],
+    }),
+    null,
   );
 
   process.stdout.write("riffdb-better-auth-real-v1\tpassed\n");

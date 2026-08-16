@@ -147,6 +147,61 @@ describe("compiled transaction dispatch", () => {
     ).resolves.toBeNull();
   });
 
+  it("reads secret fields through named RiffQL without dispatching commands", async () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    const adapter = createAdapter(transport);
+    const createdUser = user();
+    const createdAccount = account(createdUser.id);
+    const createdSession = session(createdUser.id);
+
+    await adapter.transaction(async (tx) => {
+      await tx.create({ model: "user", data: createdUser, forceAllowId: true });
+      await tx.create({ model: "account", data: createdAccount, forceAllowId: true });
+      await tx.create({ model: "session", data: createdSession, forceAllowId: true });
+    });
+    transport.commandLog.splice(0);
+
+    await expect(
+      adapter.findMany({
+        model: "account",
+        where: [{ field: "userId", value: createdUser.id }],
+      }),
+    ).resolves.toMatchObject([{ password: createdAccount.password }]);
+    await expect(
+      adapter.findOne({
+        model: "session",
+        where: [{ field: "token", value: createdSession.token }],
+      }),
+    ).resolves.toMatchObject({ token: createdSession.token });
+    expect(transport.commandLog).toEqual([]);
+  });
+
+  it("deletes a user and bounded dependent auth rows in one command", async () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    const adapter = createAdapter(transport);
+    const createdUser = user();
+
+    await adapter.transaction(async (tx) => {
+      await tx.create({ model: "user", data: createdUser, forceAllowId: true });
+      await tx.create({ model: "account", data: account(createdUser.id), forceAllowId: true });
+      await tx.create({ model: "session", data: session(createdUser.id), forceAllowId: true });
+    });
+    transport.commandLog.splice(0);
+
+    await adapter.delete({ model: "user", where: [{ field: "id", value: createdUser.id }] });
+
+    expect(transport.commandLog).toEqual(["DeleteUser"]);
+    await expect(
+      adapter.findOne({ model: "user", where: [{ field: "id", value: createdUser.id }] }),
+    ).resolves.toBeNull();
+    await expect(
+      adapter.findMany({
+        model: "account",
+        where: [{ field: "userId", value: createdUser.id }],
+      }),
+    ).resolves.toEqual([]);
+  });
+
   it("fails closed on dynamic methods without touching RiffDB", async () => {
     const transport = new FakeRiffDBApplicationTransport();
     const adapter = createAdapter(transport);

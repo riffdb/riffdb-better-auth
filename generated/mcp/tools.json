@@ -1,5 +1,5 @@
 {
-  "application_manifest_hash": "aef08b15850fface8e214b3557b3bf5e4bac261c2e99ba1eb4b515a939ee2491",
+  "application_manifest_hash": "0ed564cf7b710f129f2e7e961483c1442c4d12a23adf582a2339fb0dcb939e98",
   "commands": [
     {
       "annotations": {
@@ -8,7 +8,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact ConsumeVerificationSet compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -38,7 +38,7 @@
       },
       "name": "riffdb_better_auth_core_consume_verification_set",
       "operation_name": "ConsumeVerificationSet",
-      "plan_hash": "25eda2648d09c2eeab5d30555565979d153c9562133196a0441c4733184f06d7",
+      "plan_hash": "298227c9ec3ba1113c9913e8078e875a225c43ab79363b95057d73079e7d00cd",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -79,7 +79,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact CreateAccount compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -201,7 +201,7 @@
       },
       "name": "riffdb_better_auth_core_create_account",
       "operation_name": "CreateAccount",
-      "plan_hash": "49d670def2b1cc410cba570f7967359a0922627e8932d0dad5f3395c4a327224",
+      "plan_hash": "3f6afc9d8cbc0ff64aa4d3551366fdfc890158706e1093f4df5b9bfcb90a109f",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -255,7 +255,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact CreateSession compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -322,7 +322,7 @@
       },
       "name": "riffdb_better_auth_core_create_session",
       "operation_name": "CreateSession",
-      "plan_hash": "7a446dfe07ee00e2bfab906114b7b4982132a747fa7c5af2fbffbd2fcf929781",
+      "plan_hash": "834ede9c61dca92de80fb1157522b875bf3da6fd56d0f4ea12dc6dc7e62c9900",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -376,7 +376,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact CreateSignupGraph compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -505,7 +505,7 @@
       },
       "name": "riffdb_better_auth_core_create_signup_graph",
       "operation_name": "CreateSignupGraph",
-      "plan_hash": "758e671ec8dad9e3f55874a22b91848056442852bdc8290ed9ddd44eed1f598b",
+      "plan_hash": "6a0b84a32a5d29b9a391783fe819402acac7569c8a167aa3e002d3697ab8f7ae",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -572,7 +572,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact CreateUser compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -669,7 +669,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact CreateVerification compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -714,7 +714,7 @@
       },
       "name": "riffdb_better_auth_core_create_verification",
       "operation_name": "CreateVerification",
-      "plan_hash": "3573cb6e6e846e6d535f5b4106555eed3cd449bc15dbc4c92fa2d72f614a554a",
+      "plan_hash": "1271b029c766f74f0dd91764fb564a086183c504a42949b3f61fe8db4fd823ca",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -755,7 +755,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact DeleteSession compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -789,7 +789,7 @@
       },
       "name": "riffdb_better_auth_core_delete_session",
       "operation_name": "DeleteSession",
-      "plan_hash": "3be5de199c93e4293058bcddef2726a1b264cc92ec418c500ffc5d3fd9d36588",
+      "plan_hash": "62580515a9e5bc493addb410cb11c2114aab35a9899e1a9c5c26a335f02cedda",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -830,7 +830,91 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "description": "Execute the exact DeleteUser compiled command from contract RiffDBBetterAuthCore.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "organization_id": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "user_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 1,
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "user_ids",
+          "request_id",
+          "organization_id"
+        ],
+        "type": "object"
+      },
+      "name": "riffdb_better_auth_core_delete_user",
+      "operation_name": "DeleteUser",
+      "plan_hash": "13b941c8a75bb1d359ab1dfd136de826c96073d71a600d2695372438bac40477",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "UserDeleted",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "DeleteUserMissing",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "DeleteUserCascadeLimitExceeded",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run DeleteUser"
+    },
+    {
+      "annotations": {
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact DeleteVerification compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -860,7 +944,7 @@
       },
       "name": "riffdb_better_auth_core_delete_verification",
       "operation_name": "DeleteVerification",
-      "plan_hash": "6ab07e03a4916b7ec4d6d6f52ce0517fbe174fdcba33547793d2d1bdf226a66a",
+      "plan_hash": "631edda3617d0b206fd3f4f5889bfbbde6546901ff5f9994cef583ffdf5c3f6e",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -901,7 +985,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "7aa79582d1da66a587ac46ada217dedbcd3e464d036db443ad3c4baea4f224e2",
+      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
       "description": "Execute the exact UpdateAccountPasswords compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -971,7 +1055,7 @@
       },
       "name": "riffdb_better_auth_core_update_account_passwords",
       "operation_name": "UpdateAccountPasswords",
-      "plan_hash": "a44e688e012629ea12e30587275cd499bb56fa1cc51a03b5c2e37843d6afdc02",
+      "plan_hash": "d3d65de38de470e2d3e0a403afefdc94e039c6a946b29c696004b0d6411a6041",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1020,8 +1104,8 @@
     }
   ],
   "reactive_tools": [],
-  "schema": "riffdb-generated-application-operations/v2",
-  "tools": [
+  "schema": "riffdb-generated-application-operations/v3",
+  "sdk_tools": [
     {
       "annotations": {
         "destructiveHint": false,
@@ -1057,7 +1141,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3",
+      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
       "name": "riffdb_better_auth_core_find_accounts_by_user_id",
       "operation_name": "FindAccountsByUserId",
       "result_schema": {
@@ -1219,7 +1303,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3",
+      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
       "name": "riffdb_better_auth_core_find_latest_verification",
       "operation_name": "FindLatestVerification",
       "result_schema": {
@@ -1304,7 +1388,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3",
+      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
       "name": "riffdb_better_auth_core_find_session_by_id",
       "operation_name": "FindSessionById",
       "result_schema": {
@@ -1411,7 +1495,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3",
+      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
       "name": "riffdb_better_auth_core_find_session_by_token",
       "operation_name": "FindSessionByToken",
       "result_schema": {
@@ -1447,6 +1531,9 @@
                         }
                       ]
                     },
+                    "token": {
+                      "type": "string"
+                    },
                     "updated_at": {
                       "type": "string"
                     },
@@ -1467,6 +1554,7 @@
                   "required": [
                     "id",
                     "user_id",
+                    "token",
                     "expires_at",
                     "ip_address",
                     "user_agent",
@@ -1496,207 +1584,6 @@
         "openWorldHint": false,
         "readOnlyHint": true
       },
-      "description": "Execute the exact FindUserByEmail named query from immutable module riffdb_better_auth_core.",
-      "input_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "additionalProperties": false,
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "organization_id": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "organization_id",
-          "email"
-        ],
-        "type": "object"
-      },
-      "module_hash": "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3",
-      "name": "riffdb_better_auth_core_find_user_by_email",
-      "operation_name": "FindUserByEmail",
-      "result_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "oneOf": [
-          {
-            "additionalProperties": false,
-            "properties": {
-              "outcome": {
-                "const": "Found",
-                "type": "string"
-              },
-              "users": {
-                "items": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "created_at": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "email_verified": {
-                      "type": "string"
-                    },
-                    "image": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "updated_at": {
-                      "type": "string"
-                    },
-                    "user_id": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "user_id",
-                    "name",
-                    "email",
-                    "email_verified",
-                    "image",
-                    "created_at",
-                    "updated_at"
-                  ],
-                  "type": "object"
-                },
-                "maxItems": 1,
-                "type": "array"
-              }
-            },
-            "required": [
-              "outcome",
-              "users"
-            ],
-            "type": "object"
-          }
-        ]
-      },
-      "title": "Run FindUserByEmail"
-    },
-    {
-      "annotations": {
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false,
-        "readOnlyHint": true
-      },
-      "description": "Execute the exact FindUserById named query from immutable module riffdb_better_auth_core.",
-      "input_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "organization_id": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "organization_id",
-          "id"
-        ],
-        "type": "object"
-      },
-      "module_hash": "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3",
-      "name": "riffdb_better_auth_core_find_user_by_id",
-      "operation_name": "FindUserById",
-      "result_schema": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "oneOf": [
-          {
-            "additionalProperties": false,
-            "properties": {
-              "outcome": {
-                "const": "Found",
-                "type": "string"
-              },
-              "user": {
-                "additionalProperties": false,
-                "properties": {
-                  "created_at": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "email_verified": {
-                    "type": "string"
-                  },
-                  "image": {
-                    "anyOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "updated_at": {
-                    "type": "string"
-                  },
-                  "user_id": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "user_id",
-                  "name",
-                  "email",
-                  "email_verified",
-                  "image",
-                  "created_at",
-                  "updated_at"
-                ],
-                "type": "object"
-              }
-            },
-            "required": [
-              "outcome",
-              "user"
-            ],
-            "type": "object"
-          },
-          {
-            "additionalProperties": false,
-            "properties": {
-              "outcome": {
-                "const": "Missing",
-                "type": "string"
-              }
-            },
-            "required": [
-              "outcome"
-            ],
-            "type": "object"
-          }
-        ]
-      },
-      "title": "Run FindUserById"
-    },
-    {
-      "annotations": {
-        "destructiveHint": false,
-        "idempotentHint": true,
-        "openWorldHint": false,
-        "readOnlyHint": true
-      },
       "description": "Execute the exact FindVerificationById named query from immutable module riffdb_better_auth_core.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1715,7 +1602,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3",
+      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
       "name": "riffdb_better_auth_core_find_verification_by_id",
       "operation_name": "FindVerificationById",
       "result_schema": {
@@ -1819,7 +1706,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8efce8c55b61fd16bcc31c58630794843bfd36585f98d709c45478626a9d63a3",
+      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
       "name": "riffdb_better_auth_core_find_verifications_by_identifier",
       "operation_name": "FindVerificationsByIdentifier",
       "result_schema": {
@@ -1878,6 +1765,209 @@
         ]
       },
       "title": "Run FindVerificationsByIdentifier"
+    }
+  ],
+  "tools": [
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact FindUserByEmail named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organization_id",
+          "email"
+        ],
+        "type": "object"
+      },
+      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "name": "riffdb_better_auth_core_find_user_by_email",
+      "operation_name": "FindUserByEmail",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 1,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run FindUserByEmail"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact FindUserById named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organization_id",
+          "id"
+        ],
+        "type": "object"
+      },
+      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "name": "riffdb_better_auth_core_find_user_by_id",
+      "operation_name": "FindUserById",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "user": {
+                "additionalProperties": false,
+                "properties": {
+                  "created_at": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "email_verified": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "updated_at": {
+                    "type": "string"
+                  },
+                  "user_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "user_id",
+                  "name",
+                  "email",
+                  "email_verified",
+                  "image",
+                  "created_at",
+                  "updated_at"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "outcome",
+              "user"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Missing",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run FindUserById"
     }
   ]
 }

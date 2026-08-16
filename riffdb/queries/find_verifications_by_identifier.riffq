@@ -10,7 +10,11 @@ query FindVerificationsByIdentifier(
         take 32 after $after
 
     return Found {
-        verifications: verifications { verification_id identifier value expires_at created_at updated_at }
+        verifications: verifications {
+            verification_id identifier
+            value reveals verifications.value
+            expires_at created_at updated_at
+        }
     }
 
     outcomes Found
