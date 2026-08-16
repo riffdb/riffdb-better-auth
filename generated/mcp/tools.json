@@ -1,5 +1,5 @@
 {
-  "application_manifest_hash": "0ed564cf7b710f129f2e7e961483c1442c4d12a23adf582a2339fb0dcb939e98",
+  "application_manifest_hash": "a3238f3c9d24930212b6397fed4d92e3e4939bc30cced6819926e814db6cb054",
   "commands": [
     {
       "annotations": {
@@ -8,7 +8,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact ConsumeVerificationSet compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -38,7 +38,7 @@
       },
       "name": "riffdb_better_auth_core_consume_verification_set",
       "operation_name": "ConsumeVerificationSet",
-      "plan_hash": "298227c9ec3ba1113c9913e8078e875a225c43ab79363b95057d73079e7d00cd",
+      "plan_hash": "a66d95985b080b1f07ee91b5941cdb5c59b88093973719d5e58f1333001eec88",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -79,7 +79,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact CreateAccount compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -201,7 +201,7 @@
       },
       "name": "riffdb_better_auth_core_create_account",
       "operation_name": "CreateAccount",
-      "plan_hash": "3f6afc9d8cbc0ff64aa4d3551366fdfc890158706e1093f4df5b9bfcb90a109f",
+      "plan_hash": "6f2560332cfa12b801feb2bbd6a45be348eb426dc52554254c54c9dd2815865d",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -255,7 +255,214 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "description": "Execute the exact CreateOAuthUserGraph compiled command from contract RiffDBBetterAuthCore.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "access_token_expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "account_created_at": {
+            "type": "string"
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "account_updated_at": {
+            "type": "string"
+          },
+          "external_account_id": {
+            "type": "string"
+          },
+          "id_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provider_id": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "refresh_token_expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "user_created_at": {
+            "type": "string"
+          },
+          "user_email": {
+            "type": "string"
+          },
+          "user_email_verified": {
+            "type": "boolean"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "user_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "user_name": {
+            "type": "string"
+          },
+          "user_updated_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope",
+          "user_id",
+          "id_token",
+          "password",
+          "user_name",
+          "account_id",
+          "request_id",
+          "user_email",
+          "user_image",
+          "provider_id",
+          "access_token",
+          "refresh_token",
+          "organization_id",
+          "user_created_at",
+          "user_updated_at",
+          "account_created_at",
+          "account_updated_at",
+          "external_account_id",
+          "user_email_verified",
+          "access_token_expires_at",
+          "refresh_token_expires_at"
+        ],
+        "type": "object"
+      },
+      "name": "riffdb_better_auth_core_create_o_auth_user_graph",
+      "operation_name": "CreateOAuthUserGraph",
+      "plan_hash": "e8c9de08592e8da23e95f683c5afbd6c30ba9c7b85a4e183e5e3457461107c09",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "OAuthUserExists",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "OAuthAccountExists",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "OAuthUserGraphCreated",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run CreateOAuthUserGraph"
+    },
+    {
+      "annotations": {
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact CreateSession compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -322,7 +529,7 @@
       },
       "name": "riffdb_better_auth_core_create_session",
       "operation_name": "CreateSession",
-      "plan_hash": "834ede9c61dca92de80fb1157522b875bf3da6fd56d0f4ea12dc6dc7e62c9900",
+      "plan_hash": "05ae79e74ef152c4d06303d40a74384f7fd7ef8e75a495aacac23d28bad725bf",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -376,7 +583,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact CreateSignupGraph compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -505,7 +712,7 @@
       },
       "name": "riffdb_better_auth_core_create_signup_graph",
       "operation_name": "CreateSignupGraph",
-      "plan_hash": "6a0b84a32a5d29b9a391783fe819402acac7569c8a167aa3e002d3697ab8f7ae",
+      "plan_hash": "bbdbdb31dce24a4c0a1cbe20d2cb6fb1693fecbe2760dc8f38e2f3bbd7a127bc",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -572,7 +779,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact CreateUser compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -628,7 +835,7 @@
       },
       "name": "riffdb_better_auth_core_create_user",
       "operation_name": "CreateUser",
-      "plan_hash": "8077415efb76ef5b26dcd154ba54c6816c8cc55da96de34f2b7eba4307014cc6",
+      "plan_hash": "535fb4e2bc107cd645dbe7e9647f04cc8f77918924974ab6c9bc158b87008736",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -669,7 +876,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact CreateVerification compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -714,7 +921,7 @@
       },
       "name": "riffdb_better_auth_core_create_verification",
       "operation_name": "CreateVerification",
-      "plan_hash": "1271b029c766f74f0dd91764fb564a086183c504a42949b3f61fe8db4fd823ca",
+      "plan_hash": "ea666debdc2b90996ec48604ca3f7b8c7210c72c64b848fb9d71e4d395261d1c",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -755,7 +962,82 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "description": "Execute the exact DeleteAccount compiled command from contract RiffDBBetterAuthCore.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "account_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 32,
+            "minItems": 1,
+            "type": "array"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "request_id",
+          "account_ids",
+          "organization_id"
+        ],
+        "type": "object"
+      },
+      "name": "riffdb_better_auth_core_delete_account",
+      "operation_name": "DeleteAccount",
+      "plan_hash": "e0ae4691de1acf976003486c9281bfc71975ee9e25b8f5ae4e0eedf17eeb759d",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "AccountDeleted",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "AccountMissing",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run DeleteAccount"
+    },
+    {
+      "annotations": {
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact DeleteSession compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -771,7 +1053,7 @@
             "items": {
               "type": "string"
             },
-            "maxItems": 8,
+            "maxItems": 32,
             "minItems": 1,
             "type": "array"
           },
@@ -789,7 +1071,7 @@
       },
       "name": "riffdb_better_auth_core_delete_session",
       "operation_name": "DeleteSession",
-      "plan_hash": "62580515a9e5bc493addb410cb11c2114aab35a9899e1a9c5c26a335f02cedda",
+      "plan_hash": "fb5712f9f93f0812031d51c7d1e7e9cb11394716cb9b0f2a19c11baacd06d8a9",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -830,7 +1112,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact DeleteUser compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -860,7 +1142,7 @@
       },
       "name": "riffdb_better_auth_core_delete_user",
       "operation_name": "DeleteUser",
-      "plan_hash": "13b941c8a75bb1d359ab1dfd136de826c96073d71a600d2695372438bac40477",
+      "plan_hash": "7c2323a3f32ae4d7b7855a9df13d35e83995a467a2fefce668d3bf94799d23f9",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -914,7 +1196,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact DeleteVerification compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -930,7 +1212,7 @@
             "items": {
               "type": "string"
             },
-            "maxItems": 8,
+            "maxItems": 32,
             "minItems": 1,
             "type": "array"
           }
@@ -944,7 +1226,7 @@
       },
       "name": "riffdb_better_auth_core_delete_verification",
       "operation_name": "DeleteVerification",
-      "plan_hash": "631edda3617d0b206fd3f4f5889bfbbde6546901ff5f9994cef583ffdf5c3f6e",
+      "plan_hash": "9d9a74f180828deaf0955489768118271db801c2746a956b8065e5225a3570e2",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -985,7 +1267,183 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa",
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "description": "Execute the exact UpdateAccount compiled command from contract RiffDBBetterAuthCore.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "access_token_expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "expected_revision": {
+            "type": "integer"
+          },
+          "external_account_id": {
+            "type": "string"
+          },
+          "id_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provider_id": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "refresh_token_expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope",
+          "user_id",
+          "id_token",
+          "password",
+          "account_id",
+          "request_id",
+          "updated_at",
+          "provider_id",
+          "access_token",
+          "refresh_token",
+          "organization_id",
+          "expected_revision",
+          "external_account_id",
+          "access_token_expires_at",
+          "refresh_token_expires_at"
+        ],
+        "type": "object"
+      },
+      "name": "riffdb_better_auth_core_update_account",
+      "operation_name": "UpdateAccount",
+      "plan_hash": "0dc8ab13f9fea35ebf8d1e629f6870eb8af2fa12fda8fe326552fb1f64f70862",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "AccountUpdated",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "AccountUpdateStale",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "AccountUpdateMissing",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run UpdateAccount"
+    },
+    {
+      "annotations": {
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
       "description": "Execute the exact UpdateAccountPasswords compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1055,7 +1513,7 @@
       },
       "name": "riffdb_better_auth_core_update_account_passwords",
       "operation_name": "UpdateAccountPasswords",
-      "plan_hash": "d3d65de38de470e2d3e0a403afefdc94e039c6a946b29c696004b0d6411a6041",
+      "plan_hash": "380bd4efe9e846a71d19cc3ca037c4ab2436d30b6583db17d4e53fd34e714e4f",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1101,11 +1559,669 @@
         ]
       },
       "title": "Run UpdateAccountPasswords"
+    },
+    {
+      "annotations": {
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "description": "Execute the exact UpdateSession compiled command from contract RiffDBBetterAuthCore.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "type": "integer"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "ip_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "session_id": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "user_agent": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "expires_at",
+          "ip_address",
+          "request_id",
+          "session_id",
+          "updated_at",
+          "user_agent",
+          "organization_id",
+          "expected_revision"
+        ],
+        "type": "object"
+      },
+      "name": "riffdb_better_auth_core_update_session",
+      "operation_name": "UpdateSession",
+      "plan_hash": "59e5b82c09caa60194cb0e1bb6cd9c9d8fc6a3f419f8ed1cfc67ce7b80b528c1",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "SessionUpdated",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "SessionUpdateStale",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "SessionUpdateMissing",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run UpdateSession"
+    },
+    {
+      "annotations": {
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "description": "Execute the exact UpdateUser compiled command from contract RiffDBBetterAuthCore.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "email_verified": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "integer"
+          },
+          "image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "image",
+          "user_id",
+          "request_id",
+          "updated_at",
+          "email_verified",
+          "organization_id",
+          "expected_revision"
+        ],
+        "type": "object"
+      },
+      "name": "riffdb_better_auth_core_update_user",
+      "operation_name": "UpdateUser",
+      "plan_hash": "18495d705452ce951c17ff1ab67c60f4abb964049837146acc6a5e37fafc3ca5",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "UserUpdated",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "UserUpdateStale",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "UserUpdateMissing",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run UpdateUser"
+    },
+    {
+      "annotations": {
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": false
+      },
+      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "description": "Execute the exact UpdateVerification compiled command from contract RiffDBBetterAuthCore.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "expected_revision": {
+            "type": "integer"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "verification_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "expires_at",
+          "request_id",
+          "updated_at",
+          "organization_id",
+          "verification_id",
+          "expected_revision"
+        ],
+        "type": "object"
+      },
+      "name": "riffdb_better_auth_core_update_verification",
+      "operation_name": "UpdateVerification",
+      "plan_hash": "1793d95f29ffae3432297276b8f1fbf1dbc0db49c7e4a7f176a2da4f9a06ec19",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "VerificationUpdated",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "VerificationUpdateStale",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "VerificationUpdateMissing",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run UpdateVerification"
     }
   ],
   "reactive_tools": [],
   "schema": "riffdb-generated-application-operations/v3",
   "sdk_tools": [
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact FindAccountById named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organization_id",
+          "id"
+        ],
+        "type": "object"
+      },
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "name": "riffdb_better_auth_core_find_account_by_id",
+      "operation_name": "FindAccountById",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "accounts": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "access_token": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "access_token_expires_at": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "account_id": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "id_token": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "password": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "provider_id": {
+                      "type": "string"
+                    },
+                    "refresh_token": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "refresh_token_expires_at": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "scope": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "user_id",
+                    "account_id",
+                    "provider_id",
+                    "access_token",
+                    "refresh_token",
+                    "access_token_expires_at",
+                    "refresh_token_expires_at",
+                    "scope",
+                    "id_token",
+                    "password",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 1,
+                "type": "array"
+              },
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome",
+              "accounts"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run FindAccountById"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact FindAccountByProvider named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "account_id": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "provider_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organization_id",
+          "account_id",
+          "provider_id"
+        ],
+        "type": "object"
+      },
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "name": "riffdb_better_auth_core_find_account_by_provider",
+      "operation_name": "FindAccountByProvider",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "accounts": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "access_token": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "access_token_expires_at": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "account_id": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "id_token": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "password": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "provider_id": {
+                      "type": "string"
+                    },
+                    "refresh_token": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "refresh_token_expires_at": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "scope": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "user_id",
+                    "account_id",
+                    "provider_id",
+                    "access_token",
+                    "refresh_token",
+                    "access_token_expires_at",
+                    "refresh_token_expires_at",
+                    "scope",
+                    "id_token",
+                    "password",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 1,
+                "type": "array"
+              },
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              }
+            },
+            "required": [
+              "outcome",
+              "accounts"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run FindAccountByProvider"
+    },
     {
       "annotations": {
         "destructiveHint": false,
@@ -1141,7 +2257,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
       "name": "riffdb_better_auth_core_find_accounts_by_user_id",
       "operation_name": "FindAccountsByUserId",
       "result_schema": {
@@ -1226,6 +2342,9 @@
                         }
                       ]
                     },
+                    "revision": {
+                      "type": "string"
+                    },
                     "scope": {
                       "anyOf": [
                         {
@@ -1256,7 +2375,8 @@
                     "id_token",
                     "password",
                     "created_at",
-                    "updated_at"
+                    "updated_at",
+                    "revision"
                   ],
                   "type": "object"
                 },
@@ -1285,6 +2405,131 @@
         "openWorldHint": false,
         "readOnlyHint": true
       },
+      "description": "Execute the exact FindActiveSessionsByUserId named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "after": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expires_after": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organization_id",
+          "user_id",
+          "expires_after"
+        ],
+        "type": "object"
+      },
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "name": "riffdb_better_auth_core_find_active_sessions_by_user_id",
+      "operation_name": "FindActiveSessionsByUserId",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "sessions": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "expires_at": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "ip_address": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "token": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_agent": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "user_id",
+                    "token",
+                    "expires_at",
+                    "ip_address",
+                    "user_agent",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 32,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "sessions"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run FindActiveSessionsByUserId"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
       "description": "Execute the exact FindLatestVerification named query from immutable module riffdb_better_auth_core.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1303,7 +2548,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
       "name": "riffdb_better_auth_core_find_latest_verification",
       "operation_name": "FindLatestVerification",
       "result_schema": {
@@ -1329,6 +2574,9 @@
                     "identifier": {
                       "type": "string"
                     },
+                    "revision": {
+                      "type": "string"
+                    },
                     "updated_at": {
                       "type": "string"
                     },
@@ -1345,7 +2593,8 @@
                     "value",
                     "expires_at",
                     "created_at",
-                    "updated_at"
+                    "updated_at",
+                    "revision"
                   ],
                   "type": "object"
                 },
@@ -1388,7 +2637,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
       "name": "riffdb_better_auth_core_find_session_by_id",
       "operation_name": "FindSessionById",
       "result_schema": {
@@ -1424,6 +2673,9 @@
                         }
                       ]
                     },
+                    "revision": {
+                      "type": "string"
+                    },
                     "token": {
                       "type": "string"
                     },
@@ -1452,7 +2704,8 @@
                     "ip_address",
                     "user_agent",
                     "created_at",
-                    "updated_at"
+                    "updated_at",
+                    "revision"
                   ],
                   "type": "object"
                 },
@@ -1495,7 +2748,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
       "name": "riffdb_better_auth_core_find_session_by_token",
       "operation_name": "FindSessionByToken",
       "result_schema": {
@@ -1531,6 +2784,9 @@
                         }
                       ]
                     },
+                    "revision": {
+                      "type": "string"
+                    },
                     "token": {
                       "type": "string"
                     },
@@ -1559,7 +2815,8 @@
                     "ip_address",
                     "user_agent",
                     "created_at",
-                    "updated_at"
+                    "updated_at",
+                    "revision"
                   ],
                   "type": "object"
                 },
@@ -1576,6 +2833,127 @@
         ]
       },
       "title": "Run FindSessionByToken"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact FindSessionsByUserId named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "after": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organization_id",
+          "user_id"
+        ],
+        "type": "object"
+      },
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "name": "riffdb_better_auth_core_find_sessions_by_user_id",
+      "operation_name": "FindSessionsByUserId",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "sessions": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "expires_at": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "ip_address": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "token": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_agent": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "user_id",
+                    "token",
+                    "expires_at",
+                    "ip_address",
+                    "user_agent",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 32,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "sessions"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run FindSessionsByUserId"
     },
     {
       "annotations": {
@@ -1602,7 +2980,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
       "name": "riffdb_better_auth_core_find_verification_by_id",
       "operation_name": "FindVerificationById",
       "result_schema": {
@@ -1627,6 +3005,9 @@
                   "identifier": {
                     "type": "string"
                   },
+                  "revision": {
+                    "type": "string"
+                  },
                   "updated_at": {
                     "type": "string"
                   },
@@ -1643,7 +3024,8 @@
                   "value",
                   "expires_at",
                   "created_at",
-                  "updated_at"
+                  "updated_at",
+                  "revision"
                 ],
                 "type": "object"
               }
@@ -1706,7 +3088,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
       "name": "riffdb_better_auth_core_find_verifications_by_identifier",
       "operation_name": "FindVerificationsByIdentifier",
       "result_schema": {
@@ -1732,6 +3114,9 @@
                     "identifier": {
                       "type": "string"
                     },
+                    "revision": {
+                      "type": "string"
+                    },
                     "updated_at": {
                       "type": "string"
                     },
@@ -1748,7 +3133,8 @@
                     "value",
                     "expires_at",
                     "created_at",
-                    "updated_at"
+                    "updated_at",
+                    "revision"
                   ],
                   "type": "object"
                 },
@@ -1775,6 +3161,81 @@
         "openWorldHint": false,
         "readOnlyHint": true
       },
+      "description": "Execute the exact FindExpiredVerificationIds named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "after": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expires_before": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "organization_id",
+          "expires_before"
+        ],
+        "type": "object"
+      },
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "name": "riffdb_better_auth_core_find_expired_verification_ids",
+      "operation_name": "FindExpiredVerificationIds",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "verifications": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "verification_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "verification_id"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 32,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "verifications"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run FindExpiredVerificationIds"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
       "description": "Execute the exact FindUserByEmail named query from immutable module riffdb_better_auth_core.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1793,7 +3254,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
       "name": "riffdb_better_auth_core_find_user_by_email",
       "operation_name": "FindUserByEmail",
       "result_schema": {
@@ -1832,6 +3293,9 @@
                     "name": {
                       "type": "string"
                     },
+                    "revision": {
+                      "type": "string"
+                    },
                     "updated_at": {
                       "type": "string"
                     },
@@ -1846,7 +3310,8 @@
                     "email_verified",
                     "image",
                     "created_at",
-                    "updated_at"
+                    "updated_at",
+                    "revision"
                   ],
                   "type": "object"
                 },
@@ -1889,7 +3354,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627",
+      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
       "name": "riffdb_better_auth_core_find_user_by_id",
       "operation_name": "FindUserById",
       "result_schema": {
@@ -1927,6 +3392,9 @@
                   "name": {
                     "type": "string"
                   },
+                  "revision": {
+                    "type": "string"
+                  },
                   "updated_at": {
                     "type": "string"
                   },
@@ -1941,7 +3409,8 @@
                   "email_verified",
                   "image",
                   "created_at",
-                  "updated_at"
+                  "updated_at",
+                  "revision"
                 ],
                 "type": "object"
               }

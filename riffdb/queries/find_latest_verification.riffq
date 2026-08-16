@@ -12,7 +12,7 @@ query FindLatestVerification(
         verifications: verifications {
             verification_id identifier
             value reveals verifications.value
-            expires_at created_at updated_at
+            expires_at created_at updated_at revision
         }
     }
 

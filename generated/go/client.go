@@ -8,10 +8,10 @@ import (
 	riffdb "riffdb.dev/application"
 )
 
-const QueryModuleHash = "f868cf35e4d26bb35d705e0a6791486076d76f93869a95fd5602dbae7e222627"
+const QueryModuleHash = "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f"
 const ContractLineage = "RiffDBBetterAuthCore"
 const ContractVersion uint64 = 1
-const ContractBundleHash = "c276308c2b3a427e1d33846ff527b82cd0dd8d0186466eca3a347593c39daaaa"
+const ContractBundleHash = "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150"
 
 type QuerySecretOutput struct { Query string; Entity string; Field string }
 
@@ -28,6 +28,7 @@ type User struct {
 	Email string
 	Image *string
 	UserId string
+	Revision uint64
 	CreatedAt riffdb.Instant
 	UpdatedAt riffdb.Instant
 	EmailVerified bool
@@ -40,6 +41,7 @@ type Account struct {
 	UserId string
 	IdToken *string
 	Password *string
+	Revision uint64
 	AccountId string
 	CreatedAt riffdb.Instant
 	UpdatedAt riffdb.Instant
@@ -55,6 +57,7 @@ type Session struct {
 	Id string
 	Token string
 	UserId string
+	Revision uint64
 	CreatedAt riffdb.Instant
 	ExpiresAt riffdb.Instant
 	IpAddress *string
@@ -65,6 +68,7 @@ type Session struct {
 
 type Verification struct {
 	Value string
+	Revision uint64
 	CreatedAt riffdb.Instant
 	ExpiresAt riffdb.Instant
 	Identifier string
@@ -82,6 +86,51 @@ type AccountPasswordUpdate struct {
 	OrganizationId string
 }
 
+var FindAccountByIdSecretOutputs = []QuerySecretOutput{
+	{Query: "FindAccountById", Entity: "Account", Field: "access_token"},
+	{Query: "FindAccountById", Entity: "Account", Field: "refresh_token"},
+	{Query: "FindAccountById", Entity: "Account", Field: "id_token"},
+	{Query: "FindAccountById", Entity: "Account", Field: "password"},
+}
+
+type FindAccountByIdParams struct {
+	OrganizationId string
+	Id string
+}
+
+type FindAccountByIdResult interface { isFindAccountByIdResult() }
+type FindAccountByIdFound struct {
+	Outcome string
+	Accounts []struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
+}
+func (FindAccountByIdFound) isFindAccountByIdResult() {}
+
+func (FindAccountByIdFound) String() string { return "FindAccountByIdFound{<secret outputs redacted>}" }
+func (FindAccountByIdFound) GoString() string { return "FindAccountByIdFound{<secret outputs redacted>}" }
+
+var FindAccountByProviderSecretOutputs = []QuerySecretOutput{
+	{Query: "FindAccountByProvider", Entity: "Account", Field: "access_token"},
+	{Query: "FindAccountByProvider", Entity: "Account", Field: "refresh_token"},
+	{Query: "FindAccountByProvider", Entity: "Account", Field: "id_token"},
+	{Query: "FindAccountByProvider", Entity: "Account", Field: "password"},
+}
+
+type FindAccountByProviderParams struct {
+	OrganizationId string
+	AccountId string
+	ProviderId string
+}
+
+type FindAccountByProviderResult interface { isFindAccountByProviderResult() }
+type FindAccountByProviderFound struct {
+	Outcome string
+	Accounts []struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
+}
+func (FindAccountByProviderFound) isFindAccountByProviderResult() {}
+
+func (FindAccountByProviderFound) String() string { return "FindAccountByProviderFound{<secret outputs redacted>}" }
+func (FindAccountByProviderFound) GoString() string { return "FindAccountByProviderFound{<secret outputs redacted>}" }
+
 var FindAccountsByUserIdSecretOutputs = []QuerySecretOutput{
 	{Query: "FindAccountsByUserId", Entity: "Account", Field: "access_token"},
 	{Query: "FindAccountsByUserId", Entity: "Account", Field: "refresh_token"},
@@ -98,12 +147,46 @@ type FindAccountsByUserIdParams struct {
 type FindAccountsByUserIdResult interface { isFindAccountsByUserIdResult() }
 type FindAccountsByUserIdFound struct {
 	Outcome string
-	Accounts []struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }
+	Accounts []struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
 }
 func (FindAccountsByUserIdFound) isFindAccountsByUserIdResult() {}
 
 func (FindAccountsByUserIdFound) String() string { return "FindAccountsByUserIdFound{<secret outputs redacted>}" }
 func (FindAccountsByUserIdFound) GoString() string { return "FindAccountsByUserIdFound{<secret outputs redacted>}" }
+
+var FindActiveSessionsByUserIdSecretOutputs = []QuerySecretOutput{
+	{Query: "FindActiveSessionsByUserId", Entity: "Session", Field: "token"},
+}
+
+type FindActiveSessionsByUserIdParams struct {
+	OrganizationId string
+	UserId string
+	ExpiresAfter riffdb.Instant
+	After *string
+}
+
+type FindActiveSessionsByUserIdResult interface { isFindActiveSessionsByUserIdResult() }
+type FindActiveSessionsByUserIdFound struct {
+	Outcome string
+	Sessions []struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
+}
+func (FindActiveSessionsByUserIdFound) isFindActiveSessionsByUserIdResult() {}
+
+func (FindActiveSessionsByUserIdFound) String() string { return "FindActiveSessionsByUserIdFound{<secret outputs redacted>}" }
+func (FindActiveSessionsByUserIdFound) GoString() string { return "FindActiveSessionsByUserIdFound{<secret outputs redacted>}" }
+
+type FindExpiredVerificationIdsParams struct {
+	OrganizationId string
+	ExpiresBefore riffdb.Instant
+	After *string
+}
+
+type FindExpiredVerificationIdsResult interface { isFindExpiredVerificationIdsResult() }
+type FindExpiredVerificationIdsFound struct {
+	Outcome string
+	Verifications []struct { VerificationId string }
+}
+func (FindExpiredVerificationIdsFound) isFindExpiredVerificationIdsResult() {}
 
 var FindLatestVerificationSecretOutputs = []QuerySecretOutput{
 	{Query: "FindLatestVerification", Entity: "Verification", Field: "value"},
@@ -117,7 +200,7 @@ type FindLatestVerificationParams struct {
 type FindLatestVerificationResult interface { isFindLatestVerificationResult() }
 type FindLatestVerificationFound struct {
 	Outcome string
-	Verifications []struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }
+	Verifications []struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
 }
 func (FindLatestVerificationFound) isFindLatestVerificationResult() {}
 
@@ -136,7 +219,7 @@ type FindSessionByIdParams struct {
 type FindSessionByIdResult interface { isFindSessionByIdResult() }
 type FindSessionByIdFound struct {
 	Outcome string
-	Sessions []struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }
+	Sessions []struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
 }
 func (FindSessionByIdFound) isFindSessionByIdResult() {}
 
@@ -155,12 +238,32 @@ type FindSessionByTokenParams struct {
 type FindSessionByTokenResult interface { isFindSessionByTokenResult() }
 type FindSessionByTokenFound struct {
 	Outcome string
-	Sessions []struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }
+	Sessions []struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
 }
 func (FindSessionByTokenFound) isFindSessionByTokenResult() {}
 
 func (FindSessionByTokenFound) String() string { return "FindSessionByTokenFound{<secret outputs redacted>}" }
 func (FindSessionByTokenFound) GoString() string { return "FindSessionByTokenFound{<secret outputs redacted>}" }
+
+var FindSessionsByUserIdSecretOutputs = []QuerySecretOutput{
+	{Query: "FindSessionsByUserId", Entity: "Session", Field: "token"},
+}
+
+type FindSessionsByUserIdParams struct {
+	OrganizationId string
+	UserId string
+	After *string
+}
+
+type FindSessionsByUserIdResult interface { isFindSessionsByUserIdResult() }
+type FindSessionsByUserIdFound struct {
+	Outcome string
+	Sessions []struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
+}
+func (FindSessionsByUserIdFound) isFindSessionsByUserIdResult() {}
+
+func (FindSessionsByUserIdFound) String() string { return "FindSessionsByUserIdFound{<secret outputs redacted>}" }
+func (FindSessionsByUserIdFound) GoString() string { return "FindSessionsByUserIdFound{<secret outputs redacted>}" }
 
 type FindUserByEmailParams struct {
 	OrganizationId string
@@ -170,7 +273,7 @@ type FindUserByEmailParams struct {
 type FindUserByEmailResult interface { isFindUserByEmailResult() }
 type FindUserByEmailFound struct {
 	Outcome string
-	Users []struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }
+	Users []struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
 }
 func (FindUserByEmailFound) isFindUserByEmailResult() {}
 
@@ -182,7 +285,7 @@ type FindUserByIdParams struct {
 type FindUserByIdResult interface { isFindUserByIdResult() }
 type FindUserByIdFound struct {
 	Outcome string
-	User struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }
+	User struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
 }
 func (FindUserByIdFound) isFindUserByIdResult() {}
 
@@ -203,7 +306,7 @@ type FindVerificationByIdParams struct {
 type FindVerificationByIdResult interface { isFindVerificationByIdResult() }
 type FindVerificationByIdFound struct {
 	Outcome string
-	Verification struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }
+	Verification struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
 }
 func (FindVerificationByIdFound) isFindVerificationByIdResult() {}
 
@@ -231,7 +334,7 @@ type FindVerificationsByIdentifierParams struct {
 type FindVerificationsByIdentifierResult interface { isFindVerificationsByIdentifierResult() }
 type FindVerificationsByIdentifierFound struct {
 	Outcome string
-	Verifications []struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }
+	Verifications []struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }
 }
 func (FindVerificationsByIdentifierFound) isFindVerificationsByIdentifierResult() {}
 
@@ -286,6 +389,45 @@ type CreateAccountAccountAlreadyExists struct {
 	Outcome string
 }
 func (CreateAccountAccountAlreadyExists) isCreateAccountOutcome() {}
+
+type CreateOAuthUserGraphInput struct {
+	Scope *string
+	UserId string
+	IdToken *string
+	Password *string
+	UserName string
+	AccountId string
+	RequestId string
+	UserEmail string
+	UserImage *string
+	ProviderId string
+	AccessToken *string
+	RefreshToken *string
+	OrganizationId string
+	UserCreatedAt riffdb.Instant
+	UserUpdatedAt riffdb.Instant
+	AccountCreatedAt riffdb.Instant
+	AccountUpdatedAt riffdb.Instant
+	ExternalAccountId string
+	UserEmailVerified bool
+	AccessTokenExpiresAt *riffdb.Instant
+	RefreshTokenExpiresAt *riffdb.Instant
+}
+type CreateOAuthUserGraphOutcome interface { isCreateOAuthUserGraphOutcome() }
+type CreateOAuthUserGraphOAuthUserExists struct {
+	Outcome string
+}
+func (CreateOAuthUserGraphOAuthUserExists) isCreateOAuthUserGraphOutcome() {}
+
+type CreateOAuthUserGraphOAuthAccountExists struct {
+	Outcome string
+}
+func (CreateOAuthUserGraphOAuthAccountExists) isCreateOAuthUserGraphOutcome() {}
+
+type CreateOAuthUserGraphOAuthUserGraphCreated struct {
+	Outcome string
+}
+func (CreateOAuthUserGraphOAuthUserGraphCreated) isCreateOAuthUserGraphOutcome() {}
 
 type CreateSessionInput struct {
 	Id string
@@ -403,6 +545,23 @@ type CreateVerificationVerificationAlreadyExists struct {
 }
 func (CreateVerificationVerificationAlreadyExists) isCreateVerificationOutcome() {}
 
+type DeleteAccountInput struct {
+	UserId string
+	RequestId string
+	AccountIds []string
+	OrganizationId string
+}
+type DeleteAccountOutcome interface { isDeleteAccountOutcome() }
+type DeleteAccountAccountDeleted struct {
+	Outcome string
+}
+func (DeleteAccountAccountDeleted) isDeleteAccountOutcome() {}
+
+type DeleteAccountAccountMissing struct {
+	Outcome string
+}
+func (DeleteAccountAccountMissing) isDeleteAccountOutcome() {}
+
 type DeleteSessionInput struct {
 	UserId string
 	RequestId string
@@ -457,6 +616,39 @@ type DeleteVerificationVerificationMissing struct {
 }
 func (DeleteVerificationVerificationMissing) isDeleteVerificationOutcome() {}
 
+type UpdateAccountInput struct {
+	Scope *string
+	UserId string
+	IdToken *string
+	Password *string
+	AccountId string
+	RequestId string
+	UpdatedAt riffdb.Instant
+	ProviderId string
+	AccessToken *string
+	RefreshToken *string
+	OrganizationId string
+	ExpectedRevision uint64
+	ExternalAccountId string
+	AccessTokenExpiresAt *riffdb.Instant
+	RefreshTokenExpiresAt *riffdb.Instant
+}
+type UpdateAccountOutcome interface { isUpdateAccountOutcome() }
+type UpdateAccountAccountUpdated struct {
+	Outcome string
+}
+func (UpdateAccountAccountUpdated) isUpdateAccountOutcome() {}
+
+type UpdateAccountAccountUpdateStale struct {
+	Outcome string
+}
+func (UpdateAccountAccountUpdateStale) isUpdateAccountOutcome() {}
+
+type UpdateAccountAccountUpdateMissing struct {
+	Outcome string
+}
+func (UpdateAccountAccountUpdateMissing) isUpdateAccountOutcome() {}
+
 type UpdateAccountPasswordsInput struct {
 	Updates []AccountPasswordUpdate
 	UserId string
@@ -479,6 +671,85 @@ type UpdateAccountPasswordsPasswordProviderMismatch struct {
 }
 func (UpdateAccountPasswordsPasswordProviderMismatch) isUpdateAccountPasswordsOutcome() {}
 
+type UpdateSessionInput struct {
+	UserId string
+	ExpiresAt riffdb.Instant
+	IpAddress *string
+	RequestId string
+	SessionId string
+	UpdatedAt riffdb.Instant
+	UserAgent *string
+	OrganizationId string
+	ExpectedRevision uint64
+}
+type UpdateSessionOutcome interface { isUpdateSessionOutcome() }
+type UpdateSessionSessionUpdated struct {
+	Outcome string
+}
+func (UpdateSessionSessionUpdated) isUpdateSessionOutcome() {}
+
+type UpdateSessionSessionUpdateStale struct {
+	Outcome string
+}
+func (UpdateSessionSessionUpdateStale) isUpdateSessionOutcome() {}
+
+type UpdateSessionSessionUpdateMissing struct {
+	Outcome string
+}
+func (UpdateSessionSessionUpdateMissing) isUpdateSessionOutcome() {}
+
+type UpdateUserInput struct {
+	Name string
+	Email string
+	Image *string
+	UserId string
+	RequestId string
+	UpdatedAt riffdb.Instant
+	EmailVerified bool
+	OrganizationId string
+	ExpectedRevision uint64
+}
+type UpdateUserOutcome interface { isUpdateUserOutcome() }
+type UpdateUserUserUpdated struct {
+	Outcome string
+}
+func (UpdateUserUserUpdated) isUpdateUserOutcome() {}
+
+type UpdateUserUserUpdateStale struct {
+	Outcome string
+}
+func (UpdateUserUserUpdateStale) isUpdateUserOutcome() {}
+
+type UpdateUserUserUpdateMissing struct {
+	Outcome string
+}
+func (UpdateUserUserUpdateMissing) isUpdateUserOutcome() {}
+
+type UpdateVerificationInput struct {
+	Value string
+	ExpiresAt riffdb.Instant
+	RequestId string
+	UpdatedAt riffdb.Instant
+	OrganizationId string
+	VerificationId string
+	ExpectedRevision uint64
+}
+type UpdateVerificationOutcome interface { isUpdateVerificationOutcome() }
+type UpdateVerificationVerificationUpdated struct {
+	Outcome string
+}
+func (UpdateVerificationVerificationUpdated) isUpdateVerificationOutcome() {}
+
+type UpdateVerificationVerificationUpdateStale struct {
+	Outcome string
+}
+func (UpdateVerificationVerificationUpdateStale) isUpdateVerificationOutcome() {}
+
+type UpdateVerificationVerificationUpdateMissing struct {
+	Outcome string
+}
+func (UpdateVerificationVerificationUpdateMissing) isUpdateVerificationOutcome() {}
+
 type Client struct { session *riffdb.Session; commandAttempts uint32 }
 
 func NewClient(session *riffdb.Session, commandAttempts uint32) (*Client, error) { if session == nil || commandAttempts < 1 || commandAttempts > 10 { return nil, errors.New("invalid generated RiffDB client configuration") }; return &Client{session: session, commandAttempts: commandAttempts}, nil }
@@ -488,6 +759,7 @@ func encodeUser(value User) riffdb.Value { return riffdb.Record(map[string]riffd
 	"email": riffdb.String(value.Email),
 	"image": riffdb.Optional(value.Image, func(item string) riffdb.Value { return riffdb.String(item) }),
 	"user_id": riffdb.UUID(value.UserId),
+	"revision": riffdb.U64(value.Revision),
 	"created_at": riffdb.TimestampFrom(value.CreatedAt),
 	"updated_at": riffdb.TimestampFrom(value.UpdatedAt),
 	"email_verified": riffdb.Bool(value.EmailVerified),
@@ -498,6 +770,7 @@ raw, err = requiredField(fields, "name"); if err != nil { return result, err }; 
 raw, err = requiredField(fields, "email"); if err != nil { return result, err }; result.Email, err = riffdb.StringValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "image"); if err != nil { return result, err }; result.Image, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }
 raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }
+raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "email_verified"); if err != nil { return result, err }; result.EmailVerified, err = riffdb.BoolValue(raw); if err != nil { return result, err }
@@ -510,6 +783,7 @@ func encodeAccount(value Account) riffdb.Value { return riffdb.Record(map[string
 	"user_id": riffdb.UUID(value.UserId),
 	"id_token": riffdb.Optional(value.IdToken, func(item string) riffdb.Value { return riffdb.String(item) }),
 	"password": riffdb.Optional(value.Password, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"revision": riffdb.U64(value.Revision),
 	"account_id": riffdb.String(value.AccountId),
 	"created_at": riffdb.TimestampFrom(value.CreatedAt),
 	"updated_at": riffdb.TimestampFrom(value.UpdatedAt),
@@ -526,6 +800,7 @@ raw, err = requiredField(fields, "scope"); if err != nil { return result, err };
 raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "id_token"); if err != nil { return result, err }; result.IdToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }
 raw, err = requiredField(fields, "password"); if err != nil { return result, err }; result.Password, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }
+raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "account_id"); if err != nil { return result, err }; result.AccountId, err = riffdb.StringValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }
@@ -541,6 +816,7 @@ func encodeSession(value Session) riffdb.Value { return riffdb.Record(map[string
 	"id": riffdb.UUID(value.Id),
 	"token": riffdb.String(value.Token),
 	"user_id": riffdb.UUID(value.UserId),
+	"revision": riffdb.U64(value.Revision),
 	"created_at": riffdb.TimestampFrom(value.CreatedAt),
 	"expires_at": riffdb.TimestampFrom(value.ExpiresAt),
 	"ip_address": riffdb.Optional(value.IpAddress, func(item string) riffdb.Value { return riffdb.String(item) }),
@@ -552,6 +828,7 @@ func decodeSession(value riffdb.Value) (Session, error) { fields, err := riffdb.
 raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "token"); if err != nil { return result, err }; result.Token, err = riffdb.StringValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }
+raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "ip_address"); if err != nil { return result, err }; result.IpAddress, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }
@@ -562,6 +839,7 @@ return result, nil }
 
 func encodeVerification(value Verification) riffdb.Value { return riffdb.Record(map[string]riffdb.Value{
 	"value": riffdb.String(value.Value),
+	"revision": riffdb.U64(value.Revision),
 	"created_at": riffdb.TimestampFrom(value.CreatedAt),
 	"expires_at": riffdb.TimestampFrom(value.ExpiresAt),
 	"identifier": riffdb.String(value.Identifier),
@@ -571,6 +849,7 @@ func encodeVerification(value Verification) riffdb.Value { return riffdb.Record(
 }) }
 func decodeVerification(value riffdb.Value) (Verification, error) { fields, err := riffdb.RecordFields(value); if err != nil { return Verification{}, err }; var result Verification; var raw riffdb.Value
 raw, err = requiredField(fields, "value"); if err != nil { return result, err }; result.Value, err = riffdb.StringValue(raw); if err != nil { return result, err }
+raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }
 raw, err = requiredField(fields, "identifier"); if err != nil { return result, err }; result.Identifier, err = riffdb.StringValue(raw); if err != nil { return result, err }
@@ -596,11 +875,36 @@ raw, err = requiredField(fields, "provider_id"); if err != nil { return result, 
 raw, err = requiredField(fields, "organization_id"); if err != nil { return result, err }; result.OrganizationId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }
 return result, nil }
 
-const FindAccountsByUserIdQueryPlanHash = "ab17fccfbf20c57e6491a9068667cd695bde8397e543f61bba9a15ca9894255d"
+const FindAccountByIdQueryPlanHash = "5e1f2812714a2b3f78d353ee60469bd5830b9689f8df20cfa50a368108318071"
+var FindAccountByIdOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_account_by_id", InputSchemaHash: "a8efd0b9fe4e36f92ca57a7c5351df748b4c2adbd0e363e2a5ffb66ff4d23bdc"}
+func decodeFindAccountByIdResult(value riffdb.Value) (FindAccountByIdResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
+case "Found": result := FindAccountByIdFound{Outcome: outcome}
+raw, err = requiredField(fields, "accounts"); if err != nil { return nil, err }; result.Accounts, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "account_id"); if err != nil { return result, err }; result.AccountId, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "provider_id"); if err != nil { return result, err }; result.ProviderId, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "access_token"); if err != nil { return result, err }; result.AccessToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "refresh_token"); if err != nil { return result, err }; result.RefreshToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "access_token_expires_at"); if err != nil { return result, err }; result.AccessTokenExpiresAt, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (riffdb.Instant, error) { return riffdb.TimestampValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "refresh_token_expires_at"); if err != nil { return result, err }; result.RefreshTokenExpiresAt, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (riffdb.Instant, error) { return riffdb.TimestampValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "scope"); if err != nil { return result, err }; result.Scope, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "id_token"); if err != nil { return result, err }; result.IdToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "password"); if err != nil { return result, err }; result.Password, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
+func (client *Client) FindAccountById(ctx context.Context, parameters FindAccountByIdParams, options QueryOptions) (QueryResult[FindAccountByIdResult], error) { input := map[string]riffdb.Value{}
+input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
+input["id"] = riffdb.UUID(parameters.Id)
+response, err := client.session.Invoke(ctx, FindAccountByIdOperation, input, options); if err != nil { return QueryResult[FindAccountByIdResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindAccountByIdResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindAccountByIdResult(response.Value); if err != nil { return QueryResult[FindAccountByIdResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindAccountById", PlanHash: FindAccountByIdQueryPlanHash}; return QueryResult[FindAccountByIdResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
+
+const FindAccountByProviderQueryPlanHash = "c02b4c470f9390cfcbfc8350bebaccd320445afa88246baafbfe27e35baa29ae"
+var FindAccountByProviderOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_account_by_provider", InputSchemaHash: "7e48e77594d132efa4753eee93934c2ef61f6d82313edff8f7c84c7d8d4112f2"}
+func decodeFindAccountByProviderResult(value riffdb.Value) (FindAccountByProviderResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
+case "Found": result := FindAccountByProviderFound{Outcome: outcome}
+raw, err = requiredField(fields, "accounts"); if err != nil { return nil, err }; result.Accounts, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "account_id"); if err != nil { return result, err }; result.AccountId, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "provider_id"); if err != nil { return result, err }; result.ProviderId, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "access_token"); if err != nil { return result, err }; result.AccessToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "refresh_token"); if err != nil { return result, err }; result.RefreshToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "access_token_expires_at"); if err != nil { return result, err }; result.AccessTokenExpiresAt, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (riffdb.Instant, error) { return riffdb.TimestampValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "refresh_token_expires_at"); if err != nil { return result, err }; result.RefreshTokenExpiresAt, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (riffdb.Instant, error) { return riffdb.TimestampValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "scope"); if err != nil { return result, err }; result.Scope, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "id_token"); if err != nil { return result, err }; result.IdToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "password"); if err != nil { return result, err }; result.Password, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
+func (client *Client) FindAccountByProvider(ctx context.Context, parameters FindAccountByProviderParams, options QueryOptions) (QueryResult[FindAccountByProviderResult], error) { input := map[string]riffdb.Value{}
+input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
+input["account_id"] = riffdb.String(parameters.AccountId)
+input["provider_id"] = riffdb.String(parameters.ProviderId)
+response, err := client.session.Invoke(ctx, FindAccountByProviderOperation, input, options); if err != nil { return QueryResult[FindAccountByProviderResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindAccountByProviderResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindAccountByProviderResult(response.Value); if err != nil { return QueryResult[FindAccountByProviderResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindAccountByProvider", PlanHash: FindAccountByProviderQueryPlanHash}; return QueryResult[FindAccountByProviderResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
+
+const FindAccountsByUserIdQueryPlanHash = "4694c96d50546d4f109b532623cee0da55ee9e9a01477f0df59e8276c7bcca8e"
 var FindAccountsByUserIdOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_accounts_by_user_id", InputSchemaHash: "8b48444eb4b5913a5cc0488bbc67d31d3883cbc372f35dc29ed145643e2e72c6"}
 func decodeFindAccountsByUserIdResult(value riffdb.Value) (FindAccountsByUserIdResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
 case "Found": result := FindAccountsByUserIdFound{Outcome: outcome}
-raw, err = requiredField(fields, "accounts"); if err != nil { return nil, err }; result.Accounts, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { return func() (struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }{}, err }; var result struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "account_id"); if err != nil { return result, err }; result.AccountId, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "provider_id"); if err != nil { return result, err }; result.ProviderId, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "access_token"); if err != nil { return result, err }; result.AccessToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "refresh_token"); if err != nil { return result, err }; result.RefreshToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "access_token_expires_at"); if err != nil { return result, err }; result.AccessTokenExpiresAt, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (riffdb.Instant, error) { return riffdb.TimestampValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "refresh_token_expires_at"); if err != nil { return result, err }; result.RefreshTokenExpiresAt, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (riffdb.Instant, error) { return riffdb.TimestampValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "scope"); if err != nil { return result, err }; result.Scope, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "id_token"); if err != nil { return result, err }; result.IdToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "password"); if err != nil { return result, err }; result.Password, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+raw, err = requiredField(fields, "accounts"); if err != nil { return nil, err }; result.Accounts, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { Id string; UserId string; AccountId string; ProviderId string; AccessToken *string; RefreshToken *string; AccessTokenExpiresAt *riffdb.Instant; RefreshTokenExpiresAt *riffdb.Instant; Scope *string; IdToken *string; Password *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "account_id"); if err != nil { return result, err }; result.AccountId, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "provider_id"); if err != nil { return result, err }; result.ProviderId, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "access_token"); if err != nil { return result, err }; result.AccessToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "refresh_token"); if err != nil { return result, err }; result.RefreshToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "access_token_expires_at"); if err != nil { return result, err }; result.AccessTokenExpiresAt, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (riffdb.Instant, error) { return riffdb.TimestampValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "refresh_token_expires_at"); if err != nil { return result, err }; result.RefreshTokenExpiresAt, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (riffdb.Instant, error) { return riffdb.TimestampValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "scope"); if err != nil { return result, err }; result.Scope, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "id_token"); if err != nil { return result, err }; result.IdToken, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "password"); if err != nil { return result, err }; result.Password, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
 return result, nil
 default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
 func (client *Client) FindAccountsByUserId(ctx context.Context, parameters FindAccountsByUserIdParams, options QueryOptions) (QueryResult[FindAccountsByUserIdResult], error) { input := map[string]riffdb.Value{}
@@ -609,11 +913,38 @@ input["user_id"] = riffdb.UUID(parameters.UserId)
 if parameters.After != nil { input["after"] = riffdb.Optional(parameters.After, func(item string) riffdb.Value { return riffdb.String(item) }) }
 response, err := client.session.Invoke(ctx, FindAccountsByUserIdOperation, input, options); if err != nil { return QueryResult[FindAccountsByUserIdResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindAccountsByUserIdResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindAccountsByUserIdResult(response.Value); if err != nil { return QueryResult[FindAccountsByUserIdResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindAccountsByUserId", PlanHash: FindAccountsByUserIdQueryPlanHash}; return QueryResult[FindAccountsByUserIdResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
 
-const FindLatestVerificationQueryPlanHash = "b870856de144c38775a48124a305048389b14ce8e3c756504dc7a44e404510e2"
+const FindActiveSessionsByUserIdQueryPlanHash = "af936356c9bd7f4e3cc79baad4c6861d75c8b53a74238f4882481ba06161d378"
+var FindActiveSessionsByUserIdOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_active_sessions_by_user_id", InputSchemaHash: "8406692ca477e7352cd8a23c3653aa1e6f6562de235983a9be9fd61edf2bb21d"}
+func decodeFindActiveSessionsByUserIdResult(value riffdb.Value) (FindActiveSessionsByUserIdResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
+case "Found": result := FindActiveSessionsByUserIdFound{Outcome: outcome}
+raw, err = requiredField(fields, "sessions"); if err != nil { return nil, err }; result.Sessions, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "token"); if err != nil { return result, err }; result.Token, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "ip_address"); if err != nil { return result, err }; result.IpAddress, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "user_agent"); if err != nil { return result, err }; result.UserAgent, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
+func (client *Client) FindActiveSessionsByUserId(ctx context.Context, parameters FindActiveSessionsByUserIdParams, options QueryOptions) (QueryResult[FindActiveSessionsByUserIdResult], error) { input := map[string]riffdb.Value{}
+input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
+input["user_id"] = riffdb.UUID(parameters.UserId)
+input["expires_after"] = riffdb.TimestampFrom(parameters.ExpiresAfter)
+if parameters.After != nil { input["after"] = riffdb.Optional(parameters.After, func(item string) riffdb.Value { return riffdb.String(item) }) }
+response, err := client.session.Invoke(ctx, FindActiveSessionsByUserIdOperation, input, options); if err != nil { return QueryResult[FindActiveSessionsByUserIdResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindActiveSessionsByUserIdResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindActiveSessionsByUserIdResult(response.Value); if err != nil { return QueryResult[FindActiveSessionsByUserIdResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindActiveSessionsByUserId", PlanHash: FindActiveSessionsByUserIdQueryPlanHash}; return QueryResult[FindActiveSessionsByUserIdResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
+
+const FindExpiredVerificationIdsQueryPlanHash = "43d64b51b7eaeaa56fab63f6042736fab1bf79486a57a5a7949bc9e9d05f332e"
+var FindExpiredVerificationIdsOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_expired_verification_ids", InputSchemaHash: "19a93ac129c0b36b677aa9244520a3cdbff1bae06b7752f033ad115cc5d2c81e"}
+func decodeFindExpiredVerificationIdsResult(value riffdb.Value) (FindExpiredVerificationIdsResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
+case "Found": result := FindExpiredVerificationIdsFound{Outcome: outcome}
+raw, err = requiredField(fields, "verifications"); if err != nil { return nil, err }; result.Verifications, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { VerificationId string }, error) { return func() (struct { VerificationId string }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { VerificationId string }{}, err }; var result struct { VerificationId string }; var raw riffdb.Value; raw, err = requiredField(fields, "verification_id"); if err != nil { return result, err }; result.VerificationId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
+func (client *Client) FindExpiredVerificationIds(ctx context.Context, parameters FindExpiredVerificationIdsParams, options QueryOptions) (QueryResult[FindExpiredVerificationIdsResult], error) { input := map[string]riffdb.Value{}
+input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
+input["expires_before"] = riffdb.TimestampFrom(parameters.ExpiresBefore)
+if parameters.After != nil { input["after"] = riffdb.Optional(parameters.After, func(item string) riffdb.Value { return riffdb.String(item) }) }
+response, err := client.session.Invoke(ctx, FindExpiredVerificationIdsOperation, input, options); if err != nil { return QueryResult[FindExpiredVerificationIdsResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindExpiredVerificationIdsResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindExpiredVerificationIdsResult(response.Value); if err != nil { return QueryResult[FindExpiredVerificationIdsResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindExpiredVerificationIds", PlanHash: FindExpiredVerificationIdsQueryPlanHash}; return QueryResult[FindExpiredVerificationIdsResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
+
+const FindLatestVerificationQueryPlanHash = "bd8d4b384ee799602afe08393333d27d6947fff94238de3880e76ef87937e1c0"
 var FindLatestVerificationOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_latest_verification", InputSchemaHash: "414c00deb31dd873e434c8006a8caa9d2b360457abe0f8269440d6c761dfdc94"}
 func decodeFindLatestVerificationResult(value riffdb.Value) (FindLatestVerificationResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
 case "Found": result := FindLatestVerificationFound{Outcome: outcome}
-raw, err = requiredField(fields, "verifications"); if err != nil { return nil, err }; result.Verifications, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { return func() (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }{}, err }; var result struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }; var raw riffdb.Value; raw, err = requiredField(fields, "verification_id"); if err != nil { return result, err }; result.VerificationId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "identifier"); if err != nil { return result, err }; result.Identifier, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "value"); if err != nil { return result, err }; result.Value, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+raw, err = requiredField(fields, "verifications"); if err != nil { return nil, err }; result.Verifications, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "verification_id"); if err != nil { return result, err }; result.VerificationId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "identifier"); if err != nil { return result, err }; result.Identifier, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "value"); if err != nil { return result, err }; result.Value, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
 return result, nil
 default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
 func (client *Client) FindLatestVerification(ctx context.Context, parameters FindLatestVerificationParams, options QueryOptions) (QueryResult[FindLatestVerificationResult], error) { input := map[string]riffdb.Value{}
@@ -621,11 +952,11 @@ input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
 input["identifier"] = riffdb.String(parameters.Identifier)
 response, err := client.session.Invoke(ctx, FindLatestVerificationOperation, input, options); if err != nil { return QueryResult[FindLatestVerificationResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindLatestVerificationResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindLatestVerificationResult(response.Value); if err != nil { return QueryResult[FindLatestVerificationResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindLatestVerification", PlanHash: FindLatestVerificationQueryPlanHash}; return QueryResult[FindLatestVerificationResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
 
-const FindSessionByIdQueryPlanHash = "795a1c0382e07a6728359e9386fc023326b24c46e7b9a0620899ee4b6f704400"
+const FindSessionByIdQueryPlanHash = "692e9896d9ee58fb455bc3849bbb3cf1d3fceb22f15e0b226ff795a0d7bebd02"
 var FindSessionByIdOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_session_by_id", InputSchemaHash: "a8efd0b9fe4e36f92ca57a7c5351df748b4c2adbd0e363e2a5ffb66ff4d23bdc"}
 func decodeFindSessionByIdResult(value riffdb.Value) (FindSessionByIdResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
 case "Found": result := FindSessionByIdFound{Outcome: outcome}
-raw, err = requiredField(fields, "sessions"); if err != nil { return nil, err }; result.Sessions, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { return func() (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }{}, err }; var result struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "token"); if err != nil { return result, err }; result.Token, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "ip_address"); if err != nil { return result, err }; result.IpAddress, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "user_agent"); if err != nil { return result, err }; result.UserAgent, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+raw, err = requiredField(fields, "sessions"); if err != nil { return nil, err }; result.Sessions, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "token"); if err != nil { return result, err }; result.Token, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "ip_address"); if err != nil { return result, err }; result.IpAddress, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "user_agent"); if err != nil { return result, err }; result.UserAgent, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
 return result, nil
 default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
 func (client *Client) FindSessionById(ctx context.Context, parameters FindSessionByIdParams, options QueryOptions) (QueryResult[FindSessionByIdResult], error) { input := map[string]riffdb.Value{}
@@ -633,11 +964,11 @@ input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
 input["id"] = riffdb.UUID(parameters.Id)
 response, err := client.session.Invoke(ctx, FindSessionByIdOperation, input, options); if err != nil { return QueryResult[FindSessionByIdResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindSessionByIdResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindSessionByIdResult(response.Value); if err != nil { return QueryResult[FindSessionByIdResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindSessionById", PlanHash: FindSessionByIdQueryPlanHash}; return QueryResult[FindSessionByIdResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
 
-const FindSessionByTokenQueryPlanHash = "298cfc1cca2f74865d3c5267b3819b2f894bbfd8230a16f6c612594ae838f989"
+const FindSessionByTokenQueryPlanHash = "3dc135ee6f4151308ea4b1a6df0e4e0a53d151565cfaeaeb2417a1317b3f6b8f"
 var FindSessionByTokenOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_session_by_token", InputSchemaHash: "0ff142e840e9d2d322c37be4688526fc1348f508cc4976856bd7e4d2570859e8"}
 func decodeFindSessionByTokenResult(value riffdb.Value) (FindSessionByTokenResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
 case "Found": result := FindSessionByTokenFound{Outcome: outcome}
-raw, err = requiredField(fields, "sessions"); if err != nil { return nil, err }; result.Sessions, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { return func() (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }{}, err }; var result struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "token"); if err != nil { return result, err }; result.Token, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "ip_address"); if err != nil { return result, err }; result.IpAddress, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "user_agent"); if err != nil { return result, err }; result.UserAgent, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+raw, err = requiredField(fields, "sessions"); if err != nil { return nil, err }; result.Sessions, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "token"); if err != nil { return result, err }; result.Token, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "ip_address"); if err != nil { return result, err }; result.IpAddress, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "user_agent"); if err != nil { return result, err }; result.UserAgent, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
 return result, nil
 default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
 func (client *Client) FindSessionByToken(ctx context.Context, parameters FindSessionByTokenParams, options QueryOptions) (QueryResult[FindSessionByTokenResult], error) { input := map[string]riffdb.Value{}
@@ -645,11 +976,24 @@ input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
 input["token"] = riffdb.String(parameters.Token)
 response, err := client.session.Invoke(ctx, FindSessionByTokenOperation, input, options); if err != nil { return QueryResult[FindSessionByTokenResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindSessionByTokenResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindSessionByTokenResult(response.Value); if err != nil { return QueryResult[FindSessionByTokenResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindSessionByToken", PlanHash: FindSessionByTokenQueryPlanHash}; return QueryResult[FindSessionByTokenResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
 
-const FindUserByEmailQueryPlanHash = "c56ce0a4727bbb24835a18becbd868f3c8b3c080082140d72db320c01cb70d7c"
+const FindSessionsByUserIdQueryPlanHash = "50fec7186cfadbeaa096ffefc55cb01895f0629784ebb18fc3209d2f0ce23005"
+var FindSessionsByUserIdOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_sessions_by_user_id", InputSchemaHash: "8b48444eb4b5913a5cc0488bbc67d31d3883cbc372f35dc29ed145643e2e72c6"}
+func decodeFindSessionsByUserIdResult(value riffdb.Value) (FindSessionsByUserIdResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
+case "Found": result := FindSessionsByUserIdFound{Outcome: outcome}
+raw, err = requiredField(fields, "sessions"); if err != nil { return nil, err }; result.Sessions, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { Id string; UserId string; Token string; ExpiresAt riffdb.Instant; IpAddress *string; UserAgent *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "id"); if err != nil { return result, err }; result.Id, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "token"); if err != nil { return result, err }; result.Token, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "ip_address"); if err != nil { return result, err }; result.IpAddress, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "user_agent"); if err != nil { return result, err }; result.UserAgent, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
+func (client *Client) FindSessionsByUserId(ctx context.Context, parameters FindSessionsByUserIdParams, options QueryOptions) (QueryResult[FindSessionsByUserIdResult], error) { input := map[string]riffdb.Value{}
+input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
+input["user_id"] = riffdb.UUID(parameters.UserId)
+if parameters.After != nil { input["after"] = riffdb.Optional(parameters.After, func(item string) riffdb.Value { return riffdb.String(item) }) }
+response, err := client.session.Invoke(ctx, FindSessionsByUserIdOperation, input, options); if err != nil { return QueryResult[FindSessionsByUserIdResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindSessionsByUserIdResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindSessionsByUserIdResult(response.Value); if err != nil { return QueryResult[FindSessionsByUserIdResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindSessionsByUserId", PlanHash: FindSessionsByUserIdQueryPlanHash}; return QueryResult[FindSessionsByUserIdResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
+
+const FindUserByEmailQueryPlanHash = "b3b5011a19a154a46341053a4aa7c85fe569f604d4bbfcb5c377831125e4cd8c"
 var FindUserByEmailOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_user_by_email", InputSchemaHash: "7d3b1da87ea1ee59893e110cd8f8a5eacb522a8fde24a7e8aa9b7c13340990b9"}
 func decodeFindUserByEmailResult(value riffdb.Value) (FindUserByEmailResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
 case "Found": result := FindUserByEmailFound{Outcome: outcome}
-raw, err = requiredField(fields, "users"); if err != nil { return nil, err }; result.Users, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { return func() (struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }{}, err }; var result struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }; var raw riffdb.Value; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "name"); if err != nil { return result, err }; result.Name, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "email"); if err != nil { return result, err }; result.Email, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "email_verified"); if err != nil { return result, err }; result.EmailVerified, err = riffdb.BoolValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "image"); if err != nil { return result, err }; result.Image, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+raw, err = requiredField(fields, "users"); if err != nil { return nil, err }; result.Users, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "name"); if err != nil { return result, err }; result.Name, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "email"); if err != nil { return result, err }; result.Email, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "email_verified"); if err != nil { return result, err }; result.EmailVerified, err = riffdb.BoolValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "image"); if err != nil { return result, err }; result.Image, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
 return result, nil
 default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
 func (client *Client) FindUserByEmail(ctx context.Context, parameters FindUserByEmailParams, options QueryOptions) (QueryResult[FindUserByEmailResult], error) { input := map[string]riffdb.Value{}
@@ -657,11 +1001,11 @@ input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
 input["email"] = riffdb.String(parameters.Email)
 response, err := client.session.Invoke(ctx, FindUserByEmailOperation, input, options); if err != nil { return QueryResult[FindUserByEmailResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindUserByEmailResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindUserByEmailResult(response.Value); if err != nil { return QueryResult[FindUserByEmailResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindUserByEmail", PlanHash: FindUserByEmailQueryPlanHash}; return QueryResult[FindUserByEmailResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
 
-const FindUserByIdQueryPlanHash = "d73507273885a13f5f908673bc13e947151e143cdfd51368b33fbfaaca4674a5"
+const FindUserByIdQueryPlanHash = "90066115533c9556aeb736ed9df2615b06d23edcf2fd82490b0b178d9be504cd"
 var FindUserByIdOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_user_by_id", InputSchemaHash: "a8efd0b9fe4e36f92ca57a7c5351df748b4c2adbd0e363e2a5ffb66ff4d23bdc"}
 func decodeFindUserByIdResult(value riffdb.Value) (FindUserByIdResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
 case "Found": result := FindUserByIdFound{Outcome: outcome}
-raw, err = requiredField(fields, "user"); if err != nil { return nil, err }; result.User, err = func() (struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { fields, err := riffdb.RecordFields(raw); if err != nil { return struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }{}, err }; var result struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }; var raw riffdb.Value; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "name"); if err != nil { return result, err }; result.Name, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "email"); if err != nil { return result, err }; result.Email, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "email_verified"); if err != nil { return result, err }; result.EmailVerified, err = riffdb.BoolValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "image"); if err != nil { return result, err }; result.Image, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; return result, nil }(); if err != nil { return nil, err }
+raw, err = requiredField(fields, "user"); if err != nil { return nil, err }; result.User, err = func() (struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(raw); if err != nil { return struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { UserId string; Name string; Email string; EmailVerified bool; Image *string; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "user_id"); if err != nil { return result, err }; result.UserId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "name"); if err != nil { return result, err }; result.Name, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "email"); if err != nil { return result, err }; result.Email, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "email_verified"); if err != nil { return result, err }; result.EmailVerified, err = riffdb.BoolValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "image"); if err != nil { return result, err }; result.Image, err = riffdb.DecodeOptional(raw, func(item riffdb.Value) (string, error) { return riffdb.StringValue(item) }); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }(); if err != nil { return nil, err }
 return result, nil
 case "Missing": result := FindUserByIdMissing{Outcome: outcome}
 return result, nil
@@ -671,11 +1015,11 @@ input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
 input["id"] = riffdb.UUID(parameters.Id)
 response, err := client.session.Invoke(ctx, FindUserByIdOperation, input, options); if err != nil { return QueryResult[FindUserByIdResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindUserByIdResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindUserByIdResult(response.Value); if err != nil { return QueryResult[FindUserByIdResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindUserById", PlanHash: FindUserByIdQueryPlanHash}; return QueryResult[FindUserByIdResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
 
-const FindVerificationByIdQueryPlanHash = "db5b50368c99f2e9d412ad07bfcb4a03d6f9425ff7e2df13bbaa5b6020e38b7f"
+const FindVerificationByIdQueryPlanHash = "eaf3839e91f492b98d066d6df457cb493612784151f85e121fcefd9ea55b6c17"
 var FindVerificationByIdOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_verification_by_id", InputSchemaHash: "a8efd0b9fe4e36f92ca57a7c5351df748b4c2adbd0e363e2a5ffb66ff4d23bdc"}
 func decodeFindVerificationByIdResult(value riffdb.Value) (FindVerificationByIdResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
 case "Found": result := FindVerificationByIdFound{Outcome: outcome}
-raw, err = requiredField(fields, "verification"); if err != nil { return nil, err }; result.Verification, err = func() (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { fields, err := riffdb.RecordFields(raw); if err != nil { return struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }{}, err }; var result struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }; var raw riffdb.Value; raw, err = requiredField(fields, "verification_id"); if err != nil { return result, err }; result.VerificationId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "identifier"); if err != nil { return result, err }; result.Identifier, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "value"); if err != nil { return result, err }; result.Value, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; return result, nil }(); if err != nil { return nil, err }
+raw, err = requiredField(fields, "verification"); if err != nil { return nil, err }; result.Verification, err = func() (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(raw); if err != nil { return struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "verification_id"); if err != nil { return result, err }; result.VerificationId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "identifier"); if err != nil { return result, err }; result.Identifier, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "value"); if err != nil { return result, err }; result.Value, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }(); if err != nil { return nil, err }
 return result, nil
 case "Missing": result := FindVerificationByIdMissing{Outcome: outcome}
 return result, nil
@@ -685,11 +1029,11 @@ input["organization_id"] = riffdb.UUID(parameters.OrganizationId)
 input["id"] = riffdb.UUID(parameters.Id)
 response, err := client.session.Invoke(ctx, FindVerificationByIdOperation, input, options); if err != nil { return QueryResult[FindVerificationByIdResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindVerificationByIdResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindVerificationByIdResult(response.Value); if err != nil { return QueryResult[FindVerificationByIdResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindVerificationById", PlanHash: FindVerificationByIdQueryPlanHash}; return QueryResult[FindVerificationByIdResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
 
-const FindVerificationsByIdentifierQueryPlanHash = "6a191858a1c1213b0dbbeb2daca2f5dd85046004d63a0113b76feb805fd5290b"
+const FindVerificationsByIdentifierQueryPlanHash = "747e5772a57c4538c0d49b9ea22d67a9ad86644ea0fcf6dabebaa0413f96c9c3"
 var FindVerificationsByIdentifierOperation = riffdb.Operation{Name: "riffdb_better_auth_core_find_verifications_by_identifier", InputSchemaHash: "4a0f63d85d370ec2c89110afe349e6c5df34a9f969448cb24a4897e358641cb3"}
 func decodeFindVerificationsByIdentifierResult(value riffdb.Value) (FindVerificationsByIdentifierResult, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; var raw riffdb.Value; switch outcome {
 case "Found": result := FindVerificationsByIdentifierFound{Outcome: outcome}
-raw, err = requiredField(fields, "verifications"); if err != nil { return nil, err }; result.Verifications, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { return func() (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }{}, err }; var result struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant }; var raw riffdb.Value; raw, err = requiredField(fields, "verification_id"); if err != nil { return result, err }; result.VerificationId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "identifier"); if err != nil { return result, err }; result.Identifier, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "value"); if err != nil { return result, err }; result.Value, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
+raw, err = requiredField(fields, "verifications"); if err != nil { return nil, err }; result.Verifications, err = riffdb.DecodeValues(raw, func(item riffdb.Value) (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { return func() (struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }, error) { fields, err := riffdb.RecordFields(item); if err != nil { return struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }{}, err }; var result struct { VerificationId string; Identifier string; Value string; ExpiresAt riffdb.Instant; CreatedAt riffdb.Instant; UpdatedAt riffdb.Instant; Revision uint64 }; var raw riffdb.Value; raw, err = requiredField(fields, "verification_id"); if err != nil { return result, err }; result.VerificationId, err = riffdb.UUIDValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "identifier"); if err != nil { return result, err }; result.Identifier, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "value"); if err != nil { return result, err }; result.Value, err = riffdb.StringValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "expires_at"); if err != nil { return result, err }; result.ExpiresAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "created_at"); if err != nil { return result, err }; result.CreatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "updated_at"); if err != nil { return result, err }; result.UpdatedAt, err = riffdb.TimestampValue(raw); if err != nil { return result, err }; raw, err = requiredField(fields, "revision"); if err != nil { return result, err }; result.Revision, err = riffdb.U64Value(raw); if err != nil { return result, err }; return result, nil }() }); if err != nil { return nil, err }
 return result, nil
 default: return nil, errors.New("RiffDB driver returned unknown query outcome") } }
 func (client *Client) FindVerificationsByIdentifier(ctx context.Context, parameters FindVerificationsByIdentifierParams, options QueryOptions) (QueryResult[FindVerificationsByIdentifierResult], error) { input := map[string]riffdb.Value{}
@@ -698,7 +1042,7 @@ input["identifier"] = riffdb.String(parameters.Identifier)
 if parameters.After != nil { input["after"] = riffdb.Optional(parameters.After, func(item string) riffdb.Value { return riffdb.String(item) }) }
 response, err := client.session.Invoke(ctx, FindVerificationsByIdentifierOperation, input, options); if err != nil { return QueryResult[FindVerificationsByIdentifierResult]{}, err }; if response.ApplicationHead == nil { return QueryResult[FindVerificationsByIdentifierResult]{}, errors.New("RiffDB driver omitted query frontier") }; value, err := decodeFindVerificationsByIdentifierResult(response.Value); if err != nil { return QueryResult[FindVerificationsByIdentifierResult]{}, err }; identity := QueryIdentity{ContractLineage: ContractLineage, ContractVersion: ContractVersion, ContractBundleHash: ContractBundleHash, ModuleHash: QueryModuleHash, QueryName: "FindVerificationsByIdentifier", PlanHash: FindVerificationsByIdentifierQueryPlanHash}; return QueryResult[FindVerificationsByIdentifierResult]{Value: value, Identity: identity, ApplicationHead: *response.ApplicationHead, NextCursor: response.Cursor}, nil }
 
-const ConsumeVerificationSetPlanHash = "298227c9ec3ba1113c9913e8078e875a225c43ab79363b95057d73079e7d00cd"
+const ConsumeVerificationSetPlanHash = "a66d95985b080b1f07ee91b5941cdb5c59b88093973719d5e58f1333001eec88"
 var ConsumeVerificationSetOperation = riffdb.Operation{Name: "riffdb_better_auth_core_consume_verification_set", InputSchemaHash: "ce88d8052f760625503f8a732f9813446ef7cc042d726ee1826c05c437c0929c"}
 func encodeConsumeVerificationSetInput(input ConsumeVerificationSetInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"request_id": riffdb.UUID(input.RequestId),
@@ -715,7 +1059,7 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) ConsumeVerificationSet(ctx context.Context, input ConsumeVerificationSetInput) (CommandResult[ConsumeVerificationSetOutcome], error) { if err := validateConsumeVerificationSetInput(input); err != nil { return CommandResult[ConsumeVerificationSetOutcome]{}, err }; response, err := client.session.Invoke(ctx, ConsumeVerificationSetOperation, encodeConsumeVerificationSetInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[ConsumeVerificationSetOutcome]{}, err }; outcome, err := decodeConsumeVerificationSetOutcome(response.Value); if err != nil { return CommandResult[ConsumeVerificationSetOutcome]{}, err }; return CommandResult[ConsumeVerificationSetOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: ConsumeVerificationSetPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) ConsumeVerificationSetBatch(ctx context.Context, inputs []ConsumeVerificationSetInput, concurrency, checkpoint uint32) (BatchResult[ConsumeVerificationSetOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { if err := validateConsumeVerificationSetInput(input); err != nil { return BatchResult[ConsumeVerificationSetOutcome]{}, err }; encoded[index] = encodeConsumeVerificationSetInput(input) }; response, err := client.session.Batch(ctx, ConsumeVerificationSetOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[ConsumeVerificationSetOutcome]{}, err }; result := BatchResult[ConsumeVerificationSetOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[ConsumeVerificationSetOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[ConsumeVerificationSetOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeConsumeVerificationSetOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[ConsumeVerificationSetOutcome]{}, decodeErr }; converted.Result = &CommandResult[ConsumeVerificationSetOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: ConsumeVerificationSetPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const CreateAccountPlanHash = "3f6afc9d8cbc0ff64aa4d3551366fdfc890158706e1093f4df5b9bfcb90a109f"
+const CreateAccountPlanHash = "6f2560332cfa12b801feb2bbd6a45be348eb426dc52554254c54c9dd2815865d"
 var CreateAccountOperation = riffdb.Operation{Name: "riffdb_better_auth_core_create_account", InputSchemaHash: "9f59abcc35f23822a34f3504905acaae3df3c62c0f60e6bcb65bd8768279c4f9"}
 func encodeCreateAccountInput(input CreateAccountInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"id": riffdb.UUID(input.Id),
@@ -745,7 +1089,43 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) CreateAccount(ctx context.Context, input CreateAccountInput) (CommandResult[CreateAccountOutcome], error) { response, err := client.session.Invoke(ctx, CreateAccountOperation, encodeCreateAccountInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[CreateAccountOutcome]{}, err }; outcome, err := decodeCreateAccountOutcome(response.Value); if err != nil { return CommandResult[CreateAccountOutcome]{}, err }; return CommandResult[CreateAccountOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: CreateAccountPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) CreateAccountBatch(ctx context.Context, inputs []CreateAccountInput, concurrency, checkpoint uint32) (BatchResult[CreateAccountOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeCreateAccountInput(input) }; response, err := client.session.Batch(ctx, CreateAccountOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[CreateAccountOutcome]{}, err }; result := BatchResult[CreateAccountOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[CreateAccountOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[CreateAccountOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeCreateAccountOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[CreateAccountOutcome]{}, decodeErr }; converted.Result = &CommandResult[CreateAccountOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: CreateAccountPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const CreateSessionPlanHash = "834ede9c61dca92de80fb1157522b875bf3da6fd56d0f4ea12dc6dc7e62c9900"
+const CreateOAuthUserGraphPlanHash = "e8c9de08592e8da23e95f683c5afbd6c30ba9c7b85a4e183e5e3457461107c09"
+var CreateOAuthUserGraphOperation = riffdb.Operation{Name: "riffdb_better_auth_core_create_o_auth_user_graph", InputSchemaHash: "e7b044ec8cfadc80fc33bc06825e721bc65d5926299b0643cf1f7e4e75cf6f33"}
+func encodeCreateOAuthUserGraphInput(input CreateOAuthUserGraphInput) map[string]riffdb.Value { return map[string]riffdb.Value{
+	"scope": riffdb.Optional(input.Scope, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"user_id": riffdb.UUID(input.UserId),
+	"id_token": riffdb.Optional(input.IdToken, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"password": riffdb.Optional(input.Password, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"user_name": riffdb.String(input.UserName),
+	"account_id": riffdb.UUID(input.AccountId),
+	"request_id": riffdb.UUID(input.RequestId),
+	"user_email": riffdb.String(input.UserEmail),
+	"user_image": riffdb.Optional(input.UserImage, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"provider_id": riffdb.String(input.ProviderId),
+	"access_token": riffdb.Optional(input.AccessToken, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"refresh_token": riffdb.Optional(input.RefreshToken, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"organization_id": riffdb.UUID(input.OrganizationId),
+	"user_created_at": riffdb.TimestampFrom(input.UserCreatedAt),
+	"user_updated_at": riffdb.TimestampFrom(input.UserUpdatedAt),
+	"account_created_at": riffdb.TimestampFrom(input.AccountCreatedAt),
+	"account_updated_at": riffdb.TimestampFrom(input.AccountUpdatedAt),
+	"external_account_id": riffdb.String(input.ExternalAccountId),
+	"user_email_verified": riffdb.Bool(input.UserEmailVerified),
+	"access_token_expires_at": riffdb.Optional(input.AccessTokenExpiresAt, func(item riffdb.Instant) riffdb.Value { return riffdb.TimestampFrom(item) }),
+	"refresh_token_expires_at": riffdb.Optional(input.RefreshTokenExpiresAt, func(item riffdb.Instant) riffdb.Value { return riffdb.TimestampFrom(item) }),
+} }
+func decodeCreateOAuthUserGraphOutcome(value riffdb.Value) (CreateOAuthUserGraphOutcome, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; switch outcome {
+case "OAuthUserExists": result := CreateOAuthUserGraphOAuthUserExists{Outcome: outcome}
+return result, nil
+case "OAuthAccountExists": result := CreateOAuthUserGraphOAuthAccountExists{Outcome: outcome}
+return result, nil
+case "OAuthUserGraphCreated": result := CreateOAuthUserGraphOAuthUserGraphCreated{Outcome: outcome}
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown command outcome") } }
+func (client *Client) CreateOAuthUserGraph(ctx context.Context, input CreateOAuthUserGraphInput) (CommandResult[CreateOAuthUserGraphOutcome], error) { response, err := client.session.Invoke(ctx, CreateOAuthUserGraphOperation, encodeCreateOAuthUserGraphInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[CreateOAuthUserGraphOutcome]{}, err }; outcome, err := decodeCreateOAuthUserGraphOutcome(response.Value); if err != nil { return CommandResult[CreateOAuthUserGraphOutcome]{}, err }; return CommandResult[CreateOAuthUserGraphOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: CreateOAuthUserGraphPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
+func (client *Client) CreateOAuthUserGraphBatch(ctx context.Context, inputs []CreateOAuthUserGraphInput, concurrency, checkpoint uint32) (BatchResult[CreateOAuthUserGraphOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeCreateOAuthUserGraphInput(input) }; response, err := client.session.Batch(ctx, CreateOAuthUserGraphOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[CreateOAuthUserGraphOutcome]{}, err }; result := BatchResult[CreateOAuthUserGraphOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[CreateOAuthUserGraphOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[CreateOAuthUserGraphOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeCreateOAuthUserGraphOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[CreateOAuthUserGraphOutcome]{}, decodeErr }; converted.Result = &CommandResult[CreateOAuthUserGraphOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: CreateOAuthUserGraphPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
+
+const CreateSessionPlanHash = "05ae79e74ef152c4d06303d40a74384f7fd7ef8e75a495aacac23d28bad725bf"
 var CreateSessionOperation = riffdb.Operation{Name: "riffdb_better_auth_core_create_session", InputSchemaHash: "90f15b4cdb6f49df5e37b625173a07170d7975bbb4e8a8d1419071cd4f8a9312"}
 func encodeCreateSessionInput(input CreateSessionInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"id": riffdb.UUID(input.Id),
@@ -770,7 +1150,7 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) CreateSession(ctx context.Context, input CreateSessionInput) (CommandResult[CreateSessionOutcome], error) { response, err := client.session.Invoke(ctx, CreateSessionOperation, encodeCreateSessionInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[CreateSessionOutcome]{}, err }; outcome, err := decodeCreateSessionOutcome(response.Value); if err != nil { return CommandResult[CreateSessionOutcome]{}, err }; return CommandResult[CreateSessionOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: CreateSessionPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) CreateSessionBatch(ctx context.Context, inputs []CreateSessionInput, concurrency, checkpoint uint32) (BatchResult[CreateSessionOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeCreateSessionInput(input) }; response, err := client.session.Batch(ctx, CreateSessionOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[CreateSessionOutcome]{}, err }; result := BatchResult[CreateSessionOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[CreateSessionOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[CreateSessionOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeCreateSessionOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[CreateSessionOutcome]{}, decodeErr }; converted.Result = &CommandResult[CreateSessionOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: CreateSessionPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const CreateSignupGraphPlanHash = "6a0b84a32a5d29b9a391783fe819402acac7569c8a167aa3e002d3697ab8f7ae"
+const CreateSignupGraphPlanHash = "bbdbdb31dce24a4c0a1cbe20d2cb6fb1693fecbe2760dc8f38e2f3bbd7a127bc"
 var CreateSignupGraphOperation = riffdb.Operation{Name: "riffdb_better_auth_core_create_signup_graph", InputSchemaHash: "49ab048473688615ee1dd52f54c399de0a8da4accab6a7e8f109b3bdd0937c31"}
 func encodeCreateSignupGraphInput(input CreateSignupGraphInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"user_id": riffdb.UUID(input.UserId),
@@ -809,7 +1189,7 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) CreateSignupGraph(ctx context.Context, input CreateSignupGraphInput) (CommandResult[CreateSignupGraphOutcome], error) { response, err := client.session.Invoke(ctx, CreateSignupGraphOperation, encodeCreateSignupGraphInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[CreateSignupGraphOutcome]{}, err }; outcome, err := decodeCreateSignupGraphOutcome(response.Value); if err != nil { return CommandResult[CreateSignupGraphOutcome]{}, err }; return CommandResult[CreateSignupGraphOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: CreateSignupGraphPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) CreateSignupGraphBatch(ctx context.Context, inputs []CreateSignupGraphInput, concurrency, checkpoint uint32) (BatchResult[CreateSignupGraphOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeCreateSignupGraphInput(input) }; response, err := client.session.Batch(ctx, CreateSignupGraphOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[CreateSignupGraphOutcome]{}, err }; result := BatchResult[CreateSignupGraphOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[CreateSignupGraphOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[CreateSignupGraphOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeCreateSignupGraphOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[CreateSignupGraphOutcome]{}, decodeErr }; converted.Result = &CommandResult[CreateSignupGraphOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: CreateSignupGraphPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const CreateUserPlanHash = "8077415efb76ef5b26dcd154ba54c6816c8cc55da96de34f2b7eba4307014cc6"
+const CreateUserPlanHash = "535fb4e2bc107cd645dbe7e9647f04cc8f77918924974ab6c9bc158b87008736"
 var CreateUserOperation = riffdb.Operation{Name: "riffdb_better_auth_core_create_user", InputSchemaHash: "797c4a05358287284cac08b3b955bda7d19f1fb1fd7d682d3daf07b12d64ea2a"}
 func encodeCreateUserInput(input CreateUserInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"id": riffdb.UUID(input.Id),
@@ -831,7 +1211,7 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) CreateUser(ctx context.Context, input CreateUserInput) (CommandResult[CreateUserOutcome], error) { response, err := client.session.Invoke(ctx, CreateUserOperation, encodeCreateUserInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[CreateUserOutcome]{}, err }; outcome, err := decodeCreateUserOutcome(response.Value); if err != nil { return CommandResult[CreateUserOutcome]{}, err }; return CommandResult[CreateUserOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: CreateUserPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) CreateUserBatch(ctx context.Context, inputs []CreateUserInput, concurrency, checkpoint uint32) (BatchResult[CreateUserOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeCreateUserInput(input) }; response, err := client.session.Batch(ctx, CreateUserOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[CreateUserOutcome]{}, err }; result := BatchResult[CreateUserOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[CreateUserOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[CreateUserOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeCreateUserOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[CreateUserOutcome]{}, decodeErr }; converted.Result = &CommandResult[CreateUserOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: CreateUserPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const CreateVerificationPlanHash = "1271b029c766f74f0dd91764fb564a086183c504a42949b3f61fe8db4fd823ca"
+const CreateVerificationPlanHash = "ea666debdc2b90996ec48604ca3f7b8c7210c72c64b848fb9d71e4d395261d1c"
 var CreateVerificationOperation = riffdb.Operation{Name: "riffdb_better_auth_core_create_verification", InputSchemaHash: "1df4414485ef2e463cee868bb97850b7a189a8c72c6090a650a1a1e0bd96baef"}
 func encodeCreateVerificationInput(input CreateVerificationInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"id": riffdb.UUID(input.Id),
@@ -852,15 +1232,33 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) CreateVerification(ctx context.Context, input CreateVerificationInput) (CommandResult[CreateVerificationOutcome], error) { response, err := client.session.Invoke(ctx, CreateVerificationOperation, encodeCreateVerificationInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[CreateVerificationOutcome]{}, err }; outcome, err := decodeCreateVerificationOutcome(response.Value); if err != nil { return CommandResult[CreateVerificationOutcome]{}, err }; return CommandResult[CreateVerificationOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: CreateVerificationPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) CreateVerificationBatch(ctx context.Context, inputs []CreateVerificationInput, concurrency, checkpoint uint32) (BatchResult[CreateVerificationOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeCreateVerificationInput(input) }; response, err := client.session.Batch(ctx, CreateVerificationOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[CreateVerificationOutcome]{}, err }; result := BatchResult[CreateVerificationOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[CreateVerificationOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[CreateVerificationOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeCreateVerificationOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[CreateVerificationOutcome]{}, decodeErr }; converted.Result = &CommandResult[CreateVerificationOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: CreateVerificationPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const DeleteSessionPlanHash = "62580515a9e5bc493addb410cb11c2114aab35a9899e1a9c5c26a335f02cedda"
-var DeleteSessionOperation = riffdb.Operation{Name: "riffdb_better_auth_core_delete_session", InputSchemaHash: "93df80c2f098afae82911f08ff448c406fc25276dbd927bf8c2573fc81b569cf"}
+const DeleteAccountPlanHash = "e0ae4691de1acf976003486c9281bfc71975ee9e25b8f5ae4e0eedf17eeb759d"
+var DeleteAccountOperation = riffdb.Operation{Name: "riffdb_better_auth_core_delete_account", InputSchemaHash: "8e512e4d77b1ced01a098641ce940e1440a4b63d4c3e2ddad9068a1faf9c2c11"}
+func encodeDeleteAccountInput(input DeleteAccountInput) map[string]riffdb.Value { return map[string]riffdb.Value{
+	"user_id": riffdb.UUID(input.UserId),
+	"request_id": riffdb.UUID(input.RequestId),
+	"account_ids": riffdb.Values(input.AccountIds, func(item string) riffdb.Value { return riffdb.UUID(item) }),
+	"organization_id": riffdb.UUID(input.OrganizationId),
+} }
+func validateDeleteAccountInput(input DeleteAccountInput) error { if len(input.AccountIds) < 1 || len(input.AccountIds) > 32 { return errors.New("invalid bounded collection length for DeleteAccount.account_ids") }; return nil }
+func decodeDeleteAccountOutcome(value riffdb.Value) (DeleteAccountOutcome, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; switch outcome {
+case "AccountDeleted": result := DeleteAccountAccountDeleted{Outcome: outcome}
+return result, nil
+case "AccountMissing": result := DeleteAccountAccountMissing{Outcome: outcome}
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown command outcome") } }
+func (client *Client) DeleteAccount(ctx context.Context, input DeleteAccountInput) (CommandResult[DeleteAccountOutcome], error) { if err := validateDeleteAccountInput(input); err != nil { return CommandResult[DeleteAccountOutcome]{}, err }; response, err := client.session.Invoke(ctx, DeleteAccountOperation, encodeDeleteAccountInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[DeleteAccountOutcome]{}, err }; outcome, err := decodeDeleteAccountOutcome(response.Value); if err != nil { return CommandResult[DeleteAccountOutcome]{}, err }; return CommandResult[DeleteAccountOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: DeleteAccountPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
+func (client *Client) DeleteAccountBatch(ctx context.Context, inputs []DeleteAccountInput, concurrency, checkpoint uint32) (BatchResult[DeleteAccountOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { if err := validateDeleteAccountInput(input); err != nil { return BatchResult[DeleteAccountOutcome]{}, err }; encoded[index] = encodeDeleteAccountInput(input) }; response, err := client.session.Batch(ctx, DeleteAccountOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[DeleteAccountOutcome]{}, err }; result := BatchResult[DeleteAccountOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[DeleteAccountOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[DeleteAccountOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeDeleteAccountOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[DeleteAccountOutcome]{}, decodeErr }; converted.Result = &CommandResult[DeleteAccountOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: DeleteAccountPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
+
+const DeleteSessionPlanHash = "fb5712f9f93f0812031d51c7d1e7e9cb11394716cb9b0f2a19c11baacd06d8a9"
+var DeleteSessionOperation = riffdb.Operation{Name: "riffdb_better_auth_core_delete_session", InputSchemaHash: "6eeb9f3b452bb70a9b0e955dcb9e9a0115db479f3297a5d3c8b243a6e34974f7"}
 func encodeDeleteSessionInput(input DeleteSessionInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"user_id": riffdb.UUID(input.UserId),
 	"request_id": riffdb.UUID(input.RequestId),
 	"session_ids": riffdb.Values(input.SessionIds, func(item string) riffdb.Value { return riffdb.UUID(item) }),
 	"organization_id": riffdb.UUID(input.OrganizationId),
 } }
-func validateDeleteSessionInput(input DeleteSessionInput) error { if len(input.SessionIds) < 1 || len(input.SessionIds) > 8 { return errors.New("invalid bounded collection length for DeleteSession.session_ids") }; return nil }
+func validateDeleteSessionInput(input DeleteSessionInput) error { if len(input.SessionIds) < 1 || len(input.SessionIds) > 32 { return errors.New("invalid bounded collection length for DeleteSession.session_ids") }; return nil }
 func decodeDeleteSessionOutcome(value riffdb.Value) (DeleteSessionOutcome, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; switch outcome {
 case "SessionDeleted": result := DeleteSessionSessionDeleted{Outcome: outcome}
 return result, nil
@@ -870,7 +1268,7 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) DeleteSession(ctx context.Context, input DeleteSessionInput) (CommandResult[DeleteSessionOutcome], error) { if err := validateDeleteSessionInput(input); err != nil { return CommandResult[DeleteSessionOutcome]{}, err }; response, err := client.session.Invoke(ctx, DeleteSessionOperation, encodeDeleteSessionInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[DeleteSessionOutcome]{}, err }; outcome, err := decodeDeleteSessionOutcome(response.Value); if err != nil { return CommandResult[DeleteSessionOutcome]{}, err }; return CommandResult[DeleteSessionOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: DeleteSessionPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) DeleteSessionBatch(ctx context.Context, inputs []DeleteSessionInput, concurrency, checkpoint uint32) (BatchResult[DeleteSessionOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { if err := validateDeleteSessionInput(input); err != nil { return BatchResult[DeleteSessionOutcome]{}, err }; encoded[index] = encodeDeleteSessionInput(input) }; response, err := client.session.Batch(ctx, DeleteSessionOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[DeleteSessionOutcome]{}, err }; result := BatchResult[DeleteSessionOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[DeleteSessionOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[DeleteSessionOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeDeleteSessionOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[DeleteSessionOutcome]{}, decodeErr }; converted.Result = &CommandResult[DeleteSessionOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: DeleteSessionPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const DeleteUserPlanHash = "13b941c8a75bb1d359ab1dfd136de826c96073d71a600d2695372438bac40477"
+const DeleteUserPlanHash = "7c2323a3f32ae4d7b7855a9df13d35e83995a467a2fefce668d3bf94799d23f9"
 var DeleteUserOperation = riffdb.Operation{Name: "riffdb_better_auth_core_delete_user", InputSchemaHash: "c128e0333c57f08e3094e68459abbac53483952520e8381c0b79db903c36146d"}
 func encodeDeleteUserInput(input DeleteUserInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"user_ids": riffdb.Values(input.UserIds, func(item string) riffdb.Value { return riffdb.UUID(item) }),
@@ -889,14 +1287,14 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) DeleteUser(ctx context.Context, input DeleteUserInput) (CommandResult[DeleteUserOutcome], error) { if err := validateDeleteUserInput(input); err != nil { return CommandResult[DeleteUserOutcome]{}, err }; response, err := client.session.Invoke(ctx, DeleteUserOperation, encodeDeleteUserInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[DeleteUserOutcome]{}, err }; outcome, err := decodeDeleteUserOutcome(response.Value); if err != nil { return CommandResult[DeleteUserOutcome]{}, err }; return CommandResult[DeleteUserOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: DeleteUserPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) DeleteUserBatch(ctx context.Context, inputs []DeleteUserInput, concurrency, checkpoint uint32) (BatchResult[DeleteUserOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { if err := validateDeleteUserInput(input); err != nil { return BatchResult[DeleteUserOutcome]{}, err }; encoded[index] = encodeDeleteUserInput(input) }; response, err := client.session.Batch(ctx, DeleteUserOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[DeleteUserOutcome]{}, err }; result := BatchResult[DeleteUserOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[DeleteUserOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[DeleteUserOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeDeleteUserOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[DeleteUserOutcome]{}, decodeErr }; converted.Result = &CommandResult[DeleteUserOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: DeleteUserPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const DeleteVerificationPlanHash = "631edda3617d0b206fd3f4f5889bfbbde6546901ff5f9994cef583ffdf5c3f6e"
-var DeleteVerificationOperation = riffdb.Operation{Name: "riffdb_better_auth_core_delete_verification", InputSchemaHash: "c98922ecac7f1a5568958916d08e084d390d382517fd3f911491a5be5200fd96"}
+const DeleteVerificationPlanHash = "9d9a74f180828deaf0955489768118271db801c2746a956b8065e5225a3570e2"
+var DeleteVerificationOperation = riffdb.Operation{Name: "riffdb_better_auth_core_delete_verification", InputSchemaHash: "ce88d8052f760625503f8a732f9813446ef7cc042d726ee1826c05c437c0929c"}
 func encodeDeleteVerificationInput(input DeleteVerificationInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"request_id": riffdb.UUID(input.RequestId),
 	"organization_id": riffdb.UUID(input.OrganizationId),
 	"verification_ids": riffdb.Values(input.VerificationIds, func(item string) riffdb.Value { return riffdb.UUID(item) }),
 } }
-func validateDeleteVerificationInput(input DeleteVerificationInput) error { if len(input.VerificationIds) < 1 || len(input.VerificationIds) > 8 { return errors.New("invalid bounded collection length for DeleteVerification.verification_ids") }; return nil }
+func validateDeleteVerificationInput(input DeleteVerificationInput) error { if len(input.VerificationIds) < 1 || len(input.VerificationIds) > 32 { return errors.New("invalid bounded collection length for DeleteVerification.verification_ids") }; return nil }
 func decodeDeleteVerificationOutcome(value riffdb.Value) (DeleteVerificationOutcome, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; switch outcome {
 case "VerificationDeleted": result := DeleteVerificationVerificationDeleted{Outcome: outcome}
 return result, nil
@@ -906,7 +1304,37 @@ default: return nil, errors.New("RiffDB driver returned unknown command outcome"
 func (client *Client) DeleteVerification(ctx context.Context, input DeleteVerificationInput) (CommandResult[DeleteVerificationOutcome], error) { if err := validateDeleteVerificationInput(input); err != nil { return CommandResult[DeleteVerificationOutcome]{}, err }; response, err := client.session.Invoke(ctx, DeleteVerificationOperation, encodeDeleteVerificationInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[DeleteVerificationOutcome]{}, err }; outcome, err := decodeDeleteVerificationOutcome(response.Value); if err != nil { return CommandResult[DeleteVerificationOutcome]{}, err }; return CommandResult[DeleteVerificationOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: DeleteVerificationPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) DeleteVerificationBatch(ctx context.Context, inputs []DeleteVerificationInput, concurrency, checkpoint uint32) (BatchResult[DeleteVerificationOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { if err := validateDeleteVerificationInput(input); err != nil { return BatchResult[DeleteVerificationOutcome]{}, err }; encoded[index] = encodeDeleteVerificationInput(input) }; response, err := client.session.Batch(ctx, DeleteVerificationOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[DeleteVerificationOutcome]{}, err }; result := BatchResult[DeleteVerificationOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[DeleteVerificationOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[DeleteVerificationOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeDeleteVerificationOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[DeleteVerificationOutcome]{}, decodeErr }; converted.Result = &CommandResult[DeleteVerificationOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: DeleteVerificationPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
-const UpdateAccountPasswordsPlanHash = "d3d65de38de470e2d3e0a403afefdc94e039c6a946b29c696004b0d6411a6041"
+const UpdateAccountPlanHash = "0dc8ab13f9fea35ebf8d1e629f6870eb8af2fa12fda8fe326552fb1f64f70862"
+var UpdateAccountOperation = riffdb.Operation{Name: "riffdb_better_auth_core_update_account", InputSchemaHash: "f623666040b60333eba3b4b46d5b1fe92158fcade5037f13b8ed0435e5c9471e"}
+func encodeUpdateAccountInput(input UpdateAccountInput) map[string]riffdb.Value { return map[string]riffdb.Value{
+	"scope": riffdb.Optional(input.Scope, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"user_id": riffdb.UUID(input.UserId),
+	"id_token": riffdb.Optional(input.IdToken, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"password": riffdb.Optional(input.Password, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"account_id": riffdb.UUID(input.AccountId),
+	"request_id": riffdb.UUID(input.RequestId),
+	"updated_at": riffdb.TimestampFrom(input.UpdatedAt),
+	"provider_id": riffdb.String(input.ProviderId),
+	"access_token": riffdb.Optional(input.AccessToken, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"refresh_token": riffdb.Optional(input.RefreshToken, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"organization_id": riffdb.UUID(input.OrganizationId),
+	"expected_revision": riffdb.U64(input.ExpectedRevision),
+	"external_account_id": riffdb.String(input.ExternalAccountId),
+	"access_token_expires_at": riffdb.Optional(input.AccessTokenExpiresAt, func(item riffdb.Instant) riffdb.Value { return riffdb.TimestampFrom(item) }),
+	"refresh_token_expires_at": riffdb.Optional(input.RefreshTokenExpiresAt, func(item riffdb.Instant) riffdb.Value { return riffdb.TimestampFrom(item) }),
+} }
+func decodeUpdateAccountOutcome(value riffdb.Value) (UpdateAccountOutcome, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; switch outcome {
+case "AccountUpdated": result := UpdateAccountAccountUpdated{Outcome: outcome}
+return result, nil
+case "AccountUpdateStale": result := UpdateAccountAccountUpdateStale{Outcome: outcome}
+return result, nil
+case "AccountUpdateMissing": result := UpdateAccountAccountUpdateMissing{Outcome: outcome}
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown command outcome") } }
+func (client *Client) UpdateAccount(ctx context.Context, input UpdateAccountInput) (CommandResult[UpdateAccountOutcome], error) { response, err := client.session.Invoke(ctx, UpdateAccountOperation, encodeUpdateAccountInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[UpdateAccountOutcome]{}, err }; outcome, err := decodeUpdateAccountOutcome(response.Value); if err != nil { return CommandResult[UpdateAccountOutcome]{}, err }; return CommandResult[UpdateAccountOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: UpdateAccountPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
+func (client *Client) UpdateAccountBatch(ctx context.Context, inputs []UpdateAccountInput, concurrency, checkpoint uint32) (BatchResult[UpdateAccountOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeUpdateAccountInput(input) }; response, err := client.session.Batch(ctx, UpdateAccountOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[UpdateAccountOutcome]{}, err }; result := BatchResult[UpdateAccountOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[UpdateAccountOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[UpdateAccountOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeUpdateAccountOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[UpdateAccountOutcome]{}, decodeErr }; converted.Result = &CommandResult[UpdateAccountOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: UpdateAccountPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
+
+const UpdateAccountPasswordsPlanHash = "380bd4efe9e846a71d19cc3ca037c4ab2436d30b6583db17d4e53fd34e714e4f"
 var UpdateAccountPasswordsOperation = riffdb.Operation{Name: "riffdb_better_auth_core_update_account_passwords", InputSchemaHash: "8d759c58ce98f0575f783e11a6d84ebaea2d7eaae4e31ada86da8d25a7f24dc0"}
 func encodeUpdateAccountPasswordsInput(input UpdateAccountPasswordsInput) map[string]riffdb.Value { return map[string]riffdb.Value{
 	"updates": riffdb.Values(input.Updates, func(item AccountPasswordUpdate) riffdb.Value { return encodeAccountPasswordUpdate(item) }),
@@ -925,5 +1353,75 @@ return result, nil
 default: return nil, errors.New("RiffDB driver returned unknown command outcome") } }
 func (client *Client) UpdateAccountPasswords(ctx context.Context, input UpdateAccountPasswordsInput) (CommandResult[UpdateAccountPasswordsOutcome], error) { if err := validateUpdateAccountPasswordsInput(input); err != nil { return CommandResult[UpdateAccountPasswordsOutcome]{}, err }; response, err := client.session.Invoke(ctx, UpdateAccountPasswordsOperation, encodeUpdateAccountPasswordsInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[UpdateAccountPasswordsOutcome]{}, err }; outcome, err := decodeUpdateAccountPasswordsOutcome(response.Value); if err != nil { return CommandResult[UpdateAccountPasswordsOutcome]{}, err }; return CommandResult[UpdateAccountPasswordsOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: UpdateAccountPasswordsPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
 func (client *Client) UpdateAccountPasswordsBatch(ctx context.Context, inputs []UpdateAccountPasswordsInput, concurrency, checkpoint uint32) (BatchResult[UpdateAccountPasswordsOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { if err := validateUpdateAccountPasswordsInput(input); err != nil { return BatchResult[UpdateAccountPasswordsOutcome]{}, err }; encoded[index] = encodeUpdateAccountPasswordsInput(input) }; response, err := client.session.Batch(ctx, UpdateAccountPasswordsOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[UpdateAccountPasswordsOutcome]{}, err }; result := BatchResult[UpdateAccountPasswordsOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[UpdateAccountPasswordsOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[UpdateAccountPasswordsOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeUpdateAccountPasswordsOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[UpdateAccountPasswordsOutcome]{}, decodeErr }; converted.Result = &CommandResult[UpdateAccountPasswordsOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: UpdateAccountPasswordsPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
+
+const UpdateSessionPlanHash = "59e5b82c09caa60194cb0e1bb6cd9c9d8fc6a3f419f8ed1cfc67ce7b80b528c1"
+var UpdateSessionOperation = riffdb.Operation{Name: "riffdb_better_auth_core_update_session", InputSchemaHash: "4dc035dba6c54788232952ebe5eb225c8f1e8e542ea3b20ef188f85fbfb1a1a1"}
+func encodeUpdateSessionInput(input UpdateSessionInput) map[string]riffdb.Value { return map[string]riffdb.Value{
+	"user_id": riffdb.UUID(input.UserId),
+	"expires_at": riffdb.TimestampFrom(input.ExpiresAt),
+	"ip_address": riffdb.Optional(input.IpAddress, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"request_id": riffdb.UUID(input.RequestId),
+	"session_id": riffdb.UUID(input.SessionId),
+	"updated_at": riffdb.TimestampFrom(input.UpdatedAt),
+	"user_agent": riffdb.Optional(input.UserAgent, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"organization_id": riffdb.UUID(input.OrganizationId),
+	"expected_revision": riffdb.U64(input.ExpectedRevision),
+} }
+func decodeUpdateSessionOutcome(value riffdb.Value) (UpdateSessionOutcome, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; switch outcome {
+case "SessionUpdated": result := UpdateSessionSessionUpdated{Outcome: outcome}
+return result, nil
+case "SessionUpdateStale": result := UpdateSessionSessionUpdateStale{Outcome: outcome}
+return result, nil
+case "SessionUpdateMissing": result := UpdateSessionSessionUpdateMissing{Outcome: outcome}
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown command outcome") } }
+func (client *Client) UpdateSession(ctx context.Context, input UpdateSessionInput) (CommandResult[UpdateSessionOutcome], error) { response, err := client.session.Invoke(ctx, UpdateSessionOperation, encodeUpdateSessionInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[UpdateSessionOutcome]{}, err }; outcome, err := decodeUpdateSessionOutcome(response.Value); if err != nil { return CommandResult[UpdateSessionOutcome]{}, err }; return CommandResult[UpdateSessionOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: UpdateSessionPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
+func (client *Client) UpdateSessionBatch(ctx context.Context, inputs []UpdateSessionInput, concurrency, checkpoint uint32) (BatchResult[UpdateSessionOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeUpdateSessionInput(input) }; response, err := client.session.Batch(ctx, UpdateSessionOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[UpdateSessionOutcome]{}, err }; result := BatchResult[UpdateSessionOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[UpdateSessionOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[UpdateSessionOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeUpdateSessionOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[UpdateSessionOutcome]{}, decodeErr }; converted.Result = &CommandResult[UpdateSessionOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: UpdateSessionPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
+
+const UpdateUserPlanHash = "18495d705452ce951c17ff1ab67c60f4abb964049837146acc6a5e37fafc3ca5"
+var UpdateUserOperation = riffdb.Operation{Name: "riffdb_better_auth_core_update_user", InputSchemaHash: "1c26635c0abf32530ed895a1dd615ef00b0a9c9177fafb4adedd7de97f7f5757"}
+func encodeUpdateUserInput(input UpdateUserInput) map[string]riffdb.Value { return map[string]riffdb.Value{
+	"name": riffdb.String(input.Name),
+	"email": riffdb.String(input.Email),
+	"image": riffdb.Optional(input.Image, func(item string) riffdb.Value { return riffdb.String(item) }),
+	"user_id": riffdb.UUID(input.UserId),
+	"request_id": riffdb.UUID(input.RequestId),
+	"updated_at": riffdb.TimestampFrom(input.UpdatedAt),
+	"email_verified": riffdb.Bool(input.EmailVerified),
+	"organization_id": riffdb.UUID(input.OrganizationId),
+	"expected_revision": riffdb.U64(input.ExpectedRevision),
+} }
+func decodeUpdateUserOutcome(value riffdb.Value) (UpdateUserOutcome, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; switch outcome {
+case "UserUpdated": result := UpdateUserUserUpdated{Outcome: outcome}
+return result, nil
+case "UserUpdateStale": result := UpdateUserUserUpdateStale{Outcome: outcome}
+return result, nil
+case "UserUpdateMissing": result := UpdateUserUserUpdateMissing{Outcome: outcome}
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown command outcome") } }
+func (client *Client) UpdateUser(ctx context.Context, input UpdateUserInput) (CommandResult[UpdateUserOutcome], error) { response, err := client.session.Invoke(ctx, UpdateUserOperation, encodeUpdateUserInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[UpdateUserOutcome]{}, err }; outcome, err := decodeUpdateUserOutcome(response.Value); if err != nil { return CommandResult[UpdateUserOutcome]{}, err }; return CommandResult[UpdateUserOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: UpdateUserPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
+func (client *Client) UpdateUserBatch(ctx context.Context, inputs []UpdateUserInput, concurrency, checkpoint uint32) (BatchResult[UpdateUserOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeUpdateUserInput(input) }; response, err := client.session.Batch(ctx, UpdateUserOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[UpdateUserOutcome]{}, err }; result := BatchResult[UpdateUserOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[UpdateUserOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[UpdateUserOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeUpdateUserOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[UpdateUserOutcome]{}, decodeErr }; converted.Result = &CommandResult[UpdateUserOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: UpdateUserPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
+
+const UpdateVerificationPlanHash = "1793d95f29ffae3432297276b8f1fbf1dbc0db49c7e4a7f176a2da4f9a06ec19"
+var UpdateVerificationOperation = riffdb.Operation{Name: "riffdb_better_auth_core_update_verification", InputSchemaHash: "4377bfd8aba7795661e686fbc5903e8116b2f9eba24bce9fcdd63cd4bb53e8c5"}
+func encodeUpdateVerificationInput(input UpdateVerificationInput) map[string]riffdb.Value { return map[string]riffdb.Value{
+	"value": riffdb.String(input.Value),
+	"expires_at": riffdb.TimestampFrom(input.ExpiresAt),
+	"request_id": riffdb.UUID(input.RequestId),
+	"updated_at": riffdb.TimestampFrom(input.UpdatedAt),
+	"organization_id": riffdb.UUID(input.OrganizationId),
+	"verification_id": riffdb.UUID(input.VerificationId),
+	"expected_revision": riffdb.U64(input.ExpectedRevision),
+} }
+func decodeUpdateVerificationOutcome(value riffdb.Value) (UpdateVerificationOutcome, error) { fields, err := riffdb.RecordFields(value); if err != nil { return nil, err }; outcomeValue, err := requiredField(fields, "outcome"); if err != nil { return nil, err }; outcome, err := riffdb.EnumValue(outcomeValue); if err != nil { return nil, err }; switch outcome {
+case "VerificationUpdated": result := UpdateVerificationVerificationUpdated{Outcome: outcome}
+return result, nil
+case "VerificationUpdateStale": result := UpdateVerificationVerificationUpdateStale{Outcome: outcome}
+return result, nil
+case "VerificationUpdateMissing": result := UpdateVerificationVerificationUpdateMissing{Outcome: outcome}
+return result, nil
+default: return nil, errors.New("RiffDB driver returned unknown command outcome") } }
+func (client *Client) UpdateVerification(ctx context.Context, input UpdateVerificationInput) (CommandResult[UpdateVerificationOutcome], error) { response, err := client.session.Invoke(ctx, UpdateVerificationOperation, encodeUpdateVerificationInput(input), riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return CommandResult[UpdateVerificationOutcome]{}, err }; outcome, err := decodeUpdateVerificationOutcome(response.Value); if err != nil { return CommandResult[UpdateVerificationOutcome]{}, err }; return CommandResult[UpdateVerificationOutcome]{Outcome: outcome, CommitSequence: response.ApplicationHead, ContractVersion: ContractVersion, PlanHash: UpdateVerificationPlanHash, Replayed: response.Replayed, OutcomeURI: response.Cursor}, nil }
+func (client *Client) UpdateVerificationBatch(ctx context.Context, inputs []UpdateVerificationInput, concurrency, checkpoint uint32) (BatchResult[UpdateVerificationOutcome], error) { encoded := make([]map[string]riffdb.Value, len(inputs)); for index, input := range inputs { encoded[index] = encodeUpdateVerificationInput(input) }; response, err := client.session.Batch(ctx, UpdateVerificationOperation, encoded, concurrency, checkpoint, riffdb.Options{MaximumAttempts: client.commandAttempts}); if err != nil { return BatchResult[UpdateVerificationOutcome]{}, err }; result := BatchResult[UpdateVerificationOutcome]{Checkpoint: response.Checkpoint, Total: response.Total, Items: make([]BatchItem[UpdateVerificationOutcome], 0, len(response.Items))}; for _, item := range response.Items { converted := BatchItem[UpdateVerificationOutcome]{Index: item.Index}; if item.Error != nil { converted.Error = item.Error } else if item.Result != nil { outcome, decodeErr := decodeUpdateVerificationOutcome(item.Result.Value); if decodeErr != nil { return BatchResult[UpdateVerificationOutcome]{}, decodeErr }; converted.Result = &CommandResult[UpdateVerificationOutcome]{Outcome: outcome, CommitSequence: item.Result.CommitSequence, ContractVersion: ContractVersion, PlanHash: UpdateVerificationPlanHash, Replayed: item.Result.Replayed, OutcomeURI: item.Result.OutcomeURI} }; result.Items = append(result.Items, converted) }; return result, nil }
 
 func requiredField(fields map[string]riffdb.Value, name string) (riffdb.Value, error) { value, ok := fields[name]; if !ok { return riffdb.Value{}, errors.New("RiffDB driver result is missing a generated field") }; return value, nil }

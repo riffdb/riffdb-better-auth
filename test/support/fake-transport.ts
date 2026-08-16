@@ -18,6 +18,7 @@ interface UserRow {
   readonly image: string | null;
   readonly created_at: Timestamp;
   readonly updated_at: Timestamp;
+  readonly revision: bigint;
 }
 
 interface AccountRow {
@@ -35,6 +36,7 @@ interface AccountRow {
   password: string | null;
   readonly created_at: Timestamp;
   updated_at: Timestamp;
+  readonly revision: bigint;
 }
 
 interface SessionRow {
@@ -47,6 +49,7 @@ interface SessionRow {
   readonly user_agent: string | null;
   readonly created_at: Timestamp;
   readonly updated_at: Timestamp;
+  readonly revision: bigint;
 }
 
 interface VerificationRow {
@@ -57,6 +60,7 @@ interface VerificationRow {
   readonly expires_at: Timestamp;
   readonly created_at: Timestamp;
   readonly updated_at: Timestamp;
+  readonly revision: bigint;
 }
 
 function inputRecord(value: unknown): Record<string, unknown> {
@@ -75,6 +79,12 @@ function stringField(record: Readonly<Record<string, unknown>>, field: string): 
 function booleanField(record: Readonly<Record<string, unknown>>, field: string): boolean {
   const value = record[field];
   if (typeof value !== "boolean") throw new Error(`invalid fake boolean field: ${field}`);
+  return value;
+}
+
+function bigintField(record: Readonly<Record<string, unknown>>, field: string): bigint {
+  const value = record[field];
+  if (typeof value !== "bigint") throw new Error(`invalid fake bigint field: ${field}`);
   return value;
 }
 
@@ -109,6 +119,11 @@ function stringListField(record: Readonly<Record<string, unknown>>, field: strin
     throw new Error(`invalid fake string-list field: ${field}`);
   }
   return value as string[];
+}
+
+function compareTimestamp(left: Timestamp, right: Timestamp): number {
+  if (left.seconds !== right.seconds) return left.seconds < right.seconds ? -1 : 1;
+  return left.nanos - right.nanos;
 }
 
 export class FakeRiffDBApplicationTransport implements ApplicationTransport {
@@ -184,6 +199,39 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
         };
         break;
       }
+      case "FindSessionsByUserId": {
+        const userId = stringField(parameters, "user_id");
+        value = {
+          outcome: "Found",
+          sessions: this.sessions
+            .filter(
+              (row) => row.organization_id === organizationId && row.user_id === userId,
+            )
+            .sort((left, right) => left.id.localeCompare(right.id))
+            .map(({ organization_id: _organizationId, ...row }) => row),
+        };
+        break;
+      }
+      case "FindActiveSessionsByUserId": {
+        const userId = stringField(parameters, "user_id");
+        const expiresAfter = timestampField(parameters, "expires_after");
+        value = {
+          outcome: "Found",
+          sessions: this.sessions
+            .filter(
+              (row) =>
+                row.organization_id === organizationId &&
+                row.user_id === userId &&
+                compareTimestamp(row.expires_at, expiresAfter) > 0,
+            )
+            .sort((left, right) => {
+              const expiry = compareTimestamp(left.expires_at, right.expires_at);
+              return expiry !== 0 ? expiry : left.id.localeCompare(right.id);
+            })
+            .map(({ organization_id: _organizationId, ...row }) => row),
+        };
+        break;
+      }
       case "FindAccountsByUserId": {
         const userId = stringField(parameters, "user_id");
         value = {
@@ -193,6 +241,32 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
               (row) => row.organization_id === organizationId && row.user_id === userId,
             )
             .sort((left, right) => left.id.localeCompare(right.id))
+            .map(({ organization_id: _organizationId, ...row }) => row),
+        };
+        break;
+      }
+      case "FindAccountById": {
+        const id = stringField(parameters, "id");
+        value = {
+          outcome: "Found",
+          accounts: this.accounts
+            .filter((row) => row.organization_id === organizationId && row.id === id)
+            .map(({ organization_id: _organizationId, ...row }) => row),
+        };
+        break;
+      }
+      case "FindAccountByProvider": {
+        const accountId = stringField(parameters, "account_id");
+        const providerId = stringField(parameters, "provider_id");
+        value = {
+          outcome: "Found",
+          accounts: this.accounts
+            .filter(
+              (row) =>
+                row.organization_id === organizationId &&
+                row.account_id === accountId &&
+                row.provider_id === providerId,
+            )
             .map(({ organization_id: _organizationId, ...row }) => row),
         };
         break;
@@ -247,6 +321,26 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
         };
         break;
       }
+      case "FindExpiredVerificationIds": {
+        const expiresBefore = timestampField(parameters, "expires_before");
+        value = {
+          outcome: "Found",
+          verifications: this.verifications
+            .filter(
+              (row) =>
+                row.organization_id === organizationId &&
+                compareTimestamp(row.expires_at, expiresBefore) < 0,
+            )
+            .sort((left, right) => {
+              const expiry = compareTimestamp(left.expires_at, right.expires_at);
+              return expiry !== 0
+                ? expiry
+                : left.verification_id.localeCompare(right.verification_id);
+            })
+            .map((row) => ({ verification_id: row.verification_id })),
+        };
+        break;
+      }
       default:
         throw new Error(`unsupported fake query: ${request.queryName}`);
     }
@@ -287,8 +381,26 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       case "CreateSignupGraph":
         outcome = { outcome: this.createSignupGraph(input) };
         break;
+      case "CreateOAuthUserGraph":
+        outcome = { outcome: this.createOAuthUserGraph(input) };
+        break;
+      case "UpdateUser":
+        outcome = { outcome: this.updateUser(input) };
+        break;
+      case "UpdateSession":
+        outcome = { outcome: this.updateSession(input) };
+        break;
+      case "UpdateAccount":
+        outcome = { outcome: this.updateAccount(input) };
+        break;
+      case "UpdateVerification":
+        outcome = { outcome: this.updateVerification(input) };
+        break;
       case "DeleteSession":
         outcome = { outcome: this.deleteSessions(input) };
+        break;
+      case "DeleteAccount":
+        outcome = { outcome: this.deleteAccounts(input) };
         break;
       case "DeleteVerification":
         outcome = {
@@ -345,8 +457,30 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       image: nullableStringField(input, "image"),
       created_at: timestampField(input, "created_at"),
       updated_at: timestampField(input, "updated_at"),
+      revision: 1n,
     });
     return "UserCreated";
+  }
+
+  private updateUser(input: Readonly<Record<string, unknown>>): string {
+    const organizationId = stringField(input, "organization_id");
+    const userId = stringField(input, "user_id");
+    const index = this.users.findIndex(
+      (row) => row.organization_id === organizationId && row.user_id === userId,
+    );
+    if (index < 0) return "UserUpdateMissing";
+    const current = this.users[index]!;
+    if (current.revision !== bigintField(input, "expected_revision")) return "UserUpdateStale";
+    this.users[index] = {
+      ...current,
+      name: stringField(input, "name"),
+      email: stringField(input, "email"),
+      email_verified: booleanField(input, "email_verified"),
+      image: nullableStringField(input, "image"),
+      updated_at: timestampField(input, "updated_at"),
+      revision: current.revision + 1n,
+    };
+    return "UserUpdated";
   }
 
   private createAccount(input: Readonly<Record<string, unknown>>): string {
@@ -386,6 +520,7 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       password: nullableStringField(input, "password"),
       created_at: timestampField(input, "created_at"),
       updated_at: timestampField(input, "updated_at"),
+      revision: 1n,
     });
     return "AccountCreated";
   }
@@ -420,8 +555,35 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       user_agent: nullableStringField(input, "user_agent"),
       created_at: timestampField(input, "created_at"),
       updated_at: timestampField(input, "updated_at"),
+      revision: 1n,
     });
     return "SessionCreated";
+  }
+
+  private updateSession(input: Readonly<Record<string, unknown>>): string {
+    const organizationId = stringField(input, "organization_id");
+    const userId = stringField(input, "user_id");
+    const sessionId = stringField(input, "session_id");
+    const index = this.sessions.findIndex(
+      (row) =>
+        row.organization_id === organizationId &&
+        row.user_id === userId &&
+        row.id === sessionId,
+    );
+    if (index < 0) return "SessionUpdateMissing";
+    const current = this.sessions[index]!;
+    if (current.revision !== bigintField(input, "expected_revision")) {
+      return "SessionUpdateStale";
+    }
+    this.sessions[index] = {
+      ...current,
+      expires_at: timestampField(input, "expires_at"),
+      ip_address: nullableStringField(input, "ip_address"),
+      user_agent: nullableStringField(input, "user_agent"),
+      updated_at: timestampField(input, "updated_at"),
+      revision: current.revision + 1n,
+    };
+    return "SessionUpdated";
   }
 
   private createVerification(input: Readonly<Record<string, unknown>>): string {
@@ -442,8 +604,31 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       expires_at: timestampField(input, "expires_at"),
       created_at: timestampField(input, "created_at"),
       updated_at: timestampField(input, "updated_at"),
+      revision: 1n,
     });
     return "VerificationCreated";
+  }
+
+  private updateVerification(input: Readonly<Record<string, unknown>>): string {
+    const organizationId = stringField(input, "organization_id");
+    const verificationId = stringField(input, "verification_id");
+    const index = this.verifications.findIndex(
+      (row) =>
+        row.organization_id === organizationId && row.verification_id === verificationId,
+    );
+    if (index < 0) return "VerificationUpdateMissing";
+    const current = this.verifications[index]!;
+    if (current.revision !== bigintField(input, "expected_revision")) {
+      return "VerificationUpdateStale";
+    }
+    this.verifications[index] = {
+      ...current,
+      value: stringField(input, "value"),
+      expires_at: timestampField(input, "expires_at"),
+      updated_at: timestampField(input, "updated_at"),
+      revision: current.revision + 1n,
+    };
+    return "VerificationUpdated";
   }
 
   private createSignupGraph(input: Readonly<Record<string, unknown>>): string {
@@ -522,6 +707,95 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
     return "SignupGraphCreated";
   }
 
+  private createOAuthUserGraph(input: Readonly<Record<string, unknown>>): string {
+    const userInput = {
+      organization_id: input.organization_id,
+      id: input.user_id,
+      name: input.user_name,
+      email: input.user_email,
+      email_verified: input.user_email_verified,
+      image: input.user_image,
+      created_at: input.user_created_at,
+      updated_at: input.user_updated_at,
+    };
+    const accountInput = {
+      organization_id: input.organization_id,
+      user_id: input.user_id,
+      id: input.account_id,
+      account_id: input.external_account_id,
+      provider_id: input.provider_id,
+      access_token: input.access_token,
+      refresh_token: input.refresh_token,
+      access_token_expires_at: input.access_token_expires_at,
+      refresh_token_expires_at: input.refresh_token_expires_at,
+      scope: input.scope,
+      id_token: input.id_token,
+      password: input.password,
+      created_at: input.account_created_at,
+      updated_at: input.account_updated_at,
+    };
+    const organizationId = stringField(userInput, "organization_id");
+    const userId = stringField(userInput, "id");
+    const email = stringField(userInput, "email");
+    if (
+      this.users.some(
+        (row) =>
+          row.organization_id === organizationId &&
+          (row.user_id === userId || row.email === email),
+      )
+    ) {
+      return "OAuthUserExists";
+    }
+    if (
+      this.accounts.some(
+        (row) =>
+          row.organization_id === organizationId &&
+          (row.id === accountInput.id ||
+            (row.account_id === accountInput.account_id &&
+              row.provider_id === accountInput.provider_id)),
+      )
+    ) {
+      return "OAuthAccountExists";
+    }
+    if (this.createUser(userInput) !== "UserCreated") throw new Error("fake OAuth user");
+    if (this.createAccount(accountInput) !== "AccountCreated") {
+      throw new Error("fake OAuth account");
+    }
+    return "OAuthUserGraphCreated";
+  }
+
+  private updateAccount(input: Readonly<Record<string, unknown>>): string {
+    const organizationId = stringField(input, "organization_id");
+    const userId = stringField(input, "user_id");
+    const accountId = stringField(input, "account_id");
+    const index = this.accounts.findIndex(
+      (row) =>
+        row.organization_id === organizationId &&
+        row.user_id === userId &&
+        row.id === accountId,
+    );
+    if (index < 0) return "AccountUpdateMissing";
+    const current = this.accounts[index]!;
+    if (current.revision !== bigintField(input, "expected_revision")) {
+      return "AccountUpdateStale";
+    }
+    this.accounts[index] = {
+      ...current,
+      account_id: stringField(input, "external_account_id"),
+      provider_id: stringField(input, "provider_id"),
+      access_token: nullableStringField(input, "access_token"),
+      refresh_token: nullableStringField(input, "refresh_token"),
+      access_token_expires_at: nullableTimestampField(input, "access_token_expires_at"),
+      refresh_token_expires_at: nullableTimestampField(input, "refresh_token_expires_at"),
+      scope: nullableStringField(input, "scope"),
+      id_token: nullableStringField(input, "id_token"),
+      password: nullableStringField(input, "password"),
+      updated_at: timestampField(input, "updated_at"),
+      revision: current.revision + 1n,
+    };
+    return "AccountUpdated";
+  }
+
   private deleteUser(input: Readonly<Record<string, unknown>>): string {
     const organizationId = stringField(input, "organization_id");
     const ids = stringListField(input, "user_ids");
@@ -576,6 +850,31 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       this.sessions.splice(index, 1);
     }
     return "SessionDeleted";
+  }
+
+  private deleteAccounts(input: Readonly<Record<string, unknown>>): string {
+    const organizationId = stringField(input, "organization_id");
+    const userId = stringField(input, "user_id");
+    const ids = stringListField(input, "account_ids");
+    if (
+      ids.some(
+        (id) =>
+          !this.accounts.some(
+            (row) =>
+              row.organization_id === organizationId && row.user_id === userId && row.id === id,
+          ),
+      )
+    ) {
+      return "AccountMissing";
+    }
+    for (const id of ids) {
+      const index = this.accounts.findIndex(
+        (row) =>
+          row.organization_id === organizationId && row.user_id === userId && row.id === id,
+      );
+      this.accounts.splice(index, 1);
+    }
+    return "AccountDeleted";
   }
 
   private deleteVerifications(

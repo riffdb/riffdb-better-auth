@@ -33,6 +33,13 @@ through a transaction callback is not supported. Likewise, any Better Auth
 transaction is supported only when one generated RiffDB command represents
 the entire atomic graph.
 
+Mutable core records carry internal monotonically increasing revisions. The
+adapter reads that compiler-owned revision, sends it to an exact update
+command, and retries a bounded stale outcome. This preserves partial-update
+semantics without allowing a client-side read/modify/write race to overwrite
+an unrelated concurrent change. Revisions are not exposed as Better Auth
+model fields.
+
 ## Upstream patterns adopted
 
 The adapter follows Better Auth's documented `createAdapterFactory` boundary

@@ -57,9 +57,14 @@ continues to own users, sessions, passwords, sign-in, and reset flows.
 The implemented profile supports the core email/password flow, including
 atomic user/account/session signup, session and account reads, single-use
 verification consumption, verification-set cleanup, password update, and
-read-after-commit fencing. User deletion is one compiled command with bounded
-cascade deletion of its account and session rows. Unknown predicates, joins,
-models, fields, plugins,
+read-after-commit fencing. It also supports revision-guarded user, session, and
+linked-account updates; token-based session revocation; bounded session
+listing (including active-only and bounded token-set reads); exact
+provider-account lookup; atomic OAuth user/account creation; and
+revision-guarded verification updates with bounded expiry cleanup.
+User deletion is available both as one bounded cascade command and through
+Better Auth's dependent-delete sequence. Unknown predicates, joins, models,
+fields, plugins,
 transaction graphs, counts, and increments fail closed before a dynamic query
 or mutation can be sent.
 
@@ -110,7 +115,10 @@ riffdb dev --run
 ```
 
 The included runner exercises signup, sign-in, password reset, changed-password
-sign-in, single-use reset-token replay rejection, and bounded cascading user
-deletion against the real Rust service and driver host.
+sign-in, single-use reset-token replay rejection, user and session updates,
+active and token-set session reads, token-set revocation, verification update
+and expiry cleanup, atomic OAuth user/account creation, provider-account
+lookup, linked-account update, and bounded user cleanup against the real Rust
+service and driver host.
 
 See [DESIGN.md](./DESIGN.md) for the method and safety inventory.

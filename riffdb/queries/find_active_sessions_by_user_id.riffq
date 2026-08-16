@@ -1,0 +1,23 @@
+query FindActiveSessionsByUserId(
+    $organization_id: Session.organization_id,
+    $user_id: Session.user_id,
+    $expires_after: Session.expires_at,
+    $after: Cursor?,
+) {
+    many sessions from Session
+        where organization_id == $organization_id
+          && user_id == $user_id
+          && expires_at > $expires_after
+        order by expires_at asc, id asc
+        take 32 after $after
+
+    return Found {
+        sessions: sessions {
+            id user_id
+            token reveals sessions.token
+            expires_at ip_address user_agent created_at updated_at revision
+        }
+    }
+
+    outcomes Found
+}

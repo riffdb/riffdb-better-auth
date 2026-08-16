@@ -8,7 +8,7 @@ query FindUserById(
         else Missing
 
     return Found {
-        user: user { user_id name email email_verified image created_at updated_at }
+        user: user { user_id name email email_verified image created_at updated_at revision }
     }
 
     outcomes Found | Missing

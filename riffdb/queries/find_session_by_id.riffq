@@ -12,7 +12,7 @@ query FindSessionById(
         sessions: sessions {
             id user_id
             token reveals sessions.token
-            expires_at ip_address user_agent created_at updated_at
+            expires_at ip_address user_agent created_at updated_at revision
         }
     }
 

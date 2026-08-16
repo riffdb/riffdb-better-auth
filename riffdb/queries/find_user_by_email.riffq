@@ -9,7 +9,7 @@ query FindUserByEmail(
         take 1
 
     return Found {
-        users: users { user_id name email email_verified image created_at updated_at }
+        users: users { user_id name email email_verified image created_at updated_at revision }
     }
 
     outcomes Found

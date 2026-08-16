@@ -16,9 +16,13 @@ import type { BetterAuthOptions } from "better-auth";
 import {
   RiffDBBetterAuthCoreClient,
   type ApplicationTransport,
+  type FindActiveSessionsByUserIdFound,
+  type FindAccountByIdFound,
+  type FindAccountByProviderFound,
   type FindAccountsByUserIdFound,
   type FindSessionByIdFound,
   type FindSessionByTokenFound,
+  type FindSessionsByUserIdFound,
   type FindUserByEmailFound,
   type FindUserByIdFound,
   type FindVerificationByIdFound,
@@ -231,10 +235,46 @@ function exactWhere(
   );
 }
 
+function exactWhereShape(
+  where: readonly CleanedWhere[] | undefined,
+  shape: readonly { readonly field: string; readonly operator: CleanedWhere["operator"] }[],
+): boolean {
+  if (where === undefined || where.length !== shape.length) return false;
+  return (
+    new Set(where.map((clause) => clause.field)).size === shape.length &&
+    shape.every(({ field, operator }) =>
+      where.some((clause) => clause.field === field && clause.operator === operator),
+    ) &&
+    where.every((clause) => clause.connector === "AND" && clause.mode === "sensitive")
+  );
+}
+
 function whereValue(where: readonly CleanedWhere[], field: string, operation: string): string {
   const value = where.find((clause) => clause.field === field)?.value;
   if (typeof value !== "string") fail("unsupported_call_shape", operation);
   return value;
+}
+
+function whereDate(where: readonly CleanedWhere[], field: string, operation: string): Date {
+  const value = where.find((clause) => clause.field === field)?.value;
+  if (!(value instanceof Date) || !Number.isFinite(value.getTime())) {
+    fail("unsupported_call_shape", operation);
+  }
+  return value;
+}
+
+function whereStringSet(
+  where: readonly CleanedWhere[],
+  field: string,
+  operation: string,
+): string[] {
+  const value = where.find((clause) => clause.field === field)?.value;
+  if (!Array.isArray(value) || value.some((item) => typeof item !== "string" || item.length === 0)) {
+    fail("unsupported_call_shape", operation);
+  }
+  const values = [...new Set(value as string[])];
+  if (values.length === 0 || values.length > 32) fail("result_bound_exceeded", operation);
+  return values;
 }
 
 function assertNoJoin(join: Readonly<Record<string, unknown>> | undefined, operation: string): void {
@@ -265,7 +305,11 @@ function mapUser(row: FindUserByIdFound["user"]): Record<string, unknown> {
 }
 
 function mapSession(
-  row: FindSessionByTokenFound["sessions"][number] | FindSessionByIdFound["sessions"][number],
+  row:
+    | FindSessionByTokenFound["sessions"][number]
+    | FindSessionByIdFound["sessions"][number]
+    | FindActiveSessionsByUserIdFound["sessions"][number]
+    | FindSessionsByUserIdFound["sessions"][number],
 ): Record<string, unknown> {
   return {
     id: row.id,
@@ -279,7 +323,12 @@ function mapSession(
   };
 }
 
-function mapAccount(row: FindAccountsByUserIdFound["accounts"][number]): Record<string, unknown> {
+function mapAccount(
+  row:
+    | FindAccountByIdFound["accounts"][number]
+    | FindAccountByProviderFound["accounts"][number]
+    | FindAccountsByUserIdFound["accounts"][number],
+): Record<string, unknown> {
   return {
     id: row.id,
     userId: row.user_id,
@@ -463,6 +512,29 @@ class CoreDispatcher {
       const row = (result.value as FindSessionByIdFound).sessions[0];
       return row === undefined ? null : mapSession(row);
     }
+    if (model === "account" && exactWhere(where, ["id"])) {
+      const result = await this.client.findAccountById(
+        {
+          organization_id: this.organizationId,
+          id: whereValue(where, "id", "findOne account"),
+        },
+        this.queryOptions(),
+      );
+      const row = result.value.accounts[0];
+      return row === undefined ? null : mapAccount(row);
+    }
+    if (model === "account" && exactWhere(where, ["accountId", "providerId"])) {
+      const result = await this.client.findAccountByProvider(
+        {
+          organization_id: this.organizationId,
+          account_id: whereValue(where, "accountId", "findOne account"),
+          provider_id: whereValue(where, "providerId", "findOne account"),
+        },
+        this.queryOptions(),
+      );
+      const row = result.value.accounts[0];
+      return row === undefined ? null : mapAccount(row);
+    }
     if (model === "verification" && exactWhere(where, ["id"])) {
       const result = await this.client.findVerificationById(
         {
@@ -477,6 +549,211 @@ class CoreDispatcher {
         : mapVerification(value.verification);
     }
     return fail("unsupported_call_shape", `findOne ${model}`);
+  }
+
+  public async update(
+    model: string,
+    where: readonly CleanedWhere[],
+    updateValue: RecordValue,
+  ): Promise<Record<string, unknown> | null> {
+    if (model === "account" && exactWhere(where, ["id"])) {
+      const update = asRecord(updateValue, "update account");
+      const allowed = new Set([
+        "accountId",
+        "providerId",
+        "accessToken",
+        "refreshToken",
+        "accessTokenExpiresAt",
+        "refreshTokenExpiresAt",
+        "scope",
+        "idToken",
+        "password",
+        "updatedAt",
+      ]);
+      const fields = Object.keys(update);
+      if (fields.length === 0 || fields.some((field) => !allowed.has(field))) {
+        fail("unsupported_call_shape", "update account");
+      }
+      const id = whereValue(where, "id", "update account");
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        const found = await this.client.findAccountById(
+          { organization_id: this.organizationId, id },
+          this.queryOptions(),
+        );
+        const row = found.value.accounts[0];
+        if (row === undefined) return null;
+        const successor = { ...mapAccount(row), ...update };
+        const updated = await this.client.updateAccount({
+          request_id: nextRequestId(),
+          organization_id: this.organizationId,
+          user_id: row.user_id,
+          account_id: row.id,
+          expected_revision: row.revision,
+          external_account_id: requiredString(successor, "accountId", "update account"),
+          provider_id: requiredString(successor, "providerId", "update account"),
+          access_token: nullableString(successor, "accessToken", "update account"),
+          refresh_token: nullableString(successor, "refreshToken", "update account"),
+          access_token_expires_at: timestampOrNull(
+            nullableDate(successor, "accessTokenExpiresAt", "update account"),
+          ),
+          refresh_token_expires_at: timestampOrNull(
+            nullableDate(successor, "refreshTokenExpiresAt", "update account"),
+          ),
+          scope: nullableString(successor, "scope", "update account"),
+          id_token: nullableString(successor, "idToken", "update account"),
+          password: nullableString(successor, "password", "update account"),
+          updated_at: toTimestamp(requiredDate(successor, "updatedAt", "update account")),
+        });
+        this.observeCommit(updated);
+        if (updated.outcome.outcome === "AccountUpdateStale") continue;
+        if (updated.outcome.outcome === "AccountUpdateMissing") return null;
+        requireOutcome(updated, "update account", "AccountUpdated");
+        return successor;
+      }
+      return fail("declared_outcome", "update account", "AccountUpdateStale");
+    }
+    if (
+      model === "session" &&
+      (exactWhere(where, ["id"]) || exactWhere(where, ["token"]))
+    ) {
+      const update = asRecord(updateValue, "update session");
+      const allowed = new Set(["expiresAt", "ipAddress", "userAgent", "updatedAt"]);
+      const fields = Object.keys(update);
+      if (fields.length === 0 || fields.some((field) => !allowed.has(field))) {
+        fail("unsupported_call_shape", "update session");
+      }
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        const result = exactWhere(where, ["id"])
+          ? await this.client.findSessionById(
+              {
+                organization_id: this.organizationId,
+                id: whereValue(where, "id", "update session"),
+              },
+              this.queryOptions(),
+            )
+          : await this.client.findSessionByToken(
+              {
+                organization_id: this.organizationId,
+                token: whereValue(where, "token", "update session"),
+              },
+              this.queryOptions(),
+            );
+        const row = result.value.sessions[0];
+        if (row === undefined) return null;
+        const current = mapSession(row);
+        const successor = { ...current, ...update };
+        const updated = await this.client.updateSession({
+          request_id: nextRequestId(),
+          organization_id: this.organizationId,
+          user_id: row.user_id,
+          session_id: row.id,
+          expected_revision: row.revision,
+          expires_at: toTimestamp(requiredDate(successor, "expiresAt", "update session")),
+          ip_address: nullableString(successor, "ipAddress", "update session"),
+          user_agent: nullableString(successor, "userAgent", "update session"),
+          updated_at: toTimestamp(requiredDate(successor, "updatedAt", "update session")),
+        });
+        this.observeCommit(updated);
+        if (updated.outcome.outcome === "SessionUpdateStale") continue;
+        if (updated.outcome.outcome === "SessionUpdateMissing") return null;
+        requireOutcome(updated, "update session", "SessionUpdated");
+        return successor;
+      }
+      return fail("declared_outcome", "update session", "SessionUpdateStale");
+    }
+    if (
+      model !== "user" ||
+      (!exactWhere(where, ["id"]) && !exactWhere(where, ["email"]))
+    ) {
+      if (model !== "verification" || !exactWhere(where, ["identifier"])) {
+        return fail("unsupported_call_shape", `update ${model}`);
+      }
+      const update = asRecord(updateValue, "update verification");
+      const allowed = new Set(["value", "expiresAt", "updatedAt"]);
+      const fields = Object.keys(update);
+      if (fields.length === 0 || fields.some((field) => !allowed.has(field))) {
+        fail("unsupported_call_shape", "update verification");
+      }
+      const identifier = whereValue(where, "identifier", "update verification");
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        const found = await this.client.findLatestVerification(
+          { organization_id: this.organizationId, identifier },
+          this.queryOptions(),
+        );
+        const row = found.value.verifications[0];
+        if (row === undefined) return null;
+        const successor = { ...mapVerification(row), ...update };
+        const result = await this.client.updateVerification({
+          request_id: nextRequestId(),
+          organization_id: this.organizationId,
+          verification_id: row.verification_id,
+          expected_revision: row.revision,
+          value: requiredString(successor, "value", "update verification"),
+          expires_at: toTimestamp(
+            requiredDate(successor, "expiresAt", "update verification"),
+          ),
+          updated_at: toTimestamp(
+            requiredDate(successor, "updatedAt", "update verification"),
+          ),
+        });
+        this.observeCommit(result);
+        if (result.outcome.outcome === "VerificationUpdateStale") continue;
+        if (result.outcome.outcome === "VerificationUpdateMissing") return null;
+        requireOutcome(result, "update verification", "VerificationUpdated");
+        return successor;
+      }
+      return fail("declared_outcome", "update verification", "VerificationUpdateStale");
+    }
+    const update = asRecord(updateValue, "update user");
+    const allowed = new Set(["name", "email", "emailVerified", "image", "updatedAt"]);
+    const fields = Object.keys(update);
+    if (fields.length === 0 || fields.some((field) => !allowed.has(field))) {
+      fail("unsupported_call_shape", "update user");
+    }
+
+    let userId = exactWhere(where, ["id"])
+      ? whereValue(where, "id", "update user")
+      : undefined;
+    const initialEmail = exactWhere(where, ["email"])
+      ? whereValue(where, "email", "update user")
+      : undefined;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const row = userId === undefined
+        ? (
+            await this.client.findUserByEmail(
+              { organization_id: this.organizationId, email: initialEmail! },
+              this.queryOptions(),
+            )
+          ).value.users[0]
+        : (
+            await this.client.findUserById(
+              { organization_id: this.organizationId, id: userId },
+              this.queryOptions(),
+            )
+          ).value;
+      if (row === undefined || ("outcome" in row && row.outcome === "Missing")) return null;
+      const resolved = "outcome" in row ? row.user : row;
+      userId = resolved.user_id;
+      const current = mapUser(resolved);
+      const successor = { ...current, ...update };
+      const result = await this.client.updateUser({
+        request_id: nextRequestId(),
+        organization_id: this.organizationId,
+        user_id: userId,
+        expected_revision: resolved.revision,
+        name: requiredString(successor, "name", "update user"),
+        email: requiredString(successor, "email", "update user"),
+        email_verified: requiredBoolean(successor, "emailVerified", "update user"),
+        image: nullableString(successor, "image", "update user"),
+        updated_at: toTimestamp(requiredDate(successor, "updatedAt", "update user")),
+      });
+      this.observeCommit(result);
+      if (result.outcome.outcome === "UserUpdateStale") continue;
+      if (result.outcome.outcome === "UserUpdateMissing") return null;
+      requireOutcome(result, "update user", "UserUpdated");
+      return successor;
+    }
+    return fail("declared_outcome", "update user", "UserUpdateStale");
   }
 
   public async findMany(
@@ -502,6 +779,71 @@ class CoreDispatcher {
       );
       if (result.nextCursor !== undefined) fail("result_bound_exceeded", "findMany account");
       return result.value.accounts.slice(0, limit).map(mapAccount);
+    }
+    if (model === "session" && exactWhere(where, ["userId"]) && sortBy === undefined) {
+      const result = await this.client.findSessionsByUserId(
+        {
+          organization_id: this.organizationId,
+          user_id: whereValue(where!, "userId", "findMany session"),
+          after: null,
+        },
+        this.queryOptions(),
+      );
+      if (result.nextCursor !== undefined) fail("result_bound_exceeded", "findMany session");
+      return result.value.sessions.slice(0, limit).map(mapSession);
+    }
+    if (
+      model === "session" &&
+      exactWhereShape(where, [
+        { field: "userId", operator: "eq" },
+        { field: "expiresAt", operator: "gt" },
+      ]) &&
+      sortBy === undefined
+    ) {
+      const result = await this.client.findActiveSessionsByUserId(
+        {
+          organization_id: this.organizationId,
+          user_id: whereValue(where!, "userId", "findMany active session"),
+          expires_after: toTimestamp(
+            whereDate(where!, "expiresAt", "findMany active session"),
+          ),
+          after: null,
+        },
+        this.queryOptions(),
+      );
+      if (result.nextCursor !== undefined) {
+        fail("result_bound_exceeded", "findMany active session");
+      }
+      return result.value.sessions.slice(0, limit).map(mapSession);
+    }
+    const tokenSetShape = exactWhereShape(where, [{ field: "token", operator: "in" }]);
+    const activeTokenSetShape = exactWhereShape(where, [
+      { field: "token", operator: "in" },
+      { field: "expiresAt", operator: "gt" },
+    ]);
+    if (
+      model === "session" &&
+      (tokenSetShape || activeTokenSetShape) &&
+      sortBy === undefined
+    ) {
+      const tokens = whereStringSet(where!, "token", "findMany session token set");
+      const cutoff = activeTokenSetShape
+        ? whereDate(where!, "expiresAt", "findMany session token set")
+        : undefined;
+      const rows = await Promise.all(
+        tokens.map(async (token) => {
+          const result = await this.client.findSessionByToken(
+            { organization_id: this.organizationId, token },
+            this.queryOptions(),
+          );
+          return result.value.sessions[0];
+        }),
+      );
+      return rows
+        .filter((row) => row !== undefined)
+        .filter((row) => cutoff === undefined || fromTimestamp(row.expires_at) > cutoff)
+        .slice(0, limit)
+        .map(mapSession);
     }
     if (
       model === "verification" &&
@@ -550,6 +892,21 @@ class CoreDispatcher {
       }
       return;
     }
+    if (model === "account" && exactWhere(where, ["id"])) {
+      const account = await this.findOne(model, where);
+      if (account === null) return;
+      const result = await this.client.deleteAccount({
+        request_id: nextRequestId(),
+        organization_id: this.organizationId,
+        user_id: requiredString(account, "userId", "delete account"),
+        account_ids: [requiredString(account, "id", "delete account")],
+      });
+      this.observeCommit(result);
+      if (!new Set(["AccountDeleted", "AccountMissing"]).has(result.outcome.outcome)) {
+        fail("declared_outcome", "delete account", result.outcome.outcome);
+      }
+      return;
+    }
     if (model === "verification" && exactWhere(where, ["id"])) {
       const result = await this.client.deleteVerification({
         request_id: nextRequestId(),
@@ -562,15 +919,31 @@ class CoreDispatcher {
       }
       return;
     }
-    if (model === "session" && exactWhere(where, ["id"])) {
-      const id = whereValue(where, "id", "delete session");
+    if (model === "verification" && exactWhere(where, ["identifier"])) {
+      const rows = await this.findMany("verification", where, 32);
+      if (rows.length === 0) return;
+      const result = await this.client.deleteVerification({
+        request_id: nextRequestId(),
+        organization_id: this.organizationId,
+        verification_ids: rows.map((row) =>
+          requiredString(row, "id", "delete verification by identifier"),
+        ),
+      });
+      this.observeCommit(result);
+      requireOutcome(result, "delete verification by identifier", "VerificationDeleted");
+      return;
+    }
+    if (
+      model === "session" &&
+      (exactWhere(where, ["id"]) || exactWhere(where, ["token"]))
+    ) {
       const session = await this.findOne("session", where);
       if (session === null) return;
       const result = await this.client.deleteSession({
         request_id: nextRequestId(),
         organization_id: this.organizationId,
         user_id: requiredString(session, "userId", "delete session"),
-        session_ids: [id],
+        session_ids: [requiredString(session, "id", "delete session")],
       });
       this.observeCommit(result);
       if (!new Set(["SessionDeleted", "SessionMissing"]).has(result.outcome.outcome)) {
@@ -584,6 +957,85 @@ class CoreDispatcher {
   public async deleteMany(model: string, where: readonly CleanedWhere[]): Promise<number> {
     if (where.length === 0 && this.resetModelForTesting !== undefined) {
       return this.resetModelForTesting(model);
+    }
+    if (model === "session" && exactWhere(where, ["userId"])) {
+      const rows = await this.findMany(model, where, 32);
+      if (rows.length === 0) return 0;
+      const result = await this.client.deleteSession({
+        request_id: nextRequestId(),
+        organization_id: this.organizationId,
+        user_id: whereValue(where, "userId", "deleteMany session"),
+        session_ids: rows.map((row) => requiredString(row, "id", "deleteMany session")),
+      });
+      this.observeCommit(result);
+      requireOutcome(result, "deleteMany session", "SessionDeleted");
+      return rows.length;
+    }
+    if (
+      model === "session" &&
+      exactWhereShape(where, [{ field: "token", operator: "in" }])
+    ) {
+      const rows = await this.findMany(model, where, 32);
+      const byUser = new Map<string, string[]>();
+      for (const row of rows) {
+        const userId = requiredString(row, "userId", "deleteMany session token set");
+        const ids = byUser.get(userId) ?? [];
+        ids.push(requiredString(row, "id", "deleteMany session token set"));
+        byUser.set(userId, ids);
+      }
+      for (const [userId, sessionIds] of byUser) {
+        const result = await this.client.deleteSession({
+          request_id: nextRequestId(),
+          organization_id: this.organizationId,
+          user_id: userId,
+          session_ids: sessionIds,
+        });
+        this.observeCommit(result);
+        requireOutcome(result, "deleteMany session token set", "SessionDeleted");
+      }
+      return rows.length;
+    }
+    if (model === "account" && exactWhere(where, ["userId"])) {
+      const rows = await this.findMany(model, where, 100);
+      if (rows.length === 0) return 0;
+      if (rows.length > 32) fail("result_bound_exceeded", "deleteMany account");
+      const result = await this.client.deleteAccount({
+        request_id: nextRequestId(),
+        organization_id: this.organizationId,
+        user_id: whereValue(where, "userId", "deleteMany account"),
+        account_ids: rows.map((row) => requiredString(row, "id", "deleteMany account")),
+      });
+      this.observeCommit(result);
+      requireOutcome(result, "deleteMany account", "AccountDeleted");
+      return rows.length;
+    }
+    if (
+      model === "verification" &&
+      exactWhereShape(where, [{ field: "expiresAt", operator: "lt" }])
+    ) {
+      const result = await this.client.findExpiredVerificationIds(
+        {
+          organization_id: this.organizationId,
+          expires_before: toTimestamp(
+            whereDate(where, "expiresAt", "deleteMany expired verification"),
+          ),
+          after: null,
+        },
+        this.queryOptions(),
+      );
+      if (result.nextCursor !== undefined) {
+        fail("result_bound_exceeded", "deleteMany expired verification");
+      }
+      const ids = result.value.verifications.map((row) => row.verification_id);
+      if (ids.length === 0) return 0;
+      const deleted = await this.client.deleteVerification({
+        request_id: nextRequestId(),
+        organization_id: this.organizationId,
+        verification_ids: ids,
+      });
+      this.observeCommit(deleted);
+      requireOutcome(deleted, "deleteMany expired verification", "VerificationDeleted");
+      return ids.length;
     }
     if (model !== "verification" || !exactWhere(where, ["identifier"])) {
       return fail("unsupported_call_shape", `deleteMany ${model}`);
@@ -709,6 +1161,53 @@ class CoreDispatcher {
     requireOutcome(result, "transaction signup", "SignupGraphCreated");
   }
 
+  public async commitOAuthUser(records: readonly DeferredCreate[]): Promise<void> {
+    if (records.length !== 2) fail("unsupported_transaction_shape", "transaction OAuth user");
+    const byModel = new Map(records.map((record) => [record.model, record.data]));
+    if (byModel.size !== 2 || !["user", "account"].every((name) => byModel.has(name))) {
+      fail("unsupported_transaction_shape", "transaction OAuth user");
+    }
+    const user = byModel.get("user")!;
+    const account = byModel.get("account")!;
+    const userId = requiredString(user, "id", "transaction OAuth user");
+    if (requiredString(account, "userId", "transaction OAuth user") !== userId) {
+      fail("unsupported_transaction_shape", "transaction OAuth user");
+    }
+    const result = await this.client.createOAuthUserGraph({
+      request_id: nextRequestId(),
+      organization_id: this.organizationId,
+      user_id: userId,
+      user_name: requiredString(user, "name", "transaction OAuth user"),
+      user_email: requiredString(user, "email", "transaction OAuth user"),
+      user_email_verified: requiredBoolean(user, "emailVerified", "transaction OAuth user"),
+      user_image: nullableString(user, "image", "transaction OAuth user"),
+      user_created_at: toTimestamp(requiredDate(user, "createdAt", "transaction OAuth user")),
+      user_updated_at: toTimestamp(requiredDate(user, "updatedAt", "transaction OAuth user")),
+      account_id: requiredString(account, "id", "transaction OAuth user"),
+      external_account_id: requiredString(account, "accountId", "transaction OAuth user"),
+      provider_id: requiredString(account, "providerId", "transaction OAuth user"),
+      access_token: nullableString(account, "accessToken", "transaction OAuth user"),
+      refresh_token: nullableString(account, "refreshToken", "transaction OAuth user"),
+      access_token_expires_at: timestampOrNull(
+        nullableDate(account, "accessTokenExpiresAt", "transaction OAuth user"),
+      ),
+      refresh_token_expires_at: timestampOrNull(
+        nullableDate(account, "refreshTokenExpiresAt", "transaction OAuth user"),
+      ),
+      scope: nullableString(account, "scope", "transaction OAuth user"),
+      id_token: nullableString(account, "idToken", "transaction OAuth user"),
+      password: nullableString(account, "password", "transaction OAuth user"),
+      account_created_at: toTimestamp(
+        requiredDate(account, "createdAt", "transaction OAuth user"),
+      ),
+      account_updated_at: toTimestamp(
+        requiredDate(account, "updatedAt", "transaction OAuth user"),
+      ),
+    });
+    this.observeCommit(result);
+    requireOutcome(result, "transaction OAuth user", "OAuthUserGraphCreated");
+  }
+
   public async commitVerificationConsume(rows: readonly RecordValue[]): Promise<void> {
     if (rows.length < 1 || rows.length > 32) {
       fail("unsupported_transaction_shape", "transaction verification consume");
@@ -758,6 +1257,12 @@ interface CustomConsumeOneArgs {
   readonly where: CleanedWhere[];
 }
 
+interface CustomUpdateArgs {
+  readonly model: string;
+  readonly where: CleanedWhere[];
+  readonly update: Record<string, unknown>;
+}
+
 function genericCreate(
   implementation: (args: CustomCreateArgs) => Promise<Record<string, unknown>>,
 ): CustomAdapter["create"] {
@@ -780,6 +1285,12 @@ function genericConsumeOne(
   implementation: (args: CustomConsumeOneArgs) => Promise<Record<string, unknown> | null>,
 ): NonNullable<CustomAdapter["consumeOne"]> {
   return implementation as NonNullable<CustomAdapter["consumeOne"]>;
+}
+
+function genericUpdate(
+  implementation: (args: CustomUpdateArgs) => Promise<Record<string, unknown> | null>,
+): CustomAdapter["update"] {
+  return implementation as CustomAdapter["update"];
 }
 
 class TransactionRecorder {
@@ -835,7 +1346,11 @@ class TransactionRecorder {
       fail("unsupported_transaction_shape", "mixed transaction");
     }
     if (this.creates.length > 0) {
-      await this.dispatcher.commitSignup(this.creates);
+      if (this.creates.length === 2) {
+        await this.dispatcher.commitOAuthUser(this.creates);
+      } else {
+        await this.dispatcher.commitSignup(this.creates);
+      }
       return;
     }
     if (hasVerificationMutation) {
@@ -862,7 +1377,8 @@ function customAdapter(dispatcher: CoreDispatcher): CustomAdapter {
     findMany: genericFindMany(async ({ model, where, limit, sortBy, offset, join }) =>
       dispatcher.findMany(model, where, limit, sortBy, offset, join)),
     count: async ({ model }) => fail("unsupported_call_shape", `count ${model}`),
-    update: async ({ model }) => fail("unsupported_call_shape", `update ${model}`),
+    update: genericUpdate(async ({ model, where, update }) =>
+      dispatcher.update(model, where, update)),
     updateMany: async ({ model, where, update }) => dispatcher.updateMany(model, where, update),
     delete: async ({ model, where }) => dispatcher.delete(model, where),
     deleteMany: async ({ model, where }) => dispatcher.deleteMany(model, where),

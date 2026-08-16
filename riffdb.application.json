@@ -23,10 +23,15 @@
         { "name": "FindUserById", "source": "riffdb/queries/find_user_by_id.riffq" },
         { "name": "FindSessionByToken", "source": "riffdb/queries/find_session_by_token.riffq" },
         { "name": "FindSessionById", "source": "riffdb/queries/find_session_by_id.riffq" },
+        { "name": "FindSessionsByUserId", "source": "riffdb/queries/find_sessions_by_user_id.riffq" },
+        { "name": "FindActiveSessionsByUserId", "source": "riffdb/queries/find_active_sessions_by_user_id.riffq" },
         { "name": "FindAccountsByUserId", "source": "riffdb/queries/find_accounts_by_user_id.riffq" },
+        { "name": "FindAccountById", "source": "riffdb/queries/find_account_by_id.riffq" },
+        { "name": "FindAccountByProvider", "source": "riffdb/queries/find_account_by_provider.riffq" },
         { "name": "FindLatestVerification", "source": "riffdb/queries/find_latest_verification.riffq" },
         { "name": "FindVerificationById", "source": "riffdb/queries/find_verification_by_id.riffq" },
-        { "name": "FindVerificationsByIdentifier", "source": "riffdb/queries/find_verifications_by_identifier.riffq" }
+        { "name": "FindVerificationsByIdentifier", "source": "riffdb/queries/find_verifications_by_identifier.riffq" },
+        { "name": "FindExpiredVerificationIds", "source": "riffdb/queries/find_expired_verification_ids.riffq" }
       ]
     }
   ],
@@ -41,10 +46,15 @@
         "FindUserById",
         "FindSessionByToken",
         "FindSessionById",
+        "FindSessionsByUserId",
+        "FindActiveSessionsByUserId",
         "FindAccountsByUserId",
+        "FindAccountById",
+        "FindAccountByProvider",
         "FindLatestVerification",
         "FindVerificationById",
-        "FindVerificationsByIdentifier"
+        "FindVerificationsByIdentifier",
+        "FindExpiredVerificationIds"
       ],
       "commands": [
         "CreateUser",
@@ -52,7 +62,13 @@
         "CreateSession",
         "CreateVerification",
         "CreateSignupGraph",
+        "CreateOAuthUserGraph",
+        "UpdateUser",
+        "UpdateSession",
+        "UpdateAccount",
+        "UpdateVerification",
         "DeleteSession",
+        "DeleteAccount",
         "DeleteVerification",
         "DeleteUser",
         "ConsumeVerificationSet",

@@ -18,10 +18,14 @@ const operations = JSON.parse(
 describe("generated secret-output boundary", () => {
   it("keeps secret RiffQL reads in typed SDKs and out of MCP tools", () => {
     const secretQueries = [
+      "FindAccountById",
+      "FindAccountByProvider",
       "FindAccountsByUserId",
+      "FindActiveSessionsByUserId",
       "FindLatestVerification",
       "FindSessionById",
       "FindSessionByToken",
+      "FindSessionsByUserId",
       "FindVerificationById",
       "FindVerificationsByIdentifier",
     ];
@@ -31,6 +35,9 @@ describe("generated secret-output boundary", () => {
     );
     expect(operations.tools.map((operation) => operation.operation_name)).not.toEqual(
       expect.arrayContaining(secretQueries),
+    );
+    expect(operations.tools.map((operation) => operation.operation_name)).toContain(
+      "FindExpiredVerificationIds",
     );
     expect(operations.commands.map((operation) => operation.operation_name)).not.toEqual(
       expect.arrayContaining([

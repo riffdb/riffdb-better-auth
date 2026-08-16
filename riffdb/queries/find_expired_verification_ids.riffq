@@ -1,0 +1,17 @@
+query FindExpiredVerificationIds(
+    $organization_id: Verification.organization_id,
+    $expires_before: Verification.expires_at,
+    $after: Cursor?,
+) {
+    many verifications from Verification
+        where organization_id == $organization_id
+          && expires_at < $expires_before
+        order by expires_at asc, verification_id asc
+        take 32 after $after
+
+    return Found {
+        verifications: verifications { verification_id }
+    }
+
+    outcomes Found
+}

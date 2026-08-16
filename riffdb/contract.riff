@@ -7,6 +7,7 @@ contract RiffDBBetterAuthCore version 1 {
     field image: optional<string<2048>>
     field created_at: timestamp
     field updated_at: timestamp
+    field revision: u64
     unique user_email (organization_id, email)
     index by_email (organization_id, email, user_id)
     delete_policy cascade {
@@ -28,7 +29,10 @@ contract RiffDBBetterAuthCore version 1 {
     field secret password: optional<string<1024>>
     field created_at: timestamp
     field updated_at: timestamp
+    field revision: u64
+    unique account_row_id (organization_id, id)
     unique provider_identity (organization_id, provider_id, account_id)
+    index by_id (organization_id, id, user_id)
     index by_user (organization_id, user_id, id)
     index by_user_provider (organization_id, user_id, provider_id, id)
     reference account_user (organization_id, user_id) -> User(organization_id, user_id)
@@ -43,11 +47,13 @@ contract RiffDBBetterAuthCore version 1 {
     field user_agent: optional<string<2048>>
     field created_at: timestamp
     field updated_at: timestamp
+    field revision: u64
     unique session_token (organization_id, token)
     unique session_id (organization_id, id)
     index by_token (organization_id, token, user_id, id)
     index by_id (organization_id, id, user_id)
     index by_user (organization_id, user_id, id)
+    index by_user_expiry (organization_id, user_id, expires_at, id)
     reference session_user (organization_id, user_id) -> User(organization_id, user_id)
     delete_policy no_inbound
   }
@@ -59,7 +65,9 @@ contract RiffDBBetterAuthCore version 1 {
     field expires_at: timestamp
     field created_at: timestamp
     field updated_at: timestamp
+    field revision: u64
     index by_identifier_created (organization_id, identifier, created_at, verification_id)
+    index by_expiry (organization_id, expires_at, verification_id)
     delete_policy no_inbound
   }
 
@@ -103,6 +111,7 @@ contract RiffDBBetterAuthCore version 1 {
     set user.image = image
     set user.created_at = created_at
     set user.updated_at = updated_at
+    set user.revision = 1
     return UserCreated {}
   }
 
@@ -136,6 +145,7 @@ contract RiffDBBetterAuthCore version 1 {
     set account.password = password
     set account.created_at = created_at
     set account.updated_at = updated_at
+    set account.revision = 1
     return AccountCreated {}
   }
 
@@ -159,6 +169,7 @@ contract RiffDBBetterAuthCore version 1 {
     set session.user_agent = user_agent
     set session.created_at = created_at
     set session.updated_at = updated_at
+    set session.revision = 1
     return SessionCreated {}
   }
 
@@ -178,6 +189,7 @@ contract RiffDBBetterAuthCore version 1 {
     set verification.expires_at = expires_at
     set verification.created_at = created_at
     set verification.updated_at = updated_at
+    set verification.revision = 1
     return VerificationCreated {}
   }
 
@@ -214,6 +226,7 @@ contract RiffDBBetterAuthCore version 1 {
     set user.image = user_image
     set user.created_at = user_created_at
     set user.updated_at = user_updated_at
+    set user.revision = 1
     set account.account_id = external_account_id
     set account.provider_id = provider_id
     set account.access_token = null
@@ -225,20 +238,163 @@ contract RiffDBBetterAuthCore version 1 {
     set account.password = account_password
     set account.created_at = account_created_at
     set account.updated_at = account_updated_at
+    set account.revision = 1
     set session.token = session_token
     set session.expires_at = session_expires_at
     set session.ip_address = session_ip_address
     set session.user_agent = session_user_agent
     set session.created_at = session_created_at
     set session.updated_at = session_updated_at
+    set session.revision = 1
     return SignupGraphCreated {}
+  }
+
+  command CreateOAuthUserGraph {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input user_name: string<256>
+    input user_email: string<320>
+    input user_email_verified: bool
+    input user_image: optional<string<2048>>
+    input user_created_at: timestamp
+    input user_updated_at: timestamp
+    input account_id: uuid
+    input external_account_id: string<256>
+    input provider_id: string<64>
+    input access_token: optional<string<4096>>
+    input refresh_token: optional<string<4096>>
+    input access_token_expires_at: optional<timestamp>
+    input refresh_token_expires_at: optional<timestamp>
+    input scope: optional<string<2048>>
+    input id_token: optional<string<8192>>
+    input password: optional<string<1024>>
+    input account_created_at: timestamp
+    input account_updated_at: timestamp
+    idempotency_key request_id
+    create User(organization_id, user_id) as user else OAuthUserExists {}
+    create Account(organization_id, user_id, account_id) as account else OAuthAccountExists {}
+    set user.name = user_name
+    set user.email = user_email
+    set user.email_verified = user_email_verified
+    set user.image = user_image
+    set user.created_at = user_created_at
+    set user.updated_at = user_updated_at
+    set user.revision = 1
+    set account.account_id = external_account_id
+    set account.provider_id = provider_id
+    set account.access_token = access_token
+    set account.refresh_token = refresh_token
+    set account.access_token_expires_at = access_token_expires_at
+    set account.refresh_token_expires_at = refresh_token_expires_at
+    set account.scope = scope
+    set account.id_token = id_token
+    set account.password = password
+    set account.created_at = account_created_at
+    set account.updated_at = account_updated_at
+    set account.revision = 1
+    return OAuthUserGraphCreated {}
+  }
+
+  command UpdateUser {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input expected_revision: u64
+    input name: string<256>
+    input email: string<320>
+    input email_verified: bool
+    input image: optional<string<2048>>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate User(organization_id, user_id) as user else UserUpdateMissing {}
+    require current_revision: user.revision == expected_revision else UserUpdateStale {}
+    set user.name = name
+    set user.email = email
+    set user.email_verified = email_verified
+    set user.image = image
+    set user.updated_at = updated_at
+    set user.revision = user.revision + 1
+    return UserUpdated {}
+  }
+
+  command UpdateSession {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input session_id: uuid
+    input expected_revision: u64
+    input expires_at: timestamp
+    input ip_address: optional<string<128>>
+    input user_agent: optional<string<2048>>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Session(organization_id, user_id, session_id) as session else SessionUpdateMissing {}
+    require current_revision: session.revision == expected_revision else SessionUpdateStale {}
+    set session.expires_at = expires_at
+    set session.ip_address = ip_address
+    set session.user_agent = user_agent
+    set session.updated_at = updated_at
+    set session.revision = session.revision + 1
+    return SessionUpdated {}
+  }
+
+  command UpdateAccount {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input account_id: uuid
+    input expected_revision: u64
+    input external_account_id: string<256>
+    input provider_id: string<64>
+    input access_token: optional<string<4096>>
+    input refresh_token: optional<string<4096>>
+    input access_token_expires_at: optional<timestamp>
+    input refresh_token_expires_at: optional<timestamp>
+    input scope: optional<string<2048>>
+    input id_token: optional<string<8192>>
+    input password: optional<string<1024>>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Account(organization_id, user_id, account_id) as account else AccountUpdateMissing {}
+    require current_revision: account.revision == expected_revision else AccountUpdateStale {}
+    set account.account_id = external_account_id
+    set account.provider_id = provider_id
+    set account.access_token = access_token
+    set account.refresh_token = refresh_token
+    set account.access_token_expires_at = access_token_expires_at
+    set account.refresh_token_expires_at = refresh_token_expires_at
+    set account.scope = scope
+    set account.id_token = id_token
+    set account.password = password
+    set account.updated_at = updated_at
+    set account.revision = account.revision + 1
+    return AccountUpdated {}
+  }
+
+  command UpdateVerification {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_id: uuid
+    input expected_revision: u64
+    input value: string<4096>
+    input expires_at: timestamp
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Verification(organization_id, verification_id) as verification else VerificationUpdateMissing {}
+    require current_revision: verification.revision == expected_revision else VerificationUpdateStale {}
+    set verification.value = value
+    set verification.expires_at = expires_at
+    set verification.updated_at = updated_at
+    set verification.revision = verification.revision + 1
+    return VerificationUpdated {}
   }
 
   bulk command DeleteSession {
     input request_id: uuid
     input organization_id: uuid
     input user_id: uuid
-    input session_ids: list<uuid, 1..8>
+    input session_ids: list<uuid, 1..32>
     idempotency_key request_id
     for session_id in session_ids {
       delete Session(organization_id, user_id, session_id) as session else SessionMissing {}
@@ -246,10 +402,22 @@ contract RiffDBBetterAuthCore version 1 {
     return SessionDeleted {}
   }
 
+  bulk command DeleteAccount {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input account_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for account_id in account_ids {
+      delete Account(organization_id, user_id, account_id) as account else AccountMissing {}
+    }
+    return AccountDeleted {}
+  }
+
   bulk command DeleteVerification {
     input request_id: uuid
     input organization_id: uuid
-    input verification_ids: list<uuid, 1..8>
+    input verification_ids: list<uuid, 1..32>
     idempotency_key request_id
     for verification_id in verification_ids {
       delete Verification(organization_id, verification_id) as verification else VerificationMissing {}
