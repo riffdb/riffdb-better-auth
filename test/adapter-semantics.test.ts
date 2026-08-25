@@ -476,11 +476,56 @@ describe("compiled transaction dispatch", () => {
     ).resolves.toMatchObject([{ id: firstActive.id }]);
   });
 
-  it("fails closed on dynamic methods without touching RiffDB", async () => {
+  it("uses exact compiled user windows for count, search, sort, and offset", async () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    const adapter = createAdapter(transport);
+    const first = { ...user(), email: "alpha@example.test", image: null };
+    const second = { ...user(), email: "beta@example.test", image: "beta.png" };
+    const third = { ...user(), email: "gamma@elsewhere.test", image: "gamma.png" };
+    for (const record of [first, second, third]) {
+      await adapter.create({ model: "user", data: record, forceAllowId: true });
+    }
+
+    await expect(adapter.count({ model: "user" })).resolves.toBe(3);
+    await expect(
+      adapter.count({
+        model: "user",
+        where: [{ field: "email", value: "@example.test", operator: "ends_with" }],
+      }),
+    ).resolves.toBe(2);
+    await expect(
+      adapter.findMany({
+        model: "user",
+        where: [{ field: "email", value: "example", operator: "contains" }],
+        limit: 1,
+        offset: 1,
+        sortBy: { field: "email", direction: "desc" },
+      }),
+    ).resolves.toMatchObject([{ id: first.id }]);
+    await expect(
+      adapter.findMany({
+        model: "user",
+        where: [{ field: "email", value: "@", operator: "contains" }],
+        sortBy: { field: "image", direction: "asc" },
+      }),
+    ).resolves.toMatchObject([{ id: second.id }, { id: third.id }, { id: first.id }]);
+    await expect(
+      adapter.findMany({
+        model: "user",
+        where: [
+          { field: "id", value: second.id },
+          { field: "email", value: "@", operator: "contains" },
+        ],
+        sortBy: { field: "image", direction: "asc" },
+      }),
+    ).resolves.toMatchObject([{ id: second.id }]);
+  });
+
+  it("fails closed on unsupported dynamic methods without touching RiffDB", async () => {
     const transport = new FakeRiffDBApplicationTransport();
     const adapter = createAdapter(transport);
 
-    await expect(adapter.count({ model: "user" })).rejects.toMatchObject({
+    await expect(adapter.count({ model: "session" })).rejects.toMatchObject({
       code: "unsupported_call_shape",
     });
     await expect(

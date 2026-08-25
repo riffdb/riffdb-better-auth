@@ -1,0 +1,954 @@
+{
+  "schema": "riffdb.better-auth-profile-plan/v1",
+  "betterAuthVersion": "1.6.29",
+  "idGeneration": "uuid",
+  "name": "BetterAuthOrganizationSecurity",
+  "contract": {
+    "lineage": "BetterAuthOrganizationSecurity",
+    "applicationRole": "BetterAuthServer"
+  },
+  "plugins": [
+    "organization",
+    "two-factor"
+  ],
+  "models": [
+    {
+      "name": "account",
+      "storageName": "account",
+      "fields": [
+        {
+          "name": "accessToken",
+          "storageName": "accessToken",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "accessTokenExpiresAt",
+          "storageName": "accessTokenExpiresAt",
+          "type": "date",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "accountId",
+          "storageName": "accountId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "idToken",
+          "storageName": "idToken",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "password",
+          "storageName": "password",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "providerId",
+          "storageName": "providerId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "refreshToken",
+          "storageName": "refreshToken",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "refreshTokenExpiresAt",
+          "storageName": "refreshTokenExpiresAt",
+          "type": "date",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "scope",
+          "storageName": "scope",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "updatedAt",
+          "storageName": "updatedAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": true
+        },
+        {
+          "name": "userId",
+          "storageName": "userId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "user",
+            "field": "id",
+            "onDelete": "cascade"
+          }
+        }
+      ]
+    },
+    {
+      "name": "invitation",
+      "storageName": "invitation",
+      "fields": [
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "email",
+          "storageName": "email",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "expiresAt",
+          "storageName": "expiresAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "inviterId",
+          "storageName": "inviterId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "user",
+            "field": "id"
+          }
+        },
+        {
+          "name": "organizationId",
+          "storageName": "organizationId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "organization",
+            "field": "id"
+          }
+        },
+        {
+          "name": "role",
+          "storageName": "role",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "status",
+          "storageName": "status",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "teamId",
+          "storageName": "teamId",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        }
+      ]
+    },
+    {
+      "name": "member",
+      "storageName": "member",
+      "fields": [
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "organizationId",
+          "storageName": "organizationId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "organization",
+            "field": "id"
+          }
+        },
+        {
+          "name": "role",
+          "storageName": "role",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "userId",
+          "storageName": "userId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "user",
+            "field": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "organization",
+      "storageName": "organization",
+      "fields": [
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "logo",
+          "storageName": "logo",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "metadata",
+          "storageName": "metadata",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "name",
+          "storageName": "name",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "slug",
+          "storageName": "slug",
+          "type": "string",
+          "required": true,
+          "unique": true,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        }
+      ]
+    },
+    {
+      "name": "session",
+      "storageName": "session",
+      "fields": [
+        {
+          "name": "activeOrganizationId",
+          "storageName": "activeOrganizationId",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": false,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "activeTeamId",
+          "storageName": "activeTeamId",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": false,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "expiresAt",
+          "storageName": "expiresAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "ipAddress",
+          "storageName": "ipAddress",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "token",
+          "storageName": "token",
+          "type": "string",
+          "required": true,
+          "unique": true,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "updatedAt",
+          "storageName": "updatedAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": true
+        },
+        {
+          "name": "userAgent",
+          "storageName": "userAgent",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "userId",
+          "storageName": "userId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "user",
+            "field": "id",
+            "onDelete": "cascade"
+          }
+        }
+      ]
+    },
+    {
+      "name": "team",
+      "storageName": "team",
+      "fields": [
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "name",
+          "storageName": "name",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "organizationId",
+          "storageName": "organizationId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "organization",
+            "field": "id"
+          }
+        },
+        {
+          "name": "updatedAt",
+          "storageName": "updatedAt",
+          "type": "date",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": true
+        }
+      ]
+    },
+    {
+      "name": "teamMember",
+      "storageName": "teamMember",
+      "fields": [
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "teamId",
+          "storageName": "teamId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "team",
+            "field": "id"
+          }
+        },
+        {
+          "name": "userId",
+          "storageName": "userId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "user",
+            "field": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "twoFactor",
+      "storageName": "twoFactor",
+      "fields": [
+        {
+          "name": "backupCodes",
+          "storageName": "backupCodes",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "failedVerificationCount",
+          "storageName": "failedVerificationCount",
+          "type": "number",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": false,
+          "returned": false,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "lockedUntil",
+          "storageName": "lockedUntil",
+          "type": "date",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": false,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "secret",
+          "storageName": "secret",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "userId",
+          "storageName": "userId",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": true,
+          "input": true,
+          "returned": false,
+          "hasDefault": false,
+          "hasOnUpdate": false,
+          "reference": {
+            "model": "user",
+            "field": "id"
+          }
+        },
+        {
+          "name": "verified",
+          "storageName": "verified",
+          "type": "boolean",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": false,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "storageName": "user",
+      "fields": [
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "email",
+          "storageName": "email",
+          "type": "string",
+          "required": true,
+          "unique": true,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "emailVerified",
+          "storageName": "emailVerified",
+          "type": "boolean",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": false,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "image",
+          "storageName": "image",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "locale",
+          "storageName": "locale",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "name",
+          "storageName": "name",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "twoFactorEnabled",
+          "storageName": "twoFactorEnabled",
+          "type": "boolean",
+          "required": false,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": false,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "updatedAt",
+          "storageName": "updatedAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": true
+        }
+      ]
+    },
+    {
+      "name": "verification",
+      "storageName": "verification",
+      "fields": [
+        {
+          "name": "createdAt",
+          "storageName": "createdAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "expiresAt",
+          "storageName": "expiresAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "identifier",
+          "storageName": "identifier",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": true,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "updatedAt",
+          "storageName": "updatedAt",
+          "type": "date",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": false,
+          "input": true,
+          "returned": true,
+          "hasDefault": true,
+          "hasOnUpdate": true
+        },
+        {
+          "name": "value",
+          "storageName": "value",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": true,
+          "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        }
+      ]
+    }
+  ],
+  "bounds": {
+    "maximumModels": 32,
+    "maximumFieldsPerModel": 64
+  }
+}

@@ -13,6 +13,7 @@
   "files": [
     "dist",
     "generated",
+    "profiles",
     "riffdb",
     "riffdb.application.json",
     "riffdb.application.lock.json",
@@ -24,9 +25,11 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "check": "npm run typecheck && npm test && npm pack --dry-run --cache ./node_modules/.cache/npm",
+    "check": "npm run typecheck && npm test && npm run profiles:check && npm pack --dry-run --cache ./node_modules/.cache/npm",
     "prepack": "npm run build",
     "start": "node scripts/real-riffdb-runner.mjs",
+    "profiles:check": "npm run build && node scripts/profile-example.mjs --check",
+    "profiles:write": "npm run build && node scripts/profile-example.mjs --write",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
@@ -34,15 +37,15 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@riffdb/client": "0.1.0-dev.6",
+    "@riffdb/client": "0.1.0-dev.14",
     "better-auth": "1.6.29"
   },
   "dependencies": {
-    "@riffdb/client": "0.1.0-dev.6"
+    "@riffdb/client": "0.1.0-dev.14"
   },
   "devDependencies": {
     "@better-auth/test-utils": "1.6.29",
-    "@riffdb/cli": "0.1.0-dev.6",
+    "@riffdb/cli": "0.1.0-dev.14",
     "@types/node": "26.2.0",
     "better-auth": "1.6.29",
     "typescript": "7.0.2",

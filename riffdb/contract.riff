@@ -10,6 +10,9 @@ contract RiffDBBetterAuthCore version 1 {
     field revision: u64
     unique user_email (organization_id, email)
     index by_email (organization_id, email, user_id)
+    index search_email (organization_id, email, user_id) text_key(email, binary_utf8_v1)
+    index by_created_at (organization_id, created_at, user_id)
+    index by_image (organization_id, image, user_id) presence(image)
     delete_policy cascade {
       relationship Account.account_user using Account.by_user maximum 32
       relationship Session.session_user using Session.by_user maximum 32
@@ -33,6 +36,7 @@ contract RiffDBBetterAuthCore version 1 {
     unique account_row_id (organization_id, id)
     unique provider_identity (organization_id, provider_id, account_id)
     index by_id (organization_id, id, user_id)
+    index by_provider (organization_id, provider_id, account_id, user_id, id)
     index by_user (organization_id, user_id, id)
     index by_user_provider (organization_id, user_id, provider_id, id)
     reference account_user (organization_id, user_id) -> User(organization_id, user_id)

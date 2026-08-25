@@ -209,7 +209,7 @@ try {
         name: "OAuth User",
         email: `oauth-${crypto.randomUUID()}@example.test`,
         emailVerified: true,
-        image: null,
+        image: "oauth.png",
         createdAt: oauthNow,
         updatedAt: oauthNow,
       },
@@ -237,15 +237,13 @@ try {
     )?.id,
     oauthUserId,
   );
-  assert.equal(
-    (
-      await directAdapter.findOne({
-        model: "account",
-        where: [{ field: "id", value: oauthAccountId }],
-      })
-    )?.id,
-    oauthAccountId,
-  );
+  const oauthAccountById = await directAdapter.findOne({
+    model: "account",
+    where: [{ field: "id", value: oauthAccountId }],
+  });
+  assert.equal(oauthAccountById?.id, oauthAccountId);
+  assert.equal(oauthAccountById?.accountId, oauthExternalId);
+  assert.equal(oauthAccountById?.providerId, "github");
   assert.equal(
     (
       await directAdapter.findOne({
@@ -267,6 +265,37 @@ try {
       })
     )?.accessToken,
     "oauth-access-token-2",
+  );
+
+  assert.equal(await directAdapter.count({ model: "user" }), 2);
+  assert.equal(
+    await directAdapter.count({
+      model: "user",
+      where: [{ field: "email", value: "@example.test", operator: "ends_with" }],
+    }),
+    2,
+  );
+  const usersByNullableImage = await directAdapter.findMany({
+    model: "user",
+    where: [{ field: "email", value: "example", operator: "contains" }],
+    limit: 2,
+    sortBy: { field: "image", direction: "asc" },
+  });
+  assert.deepEqual(
+    usersByNullableImage.map((record) => record.id),
+    [oauthUserId, signup.user.id],
+  );
+  assert.equal(
+    (
+      await directAdapter.findMany({
+        model: "user",
+        where: [{ field: "email", value: "@example.test", operator: "ends_with" }],
+        limit: 1,
+        offset: 1,
+        sortBy: { field: "email", direction: "desc" },
+      })
+    ).length,
+    1,
   );
   await directAdapter.delete({
     model: "user",

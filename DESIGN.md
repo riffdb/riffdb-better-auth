@@ -28,6 +28,12 @@ dispatch to one generated named command or query. An unmatched combination
 is an unsupported-profile error, never a dynamic RiffQL expression or generic
 storage callback.
 
+The core profile implements exact user `count` and bounded user windows for a
+finite set of UUID and email predicates. Numeric offset, exact total, text
+matching, independent order, and nullable order are declared in the compiled
+query. The result page and total therefore share one provider epoch; the
+adapter neither drains pages nor recounts client-side.
+
 `consumeOne` must map to one atomic compiled command. Better Auth's fallback
 through a transaction callback is not supported. Likewise, any Better Auth
 transaction is supported only when one generated RiffDB command represents
@@ -63,6 +69,20 @@ page-draining, sequential multi-row mutation, or callback-transaction
 patterns. Its seam consists of generated named operations for a compiled
 profile, with explicit bounds and idempotency identity.
 
+## Profile planning boundary
+
+Better Auth's `createSchema` hook is exposed through a generation-only adapter.
+It captures Better Auth's resolved tables after plugins, additional fields,
+and storage-name overrides have been applied. The deterministic plan records
+only bounded declarative metadata and never connects to RiffDB.
+
+A plan is not a runtime database schema. Materializing it requires a reviewed
+RiffDB contract, finite named queries and commands for the call shapes used by
+that Better Auth configuration, generated bindings, and equivalent conformance
+tests. This separation makes the profile customizable without turning schema
+generation into a generic database or weakening the application-facing safety
+boundary. The generation adapter rejects every runtime method.
+
 References:
 
 - <https://better-auth.com/docs/guides/create-a-db-adapter>
@@ -77,7 +97,8 @@ References:
 - additional user/session fields;
 - plugin models or plugin-added fields;
 - numeric, serial, mixed, or database-generated identifiers;
-- arbitrary joins, offsets, predicates, or sort fields;
+- arbitrary joins, predicates, offsets beyond the compiled bound, or sort
+  combinations outside the named user-window queries;
 - Better Auth database hooks that imply additional database mutations; and
 - secondary storage implemented by RiffDB.
 
@@ -85,7 +106,7 @@ References:
 
 The loopback conformance run deploys the exact contract and role and connects
 through `riffdb-driverd`. The initial empty `FindUserByEmail` result carries the
-valid application head `0`; immutable `@riffdb/client@0.1.0-dev.6` preserves it
+valid application head `0`; immutable `@riffdb/client@0.1.0-dev.14` preserves it
 as `0n`. The adapter does not issue an unrelated warmup write, so the first
 application-visible mutation remains the compiled signup graph.
 
@@ -97,6 +118,11 @@ Named RiffQL queries now support exact compiler-declared secret output leaves.
 The application role derives dedicated secret-field visibility from each
 selected immutable query, which closes the former `RDB-AUTH-0214` failure
 without using read-only commands or broadening the role manually.
+
+RiffQL now supports finite exact text predicates, numeric offsets, exact totals,
+independent ordering, and explicit null placement. The generated TypeScript
+client also emits only reachable compact decoders, so it compiles under strict
+consumer `noUnusedLocals` settings without generated-source suppressions.
 
 These exclusions describe the first profile, not permanent product limits.
 Each addition needs an explicit bounded contract and semantic tests.

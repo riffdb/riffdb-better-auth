@@ -13,6 +13,19 @@ export {
 } from "./profile.js";
 
 export {
+  RIFFDB_BETTER_AUTH_PROFILE_PLAN_SCHEMA,
+  RiffDBBetterAuthProfileGenerationError,
+  defineRiffDBBetterAuthProfilePlan,
+  renderRiffDBBetterAuthProfilePlan,
+  riffdbProfileAdapter,
+  type RiffDBBetterAuthProfileFieldPlan,
+  type RiffDBBetterAuthProfileGenerationErrorCode,
+  type RiffDBBetterAuthProfileGeneratorConfig,
+  type RiffDBBetterAuthProfileModelPlan,
+  type RiffDBBetterAuthProfilePlan,
+} from "./profile-plan.js";
+
+export {
   RiffDBBetterAuthCallError,
   riffdbAdapter,
   type RiffDBBetterAuthAdapterConfig,

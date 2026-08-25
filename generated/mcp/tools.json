@@ -1,5 +1,5 @@
 {
-  "application_manifest_hash": "a3238f3c9d24930212b6397fed4d92e3e4939bc30cced6819926e814db6cb054",
+  "application_manifest_hash": "33d7bbdabb63e25be7c4848aa259dccb19fe3b01388f25a1beed147acb979f71",
   "commands": [
     {
       "annotations": {
@@ -8,7 +8,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact ConsumeVerificationSet compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -38,7 +38,7 @@
       },
       "name": "riffdb_better_auth_core_consume_verification_set",
       "operation_name": "ConsumeVerificationSet",
-      "plan_hash": "a66d95985b080b1f07ee91b5941cdb5c59b88093973719d5e58f1333001eec88",
+      "plan_hash": "e90e64ce528ad3669cf37965290adda7513b4fb641ef956d64bb3cf80168b343",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -79,7 +79,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact CreateAccount compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -201,7 +201,7 @@
       },
       "name": "riffdb_better_auth_core_create_account",
       "operation_name": "CreateAccount",
-      "plan_hash": "6f2560332cfa12b801feb2bbd6a45be348eb426dc52554254c54c9dd2815865d",
+      "plan_hash": "0cc0a4c41781ceb4f85b025899be7d8addde85ae6aa2f06225cf67b3ba00f4e2",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -255,7 +255,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact CreateOAuthUserGraph compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -408,7 +408,7 @@
       },
       "name": "riffdb_better_auth_core_create_o_auth_user_graph",
       "operation_name": "CreateOAuthUserGraph",
-      "plan_hash": "e8c9de08592e8da23e95f683c5afbd6c30ba9c7b85a4e183e5e3457461107c09",
+      "plan_hash": "9dcc38caa0c5cb2918ef1b383d5dcaa9f8a95d2913c632233fe5c32359c88570",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -462,7 +462,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact CreateSession compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -529,7 +529,7 @@
       },
       "name": "riffdb_better_auth_core_create_session",
       "operation_name": "CreateSession",
-      "plan_hash": "05ae79e74ef152c4d06303d40a74384f7fd7ef8e75a495aacac23d28bad725bf",
+      "plan_hash": "4292ddb74c4fbb26975f0754683be9cac597e054d5703935ecb4379b73bae5f1",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -583,7 +583,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact CreateSignupGraph compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -712,7 +712,7 @@
       },
       "name": "riffdb_better_auth_core_create_signup_graph",
       "operation_name": "CreateSignupGraph",
-      "plan_hash": "bbdbdb31dce24a4c0a1cbe20d2cb6fb1693fecbe2760dc8f38e2f3bbd7a127bc",
+      "plan_hash": "8caecfbea3708c720d98f3acf53351c6734513c9b76bc7eaff0feb216bf7f910",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -779,7 +779,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact CreateUser compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -835,7 +835,7 @@
       },
       "name": "riffdb_better_auth_core_create_user",
       "operation_name": "CreateUser",
-      "plan_hash": "535fb4e2bc107cd645dbe7e9647f04cc8f77918924974ab6c9bc158b87008736",
+      "plan_hash": "f21d7e06a6a6d137696d1618e2f311dc5a72a20ad2071631e0d8a2d927d8bd1d",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -876,7 +876,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact CreateVerification compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -921,7 +921,7 @@
       },
       "name": "riffdb_better_auth_core_create_verification",
       "operation_name": "CreateVerification",
-      "plan_hash": "ea666debdc2b90996ec48604ca3f7b8c7210c72c64b848fb9d71e4d395261d1c",
+      "plan_hash": "586f67d309e0edde648ffb62139733dd86eb3f53e322503b7f26aa1ed3c4ea2e",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -962,7 +962,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact DeleteAccount compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -996,7 +996,7 @@
       },
       "name": "riffdb_better_auth_core_delete_account",
       "operation_name": "DeleteAccount",
-      "plan_hash": "e0ae4691de1acf976003486c9281bfc71975ee9e25b8f5ae4e0eedf17eeb759d",
+      "plan_hash": "6429ebe6e70797c57c44a4738c8a511bbe5304e5bf58148dfc0c2721ffaff382",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1037,7 +1037,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact DeleteSession compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1071,7 +1071,7 @@
       },
       "name": "riffdb_better_auth_core_delete_session",
       "operation_name": "DeleteSession",
-      "plan_hash": "fb5712f9f93f0812031d51c7d1e7e9cb11394716cb9b0f2a19c11baacd06d8a9",
+      "plan_hash": "a3901beb6c2d2754fd3d2c64252b6f5059cd1792c0a0560741c94da4668a0524",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1112,7 +1112,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact DeleteUser compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1142,7 +1142,7 @@
       },
       "name": "riffdb_better_auth_core_delete_user",
       "operation_name": "DeleteUser",
-      "plan_hash": "7c2323a3f32ae4d7b7855a9df13d35e83995a467a2fefce668d3bf94799d23f9",
+      "plan_hash": "d027f85aea0e28d30219cc1f995352a1d00ad669a29885ae74b5fb25497cbc34",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1196,7 +1196,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact DeleteVerification compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1226,7 +1226,7 @@
       },
       "name": "riffdb_better_auth_core_delete_verification",
       "operation_name": "DeleteVerification",
-      "plan_hash": "9d9a74f180828deaf0955489768118271db801c2746a956b8065e5225a3570e2",
+      "plan_hash": "bffc0c5ef5ad2b602954492d043e833785ec3f9d6f0520fbc0f933422544ae6a",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1267,7 +1267,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact UpdateAccount compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1389,7 +1389,7 @@
       },
       "name": "riffdb_better_auth_core_update_account",
       "operation_name": "UpdateAccount",
-      "plan_hash": "0dc8ab13f9fea35ebf8d1e629f6870eb8af2fa12fda8fe326552fb1f64f70862",
+      "plan_hash": "35e545a7ba4ec5e39d040cb3c832c175b07331aa39e9c329b435fa680f4c3c13",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1443,7 +1443,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact UpdateAccountPasswords compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1513,7 +1513,7 @@
       },
       "name": "riffdb_better_auth_core_update_account_passwords",
       "operation_name": "UpdateAccountPasswords",
-      "plan_hash": "380bd4efe9e846a71d19cc3ca037c4ab2436d30b6583db17d4e53fd34e714e4f",
+      "plan_hash": "57601183308604db7952a227981160afbf27de0cd46154e8cd989564bd9be5c5",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1567,7 +1567,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact UpdateSession compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1630,7 +1630,7 @@
       },
       "name": "riffdb_better_auth_core_update_session",
       "operation_name": "UpdateSession",
-      "plan_hash": "59e5b82c09caa60194cb0e1bb6cd9c9d8fc6a3f419f8ed1cfc67ce7b80b528c1",
+      "plan_hash": "47a20c198db83b859b152dd8b500daa501acf8f4b0f0fd232f9aa26b9e021fb7",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1684,7 +1684,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact UpdateUser compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1740,7 +1740,7 @@
       },
       "name": "riffdb_better_auth_core_update_user",
       "operation_name": "UpdateUser",
-      "plan_hash": "18495d705452ce951c17ff1ab67c60f4abb964049837146acc6a5e37fafc3ca5",
+      "plan_hash": "0681fe24aaece6ae71a3de15046ea5a8006d89690b2e51f6f20e478585c5a3fd",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1794,7 +1794,7 @@
         "openWorldHint": false,
         "readOnlyHint": false
       },
-      "contract_bundle_hash": "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150",
+      "contract_bundle_hash": "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f",
       "description": "Execute the exact UpdateVerification compiled command from contract RiffDBBetterAuthCore.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -1835,7 +1835,7 @@
       },
       "name": "riffdb_better_auth_core_update_verification",
       "operation_name": "UpdateVerification",
-      "plan_hash": "1793d95f29ffae3432297276b8f1fbf1dbc0db49c7e4a7f176a2da4f9a06ec19",
+      "plan_hash": "1be4b743bd9dc1ef4fd421d7ec7de8d88d86aad6ac069080fd2cd4f9b61f5231",
       "result_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "oneOf": [
@@ -1911,7 +1911,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_account_by_id",
       "operation_name": "FindAccountById",
       "result_schema": {
@@ -2081,7 +2081,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_account_by_provider",
       "operation_name": "FindAccountByProvider",
       "result_schema": {
@@ -2257,7 +2257,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_accounts_by_user_id",
       "operation_name": "FindAccountsByUserId",
       "result_schema": {
@@ -2437,7 +2437,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_active_sessions_by_user_id",
       "operation_name": "FindActiveSessionsByUserId",
       "result_schema": {
@@ -2548,7 +2548,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_latest_verification",
       "operation_name": "FindLatestVerification",
       "result_schema": {
@@ -2637,7 +2637,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_session_by_id",
       "operation_name": "FindSessionById",
       "result_schema": {
@@ -2748,7 +2748,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_session_by_token",
       "operation_name": "FindSessionByToken",
       "result_schema": {
@@ -2869,7 +2869,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_sessions_by_user_id",
       "operation_name": "FindSessionsByUserId",
       "result_schema": {
@@ -2980,7 +2980,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_verification_by_id",
       "operation_name": "FindVerificationById",
       "result_schema": {
@@ -3088,7 +3088,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_verifications_by_identifier",
       "operation_name": "FindVerificationsByIdentifier",
       "result_schema": {
@@ -3161,6 +3161,1221 @@
         "openWorldHint": false,
         "readOnlyHint": true
       },
+      "description": "Execute the exact AdminUsersAllEmailAsc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minimum_email": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "minimum_email"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_all_email_asc",
+      "operation_name": "AdminUsersAllEmailAsc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersAllEmailAsc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact AdminUsersContainsAsc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "needle": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "needle"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_contains_asc",
+      "operation_name": "AdminUsersContainsAsc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersContainsAsc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact AdminUsersContainsDesc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "needle": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "needle"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_contains_desc",
+      "operation_name": "AdminUsersContainsDesc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersContainsDesc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact AdminUsersEmailContainsCreatedDesc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "needle": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "needle"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_email_contains_created_desc",
+      "operation_name": "AdminUsersEmailContainsCreatedDesc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersEmailContainsCreatedDesc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact AdminUsersEmailContainsImageAsc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "needle": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "needle"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_email_contains_image_asc",
+      "operation_name": "AdminUsersEmailContainsImageAsc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersEmailContainsImageAsc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact AdminUsersEndsWithAsc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "needle": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "needle"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_ends_with_asc",
+      "operation_name": "AdminUsersEndsWithAsc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersEndsWithAsc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact AdminUsersEndsWithDesc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "needle": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "needle"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_ends_with_desc",
+      "operation_name": "AdminUsersEndsWithDesc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersEndsWithDesc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact AdminUsersStartsWithAsc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "needle": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "needle"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_starts_with_asc",
+      "operation_name": "AdminUsersStartsWithAsc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersStartsWithAsc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Execute the exact AdminUsersStartsWithDesc named query from immutable module riffdb_better_auth_core.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "maximum": 499,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "needle": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "organization_id",
+          "needle"
+        ],
+        "type": "object"
+      },
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
+      "name": "riffdb_better_auth_core_admin_users_starts_with_desc",
+      "operation_name": "AdminUsersStartsWithDesc",
+      "result_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "outcome": {
+                "const": "Found",
+                "type": "string"
+              },
+              "total": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "type": "object"
+              },
+              "users": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "email_verified": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "organization_id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "organization_id",
+                    "user_id",
+                    "name",
+                    "email",
+                    "email_verified",
+                    "image",
+                    "created_at",
+                    "updated_at",
+                    "revision"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 499,
+                "type": "array"
+              }
+            },
+            "required": [
+              "outcome",
+              "users",
+              "total"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "title": "Run AdminUsersStartsWithDesc"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
       "description": "Execute the exact FindExpiredVerificationIds named query from immutable module riffdb_better_auth_core.",
       "input_schema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -3189,7 +4404,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_expired_verification_ids",
       "operation_name": "FindExpiredVerificationIds",
       "result_schema": {
@@ -3254,7 +4469,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_user_by_email",
       "operation_name": "FindUserByEmail",
       "result_schema": {
@@ -3354,7 +4569,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f",
+      "module_hash": "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451",
       "name": "riffdb_better_auth_core_find_user_by_id",
       "operation_name": "FindUserById",
       "result_schema": {

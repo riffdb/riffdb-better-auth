@@ -88,6 +88,30 @@ function bigintField(record: Readonly<Record<string, unknown>>, field: string): 
   return value;
 }
 
+function optionalNumberField(
+  record: Readonly<Record<string, unknown>>,
+  field: string,
+  fallback: number,
+): number {
+  const value = record[field];
+  if (value === undefined) return fallback;
+  if (typeof value !== "number" || !Number.isSafeInteger(value)) {
+    throw new Error(`invalid fake number field: ${field}`);
+  }
+  return value;
+}
+
+function optionalBigintField(
+  record: Readonly<Record<string, unknown>>,
+  field: string,
+  fallback: bigint,
+): bigint {
+  const value = record[field];
+  if (value === undefined) return fallback;
+  if (typeof value !== "bigint") throw new Error(`invalid fake bigint field: ${field}`);
+  return value;
+}
+
 function timestampField(record: Readonly<Record<string, unknown>>, field: string): Timestamp {
   const value = inputRecord(record[field]);
   if (typeof value.seconds !== "bigint" || typeof value.nanos !== "number") {
@@ -159,6 +183,56 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
     const organizationId = stringField(parameters, "organization_id");
     let value: unknown;
     switch (request.queryName) {
+      case "AdminUsersAllEmailAsc":
+      case "AdminUsersContainsAsc":
+      case "AdminUsersContainsDesc":
+      case "AdminUsersStartsWithAsc":
+      case "AdminUsersStartsWithDesc":
+      case "AdminUsersEndsWithAsc":
+      case "AdminUsersEndsWithDesc":
+      case "AdminUsersEmailContainsCreatedDesc":
+      case "AdminUsersEmailContainsImageAsc": {
+        const needle = parameters.needle;
+        const userId = parameters.user_id;
+        if (needle !== undefined && typeof needle !== "string") {
+          throw new Error("invalid fake admin needle");
+        }
+        if (userId !== undefined && userId !== null && typeof userId !== "string") {
+          throw new Error("invalid fake admin user id");
+        }
+        let users = this.users.filter(
+          (row) =>
+            row.organization_id === organizationId &&
+            (userId === undefined || userId === null || row.user_id === userId),
+        );
+        if (typeof needle === "string") {
+          users = users.filter((row) => {
+            if (request.queryName.includes("StartsWith")) return row.email.startsWith(needle);
+            if (request.queryName.includes("EndsWith")) return row.email.endsWith(needle);
+            return row.email.includes(needle);
+          });
+        }
+        const total = BigInt(users.length);
+        users.sort((left, right) => {
+          if (request.queryName === "AdminUsersEmailContainsCreatedDesc") {
+            const compared = compareTimestamp(right.created_at, left.created_at);
+            return compared === 0 ? left.user_id.localeCompare(right.user_id) : compared;
+          }
+          if (request.queryName === "AdminUsersEmailContainsImageAsc") {
+            if (left.image === null && right.image !== null) return 1;
+            if (left.image !== null && right.image === null) return -1;
+            const compared = (left.image ?? "").localeCompare(right.image ?? "");
+            return compared === 0 ? left.user_id.localeCompare(right.user_id) : compared;
+          }
+          const compared = left.email.localeCompare(right.email);
+          const ordered = request.queryName.endsWith("Desc") ? -compared : compared;
+          return ordered === 0 ? left.user_id.localeCompare(right.user_id) : ordered;
+        });
+        const offset = Number(optionalBigintField(parameters, "offset", 0n));
+        const limit = optionalNumberField(parameters, "limit", 50);
+        value = { outcome: "Found", users: users.slice(offset, offset + limit), total: { value: total } };
+        break;
+      }
       case "FindUserByEmail": {
         const email = stringField(parameters, "email");
         value = {

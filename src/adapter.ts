@@ -62,6 +62,21 @@ const CORE_SCHEMA_FIELDS = {
 type CoreModel = keyof typeof CORE_SCHEMA_FIELDS;
 type RecordValue = Readonly<Record<string, unknown>>;
 type Timestamp = { readonly seconds: bigint; readonly nanos: number };
+type AdminUserRow = {
+  readonly organization_id: string;
+  readonly user_id: string;
+  readonly name: string;
+  readonly email: string;
+  readonly email_verified: boolean;
+  readonly image: string | null;
+  readonly created_at: Timestamp;
+  readonly updated_at: Timestamp;
+  readonly revision: bigint;
+};
+type AdminUserWindow = {
+  readonly users: ReadonlyArray<AdminUserRow>;
+  readonly total: { readonly value: bigint };
+};
 
 export type RiffDBBetterAuthCallErrorCode =
   | "invalid_configuration"
@@ -275,6 +290,48 @@ function whereStringSet(
   const values = [...new Set(value as string[])];
   if (values.length === 0 || values.length > 32) fail("result_bound_exceeded", operation);
   return values;
+}
+
+function adminUserWhere(
+  where: readonly CleanedWhere[] | undefined,
+  operation: string,
+): Readonly<{
+  operator?: "contains" | "starts_with" | "ends_with";
+  needle?: string;
+  userId: string | null;
+}> {
+  const clauses = where ?? [];
+  if (clauses.length > 2) fail("unsupported_call_shape", operation);
+  const id = clauses.find((clause) => clause.field === "id");
+  const search = clauses.find((clause) => clause.field !== "id");
+  if (
+    (id !== undefined &&
+      (id.operator !== "eq" || id.connector !== "AND" || id.mode !== "sensitive")) ||
+    (search !== undefined &&
+      (search.field !== "email" ||
+        !new Set<string>(["contains", "starts_with", "ends_with"]).has(
+          search.operator ?? "",
+        ) ||
+        search.connector !== "AND" ||
+        search.mode !== "sensitive")) ||
+    (id === undefined && search === undefined && clauses.length !== 0) ||
+    Number(id !== undefined) + Number(search !== undefined) !== clauses.length
+  ) {
+    fail("unsupported_call_shape", operation);
+  }
+  const userId = id === undefined ? null : id.value;
+  if (userId !== null && (typeof userId !== "string" || !isUuid(userId))) {
+    fail("unsupported_call_shape", operation);
+  }
+  if (search === undefined) return Object.freeze({ userId });
+  if (typeof search.value !== "string" || search.value.length === 0) {
+    fail("unsupported_call_shape", operation);
+  }
+  return Object.freeze({
+    operator: search.operator as "contains" | "starts_with" | "ends_with",
+    needle: search.value,
+    userId,
+  });
 }
 
 function assertNoJoin(join: Readonly<Record<string, unknown>> | undefined, operation: string): void {
@@ -765,8 +822,12 @@ class CoreDispatcher {
     join?: Readonly<Record<string, unknown>>,
   ): Promise<Record<string, unknown>[]> {
     assertNoJoin(join, `findMany ${model}`);
-    if (offset !== undefined && offset !== 0) fail("unsupported_call_shape", `findMany ${model}`);
     if (!Number.isInteger(limit) || limit < 1) fail("unsupported_call_shape", `findMany ${model}`);
+    if (model === "user") {
+      const window = await this.adminUserWindow(where, limit, sortBy, offset);
+      return window.users.map(mapUser);
+    }
+    if (offset !== undefined && offset !== 0) fail("unsupported_call_shape", `findMany ${model}`);
     if (model === "account" && exactWhere(where, ["userId"]) && sortBy === undefined) {
       if (limit > 100) fail("result_bound_exceeded", "findMany account");
       const result = await this.client.findAccountsByUserId(
@@ -874,6 +935,80 @@ class CoreDispatcher {
       return result.value.verifications.slice(0, limit).map(mapVerification);
     }
     return fail("unsupported_call_shape", `findMany ${model}`);
+  }
+
+  private async adminUserWindow(
+    where: readonly CleanedWhere[] | undefined,
+    limit: number,
+    sortBy?: { readonly field: string; readonly direction: "asc" | "desc" },
+    offset = 0,
+  ): Promise<AdminUserWindow> {
+    if (limit > 100 || !Number.isSafeInteger(offset) || offset < 0 || offset > 4_096) {
+      fail("result_bound_exceeded", "findMany user");
+    }
+    const selected = adminUserWhere(where, "findMany user");
+    const parameters = {
+      organization_id: this.organizationId,
+      user_id: selected.userId,
+      limit,
+      offset: BigInt(offset),
+    };
+    if (selected.operator === undefined) {
+      if (sortBy !== undefined && (sortBy.field !== "email" || sortBy.direction !== "asc")) {
+        fail("unsupported_call_shape", "findMany user sort");
+      }
+      const result = await this.client.adminUsersAllEmailAsc(
+        { ...parameters, minimum_email: "" },
+        this.queryOptions(),
+      );
+      return result.value;
+    }
+
+    const direction = sortBy?.direction ?? "asc";
+    const field = sortBy?.field ?? "email";
+    const searchParameters = { ...parameters, needle: selected.needle! };
+    if (field === "createdAt" && direction === "desc" && selected.operator === "contains") {
+      return (
+        await this.client.adminUsersEmailContainsCreatedDesc(
+          searchParameters,
+          this.queryOptions(),
+        )
+      ).value;
+    }
+    if (field === "image" && direction === "asc" && selected.operator === "contains") {
+      return (
+        await this.client.adminUsersEmailContainsImageAsc(
+          searchParameters,
+          this.queryOptions(),
+        )
+      ).value;
+    }
+    if (field !== "email") fail("unsupported_call_shape", "findMany user sort");
+
+    if (selected.operator === "contains") {
+      return direction === "asc"
+        ? (await this.client.adminUsersContainsAsc(searchParameters, this.queryOptions())).value
+        : (await this.client.adminUsersContainsDesc(searchParameters, this.queryOptions())).value;
+    }
+    if (selected.operator === "starts_with") {
+      return direction === "asc"
+        ? (await this.client.adminUsersStartsWithAsc(searchParameters, this.queryOptions())).value
+        : (await this.client.adminUsersStartsWithDesc(searchParameters, this.queryOptions())).value;
+    }
+    return direction === "asc"
+      ? (await this.client.adminUsersEndsWithAsc(searchParameters, this.queryOptions())).value
+      : (await this.client.adminUsersEndsWithDesc(searchParameters, this.queryOptions())).value;
+  }
+
+  public async count(
+    model: string,
+    where: readonly CleanedWhere[] | undefined,
+  ): Promise<number> {
+    if (model !== "user") fail("unsupported_call_shape", `count ${model}`);
+    const window = await this.adminUserWindow(where, 1, undefined, 0);
+    const total = window.total.value;
+    if (total > BigInt(Number.MAX_SAFE_INTEGER)) fail("result_bound_exceeded", "count user");
+    return Number(total);
   }
 
   public async delete(model: string, where: readonly CleanedWhere[]): Promise<void> {
@@ -1376,7 +1511,7 @@ function customAdapter(dispatcher: CoreDispatcher): CustomAdapter {
       dispatcher.findOne(model, where, join)),
     findMany: genericFindMany(async ({ model, where, limit, sortBy, offset, join }) =>
       dispatcher.findMany(model, where, limit, sortBy, offset, join)),
-    count: async ({ model }) => fail("unsupported_call_shape", `count ${model}`),
+    count: async ({ model, where }) => dispatcher.count(model, where),
     update: genericUpdate(async ({ model, where, update }) =>
       dispatcher.update(model, where, update)),
     updateMany: async ({ model, where, update }) => dispatcher.updateMany(model, where, update),

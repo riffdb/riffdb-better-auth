@@ -15,10 +15,15 @@ SyncApplicationTransport, Timestamp, TypedCommandResult, TypedQueryResult, Workf
 )
 from riffdb_application._binding import decode_variant, encode_record
 
+def _compact_tag(value: object, tag: str, keys: frozenset[str]) -> dict[str, object]:
+    if not isinstance(value, dict) or value.get("$riffdb") != tag or frozenset(value) != keys:
+        raise ValueError("invalid RiffDB compact value")
+    return value
+
 CONTRACT_LINEAGE: Final[str] = "RiffDBBetterAuthCore"
 CONTRACT_VERSION: Final[int] = 1
-CONTRACT_BUNDLE_HASH: Final[str] = "541be33ed959b5835639465ae7d444850790f8bc60227be9b2be7882aa634150"
-QUERY_MODULE_HASH: Final[str] = "e162bd104d954fe174609d0393084dc2d241a75221b3e5985bb4c3a009f45b3f"
+CONTRACT_BUNDLE_HASH: Final[str] = "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f"
+QUERY_MODULE_HASH: Final[str] = "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -83,7 +88,313 @@ class AccountPasswordUpdate:
     provider_id: str
     organization_id: UUID
 
-FIND_ACCOUNT_BY_ID_QUERY_PLAN_HASH: Final[str] = "5e1f2812714a2b3f78d353ee60469bd5830b9689f8df20cfa50a368108318071"
+ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "730f13d373b4c56e2100af3dc94a5266086e8cd17d29f8419c0f01da7f53bdd8"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersAllEmailAscParams:
+    organization_id: UUID
+    minimum_email: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersAllEmailAscFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersAllEmailAscFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersAllEmailAscFound:
+    users: tuple[AdminUsersAllEmailAscFoundUsers, ...]
+    total: AdminUsersAllEmailAscFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersAllEmailAscResult: TypeAlias = AdminUsersAllEmailAscFound
+
+ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "44444acad12809fd5eaef7a6d4a2637996e412b1095d2dcc90bba61b4f39cff2"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersContainsAscParams:
+    organization_id: UUID
+    needle: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersContainsAscFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersContainsAscFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersContainsAscFound:
+    users: tuple[AdminUsersContainsAscFoundUsers, ...]
+    total: AdminUsersContainsAscFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersContainsAscResult: TypeAlias = AdminUsersContainsAscFound
+
+ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "b8f41fd1ad70555bcafc44505ffd236cb2dada3b67db857bfdc10ddace066fe0"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersContainsDescParams:
+    organization_id: UUID
+    needle: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersContainsDescFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersContainsDescFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersContainsDescFound:
+    users: tuple[AdminUsersContainsDescFoundUsers, ...]
+    total: AdminUsersContainsDescFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersContainsDescResult: TypeAlias = AdminUsersContainsDescFound
+
+ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "467839c9c54a4d5e2178e92388d5dfa85e49eefbb5d7c82d15b0ed74152f12bc"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEmailContainsCreatedDescParams:
+    organization_id: UUID
+    needle: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEmailContainsCreatedDescFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEmailContainsCreatedDescFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEmailContainsCreatedDescFound:
+    users: tuple[AdminUsersEmailContainsCreatedDescFoundUsers, ...]
+    total: AdminUsersEmailContainsCreatedDescFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersEmailContainsCreatedDescResult: TypeAlias = AdminUsersEmailContainsCreatedDescFound
+
+ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "21b244e4405b9662f617c48436d8ab00e39b514d1906b37147c5a3062dc835f5"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEmailContainsImageAscParams:
+    organization_id: UUID
+    needle: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEmailContainsImageAscFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEmailContainsImageAscFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEmailContainsImageAscFound:
+    users: tuple[AdminUsersEmailContainsImageAscFoundUsers, ...]
+    total: AdminUsersEmailContainsImageAscFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersEmailContainsImageAscResult: TypeAlias = AdminUsersEmailContainsImageAscFound
+
+ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "1af0dcda10b930676e128a3de30a3984e1493263caa669f6ca4c9b52b3421122"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEndsWithAscParams:
+    organization_id: UUID
+    needle: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEndsWithAscFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEndsWithAscFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEndsWithAscFound:
+    users: tuple[AdminUsersEndsWithAscFoundUsers, ...]
+    total: AdminUsersEndsWithAscFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersEndsWithAscResult: TypeAlias = AdminUsersEndsWithAscFound
+
+ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "27004db9437f905c22014fa71109a27933e8ee9b202a8ecbb37ce9253a0bef0e"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEndsWithDescParams:
+    organization_id: UUID
+    needle: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEndsWithDescFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEndsWithDescFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersEndsWithDescFound:
+    users: tuple[AdminUsersEndsWithDescFoundUsers, ...]
+    total: AdminUsersEndsWithDescFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersEndsWithDescResult: TypeAlias = AdminUsersEndsWithDescFound
+
+ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "023d3d46a28e27a7184d859d59b0327cb2a2fe2ee50b4b53ca80e3125dc81a62"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersStartsWithAscParams:
+    organization_id: UUID
+    needle: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersStartsWithAscFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersStartsWithAscFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersStartsWithAscFound:
+    users: tuple[AdminUsersStartsWithAscFoundUsers, ...]
+    total: AdminUsersStartsWithAscFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersStartsWithAscResult: TypeAlias = AdminUsersStartsWithAscFound
+
+ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "82acf832e19b8e69968921baf0e5ee401e67b6141a72472c74bf2d34e8bf94a5"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersStartsWithDescParams:
+    organization_id: UUID
+    needle: str
+    user_id: UUID | None = None
+    limit: Annotated[int, "u64"] | None = None
+    offset: Annotated[int, "u64"] | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersStartsWithDescFoundUsers:
+    organization_id: UUID
+    user_id: UUID
+    name: str
+    email: str
+    email_verified: bool
+    image: str | None
+    created_at: Timestamp
+    updated_at: Timestamp
+    revision: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersStartsWithDescFoundTotal:
+    value: Annotated[int, "u64"]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class AdminUsersStartsWithDescFound:
+    users: tuple[AdminUsersStartsWithDescFoundUsers, ...]
+    total: AdminUsersStartsWithDescFoundTotal
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+AdminUsersStartsWithDescResult: TypeAlias = AdminUsersStartsWithDescFound
+
+FIND_ACCOUNT_BY_ID_QUERY_PLAN_HASH: Final[str] = "685efeb5591071345c4c94f7cb1ac4314cfc6dcec5bdd15c806db5fa66bf9ba3"
 FIND_ACCOUNT_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountById", "Account", "access_token"),
     ("FindAccountById", "Account", "refresh_token"),
@@ -121,7 +432,7 @@ class FindAccountByIdFound:
 
 FindAccountByIdResult: TypeAlias = FindAccountByIdFound
 
-FIND_ACCOUNT_BY_PROVIDER_QUERY_PLAN_HASH: Final[str] = "c02b4c470f9390cfcbfc8350bebaccd320445afa88246baafbfe27e35baa29ae"
+FIND_ACCOUNT_BY_PROVIDER_QUERY_PLAN_HASH: Final[str] = "cc05c3dfefe3fd4fda4463105fd6eb704832c2efde27bb645dded64c18fb13b5"
 FIND_ACCOUNT_BY_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountByProvider", "Account", "access_token"),
     ("FindAccountByProvider", "Account", "refresh_token"),
@@ -160,7 +471,7 @@ class FindAccountByProviderFound:
 
 FindAccountByProviderResult: TypeAlias = FindAccountByProviderFound
 
-FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "4694c96d50546d4f109b532623cee0da55ee9e9a01477f0df59e8276c7bcca8e"
+FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "93354d290f90935b6d46769dba5430904d96ce3eb8f66ff69f4752969d4e8d8b"
 FIND_ACCOUNTS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserId", "Account", "access_token"),
     ("FindAccountsByUserId", "Account", "refresh_token"),
@@ -199,7 +510,7 @@ class FindAccountsByUserIdFound:
 
 FindAccountsByUserIdResult: TypeAlias = FindAccountsByUserIdFound
 
-FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "af936356c9bd7f4e3cc79baad4c6861d75c8b53a74238f4882481ba06161d378"
+FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "5d1967c2ce34ace2a7e3c58f067900da8d6288efdd6c5f2d27123bea46d3c704"
 FIND_ACTIVE_SESSIONS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindActiveSessionsByUserId", "Session", "token"),
 )
@@ -231,7 +542,7 @@ class FindActiveSessionsByUserIdFound:
 
 FindActiveSessionsByUserIdResult: TypeAlias = FindActiveSessionsByUserIdFound
 
-FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH: Final[str] = "43d64b51b7eaeaa56fab63f6042736fab1bf79486a57a5a7949bc9e9d05f332e"
+FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH: Final[str] = "5eb8f451cada21dd1e93c36a003f302a1dcd57f08c39fa420f1cf351a481205f"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindExpiredVerificationIdsParams:
@@ -250,7 +561,7 @@ class FindExpiredVerificationIdsFound:
 
 FindExpiredVerificationIdsResult: TypeAlias = FindExpiredVerificationIdsFound
 
-FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "bd8d4b384ee799602afe08393333d27d6947fff94238de3880e76ef87937e1c0"
+FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "9009aa55b7f41069e1cfbe2b7ff54a9400d519bc235f4f9f90406fcfa4df4f06"
 FIND_LATEST_VERIFICATION_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindLatestVerification", "Verification", "value"),
 )
@@ -278,7 +589,7 @@ class FindLatestVerificationFound:
 
 FindLatestVerificationResult: TypeAlias = FindLatestVerificationFound
 
-FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "692e9896d9ee58fb455bc3849bbb3cf1d3fceb22f15e0b226ff795a0d7bebd02"
+FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "8b1654c9c96859b950efa6c7418cc35ef8c86b16e8d8d7bdc82ae9b834c9111a"
 FIND_SESSION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionById", "Session", "token"),
 )
@@ -308,7 +619,7 @@ class FindSessionByIdFound:
 
 FindSessionByIdResult: TypeAlias = FindSessionByIdFound
 
-FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "3dc135ee6f4151308ea4b1a6df0e4e0a53d151565cfaeaeb2417a1317b3f6b8f"
+FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "6199acea61e789824833c3b42ae301ec0c29eab51caa426444e0fbff76418205"
 FIND_SESSION_BY_TOKEN_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionByToken", "Session", "token"),
 )
@@ -338,7 +649,7 @@ class FindSessionByTokenFound:
 
 FindSessionByTokenResult: TypeAlias = FindSessionByTokenFound
 
-FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "50fec7186cfadbeaa096ffefc55cb01895f0629784ebb18fc3209d2f0ce23005"
+FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "a4d6ddfcf66d13058e3df0c2ff960dcf069a4e2054da6e2b9cbc570bd3ffddae"
 FIND_SESSIONS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionsByUserId", "Session", "token"),
 )
@@ -369,7 +680,7 @@ class FindSessionsByUserIdFound:
 
 FindSessionsByUserIdResult: TypeAlias = FindSessionsByUserIdFound
 
-FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "b3b5011a19a154a46341053a4aa7c85fe569f604d4bbfcb5c377831125e4cd8c"
+FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "d085b968b4a9060e4b915525ef06f83a4fa0c9b3d014cfb400bda44bdd720d85"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByEmailParams:
@@ -394,7 +705,7 @@ class FindUserByEmailFound:
 
 FindUserByEmailResult: TypeAlias = FindUserByEmailFound
 
-FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "90066115533c9556aeb736ed9df2615b06d23edcf2fd82490b0b178d9be504cd"
+FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "03a4223059ecd4d20ad1d193c57753923f058398ad31de57c6208531804ed770"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByIdParams:
@@ -423,7 +734,7 @@ class FindUserByIdMissing:
 
 FindUserByIdResult: TypeAlias = FindUserByIdFound | FindUserByIdMissing
 
-FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "eaf3839e91f492b98d066d6df457cb493612784151f85e121fcefd9ea55b6c17"
+FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "92edeb91a5c77dc5ed7e7068dbda5ef54f111f9d363878191cb703b112f36114"
 FIND_VERIFICATION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationById", "Verification", "value"),
 )
@@ -455,7 +766,7 @@ class FindVerificationByIdMissing:
 
 FindVerificationByIdResult: TypeAlias = FindVerificationByIdFound | FindVerificationByIdMissing
 
-FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "747e5772a57c4538c0d49b9ea22d67a9ad86644ea0fcf6dabebaa0413f96c9c3"
+FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "ee3ac63ee979a4904dd5ed191be16ce9ec4f3d1252c09e9c6b62454ca6c432f5"
 FIND_VERIFICATIONS_BY_IDENTIFIER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationsByIdentifier", "Verification", "value"),
 )
@@ -490,7 +801,7 @@ class ConsumeVerificationSetInput:
     organization_id: UUID
     verification_ids: tuple[UUID, ...]
 
-CONSUME_VERIFICATION_SET_PLAN_HASH: Final[str] = "a66d95985b080b1f07ee91b5941cdb5c59b88093973719d5e58f1333001eec88"
+CONSUME_VERIFICATION_SET_PLAN_HASH: Final[str] = "e90e64ce528ad3669cf37965290adda7513b4fb641ef956d64bb3cf80168b343"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ConsumeVerificationSetVerificationSetConsumed:
     outcome: Literal["VerificationSetConsumed"] = field(default="VerificationSetConsumed", init=False)
@@ -519,7 +830,7 @@ class CreateAccountInput:
     access_token_expires_at: Timestamp | None
     refresh_token_expires_at: Timestamp | None
 
-CREATE_ACCOUNT_PLAN_HASH: Final[str] = "6f2560332cfa12b801feb2bbd6a45be348eb426dc52554254c54c9dd2815865d"
+CREATE_ACCOUNT_PLAN_HASH: Final[str] = "0cc0a4c41781ceb4f85b025899be7d8addde85ae6aa2f06225cf67b3ba00f4e2"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateAccountAccountCreated:
     outcome: Literal["AccountCreated"] = field(default="AccountCreated", init=False)
@@ -558,7 +869,7 @@ class CreateOAuthUserGraphInput:
     access_token_expires_at: Timestamp | None
     refresh_token_expires_at: Timestamp | None
 
-CREATE_OAUTH_USER_GRAPH_PLAN_HASH: Final[str] = "e8c9de08592e8da23e95f683c5afbd6c30ba9c7b85a4e183e5e3457461107c09"
+CREATE_OAUTH_USER_GRAPH_PLAN_HASH: Final[str] = "9dcc38caa0c5cb2918ef1b383d5dcaa9f8a95d2913c632233fe5c32359c88570"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateOAuthUserGraphOAuthUserExists:
     outcome: Literal["OAuthUserExists"] = field(default="OAuthUserExists", init=False)
@@ -586,7 +897,7 @@ class CreateSessionInput:
     user_agent: str | None
     organization_id: UUID
 
-CREATE_SESSION_PLAN_HASH: Final[str] = "05ae79e74ef152c4d06303d40a74384f7fd7ef8e75a495aacac23d28bad725bf"
+CREATE_SESSION_PLAN_HASH: Final[str] = "4292ddb74c4fbb26975f0754683be9cac597e054d5703935ecb4379b73bae5f1"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSessionSessionCreated:
     outcome: Literal["SessionCreated"] = field(default="SessionCreated", init=False)
@@ -626,7 +937,7 @@ class CreateSignupGraphInput:
     external_account_id: str
     user_email_verified: bool
 
-CREATE_SIGNUP_GRAPH_PLAN_HASH: Final[str] = "bbdbdb31dce24a4c0a1cbe20d2cb6fb1693fecbe2760dc8f38e2f3bbd7a127bc"
+CREATE_SIGNUP_GRAPH_PLAN_HASH: Final[str] = "8caecfbea3708c720d98f3acf53351c6734513c9b76bc7eaff0feb216bf7f910"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSignupGraphSignupUserExists:
     outcome: Literal["SignupUserExists"] = field(default="SignupUserExists", init=False)
@@ -657,7 +968,7 @@ class CreateUserInput:
     email_verified: bool
     organization_id: UUID
 
-CREATE_USER_PLAN_HASH: Final[str] = "535fb4e2bc107cd645dbe7e9647f04cc8f77918924974ab6c9bc158b87008736"
+CREATE_USER_PLAN_HASH: Final[str] = "f21d7e06a6a6d137696d1618e2f311dc5a72a20ad2071631e0d8a2d927d8bd1d"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateUserUserCreated:
     outcome: Literal["UserCreated"] = field(default="UserCreated", init=False)
@@ -679,7 +990,7 @@ class CreateVerificationInput:
     updated_at: Timestamp
     organization_id: UUID
 
-CREATE_VERIFICATION_PLAN_HASH: Final[str] = "ea666debdc2b90996ec48604ca3f7b8c7210c72c64b848fb9d71e4d395261d1c"
+CREATE_VERIFICATION_PLAN_HASH: Final[str] = "586f67d309e0edde648ffb62139733dd86eb3f53e322503b7f26aa1ed3c4ea2e"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateVerificationVerificationCreated:
     outcome: Literal["VerificationCreated"] = field(default="VerificationCreated", init=False)
@@ -697,7 +1008,7 @@ class DeleteAccountInput:
     account_ids: tuple[UUID, ...]
     organization_id: UUID
 
-DELETE_ACCOUNT_PLAN_HASH: Final[str] = "e0ae4691de1acf976003486c9281bfc71975ee9e25b8f5ae4e0eedf17eeb759d"
+DELETE_ACCOUNT_PLAN_HASH: Final[str] = "6429ebe6e70797c57c44a4738c8a511bbe5304e5bf58148dfc0c2721ffaff382"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteAccountAccountDeleted:
     outcome: Literal["AccountDeleted"] = field(default="AccountDeleted", init=False)
@@ -715,7 +1026,7 @@ class DeleteSessionInput:
     session_ids: tuple[UUID, ...]
     organization_id: UUID
 
-DELETE_SESSION_PLAN_HASH: Final[str] = "fb5712f9f93f0812031d51c7d1e7e9cb11394716cb9b0f2a19c11baacd06d8a9"
+DELETE_SESSION_PLAN_HASH: Final[str] = "a3901beb6c2d2754fd3d2c64252b6f5059cd1792c0a0560741c94da4668a0524"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteSessionSessionDeleted:
     outcome: Literal["SessionDeleted"] = field(default="SessionDeleted", init=False)
@@ -732,7 +1043,7 @@ class DeleteUserInput:
     request_id: UUID
     organization_id: UUID
 
-DELETE_USER_PLAN_HASH: Final[str] = "7c2323a3f32ae4d7b7855a9df13d35e83995a467a2fefce668d3bf94799d23f9"
+DELETE_USER_PLAN_HASH: Final[str] = "d027f85aea0e28d30219cc1f995352a1d00ad669a29885ae74b5fb25497cbc34"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteUserUserDeleted:
     outcome: Literal["UserDeleted"] = field(default="UserDeleted", init=False)
@@ -753,7 +1064,7 @@ class DeleteVerificationInput:
     organization_id: UUID
     verification_ids: tuple[UUID, ...]
 
-DELETE_VERIFICATION_PLAN_HASH: Final[str] = "9d9a74f180828deaf0955489768118271db801c2746a956b8065e5225a3570e2"
+DELETE_VERIFICATION_PLAN_HASH: Final[str] = "bffc0c5ef5ad2b602954492d043e833785ec3f9d6f0520fbc0f933422544ae6a"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteVerificationVerificationDeleted:
     outcome: Literal["VerificationDeleted"] = field(default="VerificationDeleted", init=False)
@@ -782,7 +1093,7 @@ class UpdateAccountInput:
     access_token_expires_at: Timestamp | None
     refresh_token_expires_at: Timestamp | None
 
-UPDATE_ACCOUNT_PLAN_HASH: Final[str] = "0dc8ab13f9fea35ebf8d1e629f6870eb8af2fa12fda8fe326552fb1f64f70862"
+UPDATE_ACCOUNT_PLAN_HASH: Final[str] = "35e545a7ba4ec5e39d040cb3c832c175b07331aa39e9c329b435fa680f4c3c13"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountAccountUpdated:
     outcome: Literal["AccountUpdated"] = field(default="AccountUpdated", init=False)
@@ -804,7 +1115,7 @@ class UpdateAccountPasswordsInput:
     request_id: UUID
     organization_id: UUID
 
-UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: Final[str] = "380bd4efe9e846a71d19cc3ca037c4ab2436d30b6583db17d4e53fd34e714e4f"
+UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: Final[str] = "57601183308604db7952a227981160afbf27de0cd46154e8cd989564bd9be5c5"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountPasswordsPasswordAccountMissing:
     outcome: Literal["PasswordAccountMissing"] = field(default="PasswordAccountMissing", init=False)
@@ -831,7 +1142,7 @@ class UpdateSessionInput:
     organization_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-UPDATE_SESSION_PLAN_HASH: Final[str] = "59e5b82c09caa60194cb0e1bb6cd9c9d8fc6a3f419f8ed1cfc67ce7b80b528c1"
+UPDATE_SESSION_PLAN_HASH: Final[str] = "47a20c198db83b859b152dd8b500daa501acf8f4b0f0fd232f9aa26b9e021fb7"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateSessionSessionUpdated:
     outcome: Literal["SessionUpdated"] = field(default="SessionUpdated", init=False)
@@ -858,7 +1169,7 @@ class UpdateUserInput:
     organization_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-UPDATE_USER_PLAN_HASH: Final[str] = "18495d705452ce951c17ff1ab67c60f4abb964049837146acc6a5e37fafc3ca5"
+UPDATE_USER_PLAN_HASH: Final[str] = "0681fe24aaece6ae71a3de15046ea5a8006d89690b2e51f6f20e478585c5a3fd"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateUserUserUpdated:
     outcome: Literal["UserUpdated"] = field(default="UserUpdated", init=False)
@@ -883,7 +1194,7 @@ class UpdateVerificationInput:
     verification_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-UPDATE_VERIFICATION_PLAN_HASH: Final[str] = "1793d95f29ffae3432297276b8f1fbf1dbc0db49c7e4a7f176a2da4f9a06ec19"
+UPDATE_VERIFICATION_PLAN_HASH: Final[str] = "1be4b743bd9dc1ef4fd421d7ec7de8d88d86aad6ac069080fd2cd4f9b61f5231"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateVerificationVerificationUpdated:
     outcome: Literal["VerificationUpdated"] = field(default="VerificationUpdated", init=False)
@@ -902,6 +1213,114 @@ class RiffDBBetterAuthCoreClient:
     def __init__(self, transport: SyncApplicationTransport, command_attempts: AttemptBudget) -> None:
         self._transport = transport
         self._command_attempts = command_attempts
+
+    def admin_users_all_email_asc(self, parameters: AdminUsersAllEmailAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersAllEmailAscResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersAllEmailAsc", plan_hash=ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersAllEmailAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def admin_users_contains_asc(self, parameters: AdminUsersContainsAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsAscResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersContainsAsc", plan_hash=ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersContainsAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def admin_users_contains_desc(self, parameters: AdminUsersContainsDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsDescResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersContainsDesc", plan_hash=ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersContainsDescFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def admin_users_email_contains_created_desc(self, parameters: AdminUsersEmailContainsCreatedDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsCreatedDescResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersEmailContainsCreatedDesc", plan_hash=ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersEmailContainsCreatedDescFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def admin_users_email_contains_image_asc(self, parameters: AdminUsersEmailContainsImageAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsImageAscResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersEmailContainsImageAsc", plan_hash=ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersEmailContainsImageAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def admin_users_ends_with_asc(self, parameters: AdminUsersEndsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithAscResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersEndsWithAsc", plan_hash=ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersEndsWithAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def admin_users_ends_with_desc(self, parameters: AdminUsersEndsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithDescResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersEndsWithDesc", plan_hash=ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersEndsWithDescFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def admin_users_starts_with_asc(self, parameters: AdminUsersStartsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithAscResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersStartsWithAsc", plan_hash=ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersStartsWithAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def admin_users_starts_with_desc(self, parameters: AdminUsersStartsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithDescResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersStartsWithDesc", plan_hash=ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersStartsWithDescFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def find_account_by_id(self, parameters: FindAccountByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByIdResult]:
         raw = self._transport._execute_named_query(
@@ -1394,6 +1813,114 @@ class AsyncRiffDBBetterAuthCoreClient:
     def __init__(self, transport: AsyncApplicationTransport, command_attempts: AttemptBudget) -> None:
         self._transport = transport
         self._command_attempts = command_attempts
+
+    async def admin_users_all_email_asc(self, parameters: AdminUsersAllEmailAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersAllEmailAscResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersAllEmailAsc", plan_hash=ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersAllEmailAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def admin_users_contains_asc(self, parameters: AdminUsersContainsAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsAscResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersContainsAsc", plan_hash=ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersContainsAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def admin_users_contains_desc(self, parameters: AdminUsersContainsDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsDescResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersContainsDesc", plan_hash=ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersContainsDescFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def admin_users_email_contains_created_desc(self, parameters: AdminUsersEmailContainsCreatedDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsCreatedDescResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersEmailContainsCreatedDesc", plan_hash=ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersEmailContainsCreatedDescFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def admin_users_email_contains_image_asc(self, parameters: AdminUsersEmailContainsImageAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsImageAscResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersEmailContainsImageAsc", plan_hash=ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersEmailContainsImageAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def admin_users_ends_with_asc(self, parameters: AdminUsersEndsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithAscResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersEndsWithAsc", plan_hash=ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersEndsWithAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def admin_users_ends_with_desc(self, parameters: AdminUsersEndsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithDescResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersEndsWithDesc", plan_hash=ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersEndsWithDescFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def admin_users_starts_with_asc(self, parameters: AdminUsersStartsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithAscResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersStartsWithAsc", plan_hash=ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersStartsWithAscFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def admin_users_starts_with_desc(self, parameters: AdminUsersStartsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithDescResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="AdminUsersStartsWithDesc", plan_hash=ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": AdminUsersStartsWithDescFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def find_account_by_id(self, parameters: FindAccountByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByIdResult]:
         raw = await self._transport._execute_named_query(
