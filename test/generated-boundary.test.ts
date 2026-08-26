@@ -21,10 +21,12 @@ describe("generated secret-output boundary", () => {
       "FindAccountById",
       "FindAccountByProvider",
       "FindAccountsByUserId",
+      "FindAccountsByUserProvider",
       "FindActiveSessionsByUserId",
       "FindLatestVerification",
       "FindSessionById",
       "FindSessionByToken",
+      "FindSessionsByTokenSet",
       "FindSessionsByUserId",
       "FindVerificationById",
       "FindVerificationsByIdentifier",
@@ -38,6 +40,12 @@ describe("generated secret-output boundary", () => {
     );
     expect(operations.tools.map((operation) => operation.operation_name)).toContain(
       "FindExpiredVerificationIds",
+    );
+    expect(operations.commands.map((operation) => operation.operation_name)).toContain(
+      "ConsumeVerification",
+    );
+    expect(operations.tools.map((operation) => operation.operation_name)).not.toContain(
+      "ConsumeVerification",
     );
     expect(operations.commands.map((operation) => operation.operation_name)).not.toEqual(
       expect.arrayContaining([

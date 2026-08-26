@@ -25,7 +25,10 @@ The shipped runtime profile is deliberately exact:
 
 Unsupported configuration fails before any RiffDB request. A custom or plugin
 profile requires its own generated contract, named operations, client facade,
-and conformance tests.
+and conformance tests. Adapter construction also verifies that the resolved
+`better-auth` installation is exactly `1.6.29`; package-manager overrides do
+not bypass that runtime check. Secret-bearing Better Auth debug logging is
+rejected rather than forwarded to the factory logger.
 
 ## Runtime use
 
@@ -62,7 +65,7 @@ The core profile supports:
 - atomic email/password signup and OAuth user/account creation;
 - user, account, session, and verification create/read/update/delete paths;
 - revision-guarded partial updates with bounded stale retries;
-- atomic single-use verification consumption;
+- atomic delete-and-return single-use verification consumption;
 - bounded dependent and cascade deletion;
 - active-session, token-set, provider-account, and verification queries;
 - exact user counts with an optional UUID or bounded email text predicate; and
@@ -74,6 +77,12 @@ Email search supports `contains`, `starts_with`, and `ends_with`; every accepted
 filter/order combination maps to a distinct generated RiffQL query. Unsupported
 counts, fields, filters, orderings, joins, transaction graphs, and increments
 fail closed.
+
+Token-set session reads use one bounded compiled membership query. Combining a
+token set with an expiry cutoff remains unsupported until that exact compound
+predicate has its own reviewed named query. Verification listing accepts its
+compiled default order, plus `createdAt desc` with `limit: 1`; every other
+verification sort is rejected before a RiffDB request.
 
 Secret account credentials, session tokens, and verification values are read
 by named RiffQL queries whose exact returned leaves carry compiler-checked
@@ -146,8 +155,8 @@ npm install
 npm run check
 ```
 
-The lock is pinned to `@riffdb/client@0.1.0-dev.14` and
-`@riffdb/cli@0.1.0-dev.14`. Driver changes require a new immutable local build
+The lock is pinned to `@riffdb/client@0.1.0-dev.16` and
+`@riffdb/cli@0.1.0-dev.16`. Driver changes require a new immutable local build
 number and deliberate lock update. Nothing in this repository is published as
 part of the current development workflow.
 

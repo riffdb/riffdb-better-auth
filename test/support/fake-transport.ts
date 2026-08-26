@@ -157,6 +157,7 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
   private readonly verifications: VerificationRow[] = [];
   private sequence = 0n;
   public readonly commandLog: string[] = [];
+  public readonly queryLog: string[] = [];
 
   public resetModel(model: string): number {
     const table =
@@ -179,9 +180,11 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
     request: NamedQueryRequest<P, R>,
     _options?: QueryOptions,
   ): Promise<TypedQueryResult<R>> {
+    this.queryLog.push(request.queryName);
     const parameters = inputRecord(request.parameters);
     const organizationId = stringField(parameters, "organization_id");
     let value: unknown;
+    let nextCursor: string | undefined;
     switch (request.queryName) {
       case "AdminUsersAllEmailAsc":
       case "AdminUsersContainsAsc":
@@ -306,6 +309,24 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
         };
         break;
       }
+      case "FindSessionsByTokenSet": {
+        const tokens = new Set(stringListField(parameters, "tokens"));
+        value = {
+          outcome: "Found",
+          sessions: this.sessions
+            .filter(
+              (row) => row.organization_id === organizationId && tokens.has(row.token),
+            )
+            .sort((left, right) => {
+              const token = left.token.localeCompare(right.token);
+              if (token !== 0) return token;
+              const user = left.user_id.localeCompare(right.user_id);
+              return user !== 0 ? user : left.id.localeCompare(right.id);
+            })
+            .map(({ organization_id: _organizationId, ...row }) => row),
+        };
+        break;
+      }
       case "FindAccountsByUserId": {
         const userId = stringField(parameters, "user_id");
         value = {
@@ -315,6 +336,26 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
               (row) => row.organization_id === organizationId && row.user_id === userId,
             )
             .sort((left, right) => left.id.localeCompare(right.id))
+            .map(({ organization_id: _organizationId, ...row }) => row),
+        };
+        break;
+      }
+      case "FindAccountsByUserProvider": {
+        const userId = stringField(parameters, "user_id");
+        const providerId = stringField(parameters, "provider_id");
+        const accounts = this.accounts
+          .filter(
+            (row) =>
+              row.organization_id === organizationId &&
+              row.user_id === userId &&
+              row.provider_id === providerId,
+          )
+          .sort((left, right) => left.id.localeCompare(right.id));
+        if (accounts.length > 8) nextCursor = "fake-more-accounts";
+        value = {
+          outcome: "Found",
+          accounts: accounts
+            .slice(0, 8)
             .map(({ organization_id: _organizationId, ...row }) => row),
         };
         break;
@@ -429,6 +470,7 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       },
       value: value as R,
       applicationHead: this.sequence,
+      ...(nextCursor === undefined ? {} : { nextCursor }),
     };
   }
 
@@ -492,6 +534,9 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
             "VerificationConsumeMissing",
           ),
         };
+        break;
+      case "ConsumeVerification":
+        outcome = this.consumeVerification(input);
         break;
       case "UpdateAccountPasswords":
         outcome = { outcome: this.updateAccountPasswords(input) };
@@ -977,6 +1022,20 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
     return success;
   }
 
+  private consumeVerification(input: Readonly<Record<string, unknown>>): Record<string, unknown> {
+    const organizationId = stringField(input, "organization_id");
+    const verificationId = stringField(input, "verification_id");
+    const index = this.verifications.findIndex(
+      (row) =>
+        row.organization_id === organizationId && row.verification_id === verificationId,
+    );
+    if (index < 0) return { outcome: "VerificationConsumeMissing" };
+    const [row] = this.verifications.splice(index, 1);
+    if (row === undefined) throw new Error("fake verification consume lost its row");
+    const { organization_id: _organizationId, ...consumed } = row;
+    return { outcome: "VerificationConsumed", ...consumed };
+  }
+
   private updateAccountPasswords(input: Readonly<Record<string, unknown>>): string {
     const updates = input.updates;
     if (!Array.isArray(updates)) throw new Error("invalid fake account updates");
@@ -992,13 +1051,21 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       if (account.provider_id !== stringField(update, "provider_id")) {
         return "PasswordProviderMismatch";
       }
+      if (account.revision !== bigintField(update, "expected_revision")) {
+        return "PasswordAccountStale";
+      }
     }
     for (const update of resolved) {
-      const account = this.accounts.find(
+      const index = this.accounts.findIndex(
         (row) => row.id === stringField(update, "account_id"),
-      )!;
-      account.password = nullableStringField(update, "password");
-      account.updated_at = timestampField(update, "updated_at");
+      );
+      const account = this.accounts[index]!;
+      this.accounts[index] = {
+        ...account,
+        password: nullableStringField(update, "password"),
+        updated_at: timestampField(update, "updated_at"),
+        revision: account.revision + 1n,
+      };
     }
     return "AccountPasswordsUpdated";
   }

@@ -144,13 +144,7 @@ function validateContractIdentity(
   return Object.freeze({ ...contract });
 }
 
-/**
- * Validates the only Better Auth profile supported by the first adapter slice.
- *
- * This function is deliberately exact. It never treats an unknown model,
- * field, plugin, ID strategy, or contract identity as a generic database
- * operation. Future support requires a new compiled profile schema.
- */
+/** Validates the exact compiled Better Auth core profile. */
 export function defineRiffDBBetterAuthCoreProfile(
   input: RiffDBBetterAuthCoreProfileInput,
 ): RiffDBBetterAuthCoreProfile {

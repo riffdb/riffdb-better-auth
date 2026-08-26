@@ -22,8 +22,8 @@ def _compact_tag(value: object, tag: str, keys: frozenset[str]) -> dict[str, obj
 
 CONTRACT_LINEAGE: Final[str] = "RiffDBBetterAuthCore"
 CONTRACT_VERSION: Final[int] = 1
-CONTRACT_BUNDLE_HASH: Final[str] = "ac1f60445134c39288a0ebc99bca7382b5bd6f6d25ba7b93af8535fbe1f8dd8f"
-QUERY_MODULE_HASH: Final[str] = "009cab13b3cc09c2457fa19572bf0d07ba6908e5e53c8ea7c5cdacf263b0e451"
+CONTRACT_BUNDLE_HASH: Final[str] = "dff3e37c6ec7f6d6f6c14738743ad7b79be0d532eaa5cbd24ec577b17246c9bc"
+QUERY_MODULE_HASH: Final[str] = "7a91bcf8d04f0cbbd380810635485d6263c5dec7131ba48ba6e35245fc0ba2cb"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -87,8 +87,9 @@ class AccountPasswordUpdate:
     updated_at: Timestamp
     provider_id: str
     organization_id: UUID
+    expected_revision: Annotated[int, "u64"]
 
-ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "730f13d373b4c56e2100af3dc94a5266086e8cd17d29f8419c0f01da7f53bdd8"
+ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "c230e2b48fa79645a580a081f4f1dc94ff899076f467422fe8d744a1e9de84c2"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersAllEmailAscParams:
@@ -122,7 +123,7 @@ class AdminUsersAllEmailAscFound:
 
 AdminUsersAllEmailAscResult: TypeAlias = AdminUsersAllEmailAscFound
 
-ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "44444acad12809fd5eaef7a6d4a2637996e412b1095d2dcc90bba61b4f39cff2"
+ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "a2ffb7aba45510a8223108221f234f01afc1d04148960414025920b47b6e6527"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersContainsAscParams:
@@ -156,7 +157,7 @@ class AdminUsersContainsAscFound:
 
 AdminUsersContainsAscResult: TypeAlias = AdminUsersContainsAscFound
 
-ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "b8f41fd1ad70555bcafc44505ffd236cb2dada3b67db857bfdc10ddace066fe0"
+ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "2c8daae520d1de4fccbffa1cfdedc26f33a99fa25bd3df41f7922e84c9466740"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersContainsDescParams:
@@ -190,7 +191,7 @@ class AdminUsersContainsDescFound:
 
 AdminUsersContainsDescResult: TypeAlias = AdminUsersContainsDescFound
 
-ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "467839c9c54a4d5e2178e92388d5dfa85e49eefbb5d7c82d15b0ed74152f12bc"
+ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "a8fbf727fc16a5a76ec0607a4ec1acbd8c1e9193384bab8130bd357ea8784473"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEmailContainsCreatedDescParams:
@@ -224,7 +225,7 @@ class AdminUsersEmailContainsCreatedDescFound:
 
 AdminUsersEmailContainsCreatedDescResult: TypeAlias = AdminUsersEmailContainsCreatedDescFound
 
-ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "21b244e4405b9662f617c48436d8ab00e39b514d1906b37147c5a3062dc835f5"
+ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "7633f7c70bdd26ed7b1a6928f1eae7a834f2f31617ad2e05670e3e23216905c8"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEmailContainsImageAscParams:
@@ -258,7 +259,7 @@ class AdminUsersEmailContainsImageAscFound:
 
 AdminUsersEmailContainsImageAscResult: TypeAlias = AdminUsersEmailContainsImageAscFound
 
-ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "1af0dcda10b930676e128a3de30a3984e1493263caa669f6ca4c9b52b3421122"
+ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "de8a156dd9eb2e12eb5dd150e40ce7af69f5ff584f59d789127518a2a36c49a9"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEndsWithAscParams:
@@ -292,7 +293,7 @@ class AdminUsersEndsWithAscFound:
 
 AdminUsersEndsWithAscResult: TypeAlias = AdminUsersEndsWithAscFound
 
-ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "27004db9437f905c22014fa71109a27933e8ee9b202a8ecbb37ce9253a0bef0e"
+ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "4378509c2aba6e5705d90a6bb014c22be51344003b6f67bb6ca95c26297b4cee"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEndsWithDescParams:
@@ -326,7 +327,7 @@ class AdminUsersEndsWithDescFound:
 
 AdminUsersEndsWithDescResult: TypeAlias = AdminUsersEndsWithDescFound
 
-ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "023d3d46a28e27a7184d859d59b0327cb2a2fe2ee50b4b53ca80e3125dc81a62"
+ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "95ef1052619026bfa7293485e835bb5231b831b026dc2f6e57162c4728fef30e"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersStartsWithAscParams:
@@ -360,7 +361,7 @@ class AdminUsersStartsWithAscFound:
 
 AdminUsersStartsWithAscResult: TypeAlias = AdminUsersStartsWithAscFound
 
-ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "82acf832e19b8e69968921baf0e5ee401e67b6141a72472c74bf2d34e8bf94a5"
+ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "b99e8451f5cc732e4027340815950958a66420d450df3935d2c38c857a61162c"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersStartsWithDescParams:
@@ -394,7 +395,7 @@ class AdminUsersStartsWithDescFound:
 
 AdminUsersStartsWithDescResult: TypeAlias = AdminUsersStartsWithDescFound
 
-FIND_ACCOUNT_BY_ID_QUERY_PLAN_HASH: Final[str] = "685efeb5591071345c4c94f7cb1ac4314cfc6dcec5bdd15c806db5fa66bf9ba3"
+FIND_ACCOUNT_BY_ID_QUERY_PLAN_HASH: Final[str] = "64c60351fa0548d6a893ef53debc89884e05ab0b4e9b2639c74250af4edae3c4"
 FIND_ACCOUNT_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountById", "Account", "access_token"),
     ("FindAccountById", "Account", "refresh_token"),
@@ -432,7 +433,7 @@ class FindAccountByIdFound:
 
 FindAccountByIdResult: TypeAlias = FindAccountByIdFound
 
-FIND_ACCOUNT_BY_PROVIDER_QUERY_PLAN_HASH: Final[str] = "cc05c3dfefe3fd4fda4463105fd6eb704832c2efde27bb645dded64c18fb13b5"
+FIND_ACCOUNT_BY_PROVIDER_QUERY_PLAN_HASH: Final[str] = "f3acc5eec87721b34ec59187491f01a95cff751f58dd24baa10e25d3723be450"
 FIND_ACCOUNT_BY_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountByProvider", "Account", "access_token"),
     ("FindAccountByProvider", "Account", "refresh_token"),
@@ -471,7 +472,7 @@ class FindAccountByProviderFound:
 
 FindAccountByProviderResult: TypeAlias = FindAccountByProviderFound
 
-FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "93354d290f90935b6d46769dba5430904d96ce3eb8f66ff69f4752969d4e8d8b"
+FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "29909609dcd9b0b409c02a288ba414ae787865bc7c5029db7257018719d50ed2"
 FIND_ACCOUNTS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserId", "Account", "access_token"),
     ("FindAccountsByUserId", "Account", "refresh_token"),
@@ -510,7 +511,47 @@ class FindAccountsByUserIdFound:
 
 FindAccountsByUserIdResult: TypeAlias = FindAccountsByUserIdFound
 
-FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "5d1967c2ce34ace2a7e3c58f067900da8d6288efdd6c5f2d27123bea46d3c704"
+FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "83e479154169492ae1c7b52b2e81853b2cbee3fdb93806da0b12e4dc855b64f8"
+FIND_ACCOUNTS_BY_USER_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindAccountsByUserProvider", "Account", "access_token"),
+    ("FindAccountsByUserProvider", "Account", "refresh_token"),
+    ("FindAccountsByUserProvider", "Account", "id_token"),
+    ("FindAccountsByUserProvider", "Account", "password"),
+)
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindAccountsByUserProviderParams:
+    organization_id: UUID
+    user_id: UUID
+    provider_id: str
+    after: str | None = None
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindAccountsByUserProviderFoundAccounts:
+    id: UUID = field(repr=False)
+    user_id: UUID = field(repr=False)
+    account_id: str = field(repr=False)
+    provider_id: str = field(repr=False)
+    access_token: str | None = field(repr=False)
+    refresh_token: str | None = field(repr=False)
+    access_token_expires_at: Timestamp | None = field(repr=False)
+    refresh_token_expires_at: Timestamp | None = field(repr=False)
+    scope: str | None = field(repr=False)
+    id_token: str | None = field(repr=False)
+    password: str | None = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
+    revision: Annotated[int, "u64"] = field(repr=False)
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindAccountsByUserProviderFound:
+    accounts: tuple[FindAccountsByUserProviderFoundAccounts, ...] = field(repr=False)
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+FindAccountsByUserProviderResult: TypeAlias = FindAccountsByUserProviderFound
+
+FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "1fc7efc311d11178acb917d9080e50c5ae507d401d98fa1ad75f5c4ad117a329"
 FIND_ACTIVE_SESSIONS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindActiveSessionsByUserId", "Session", "token"),
 )
@@ -542,7 +583,7 @@ class FindActiveSessionsByUserIdFound:
 
 FindActiveSessionsByUserIdResult: TypeAlias = FindActiveSessionsByUserIdFound
 
-FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH: Final[str] = "5eb8f451cada21dd1e93c36a003f302a1dcd57f08c39fa420f1cf351a481205f"
+FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH: Final[str] = "084333809eca6633f7f2a80209593a1028532770fd7429cdc678643152289417"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindExpiredVerificationIdsParams:
@@ -561,7 +602,7 @@ class FindExpiredVerificationIdsFound:
 
 FindExpiredVerificationIdsResult: TypeAlias = FindExpiredVerificationIdsFound
 
-FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "9009aa55b7f41069e1cfbe2b7ff54a9400d519bc235f4f9f90406fcfa4df4f06"
+FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "c29b954bf84bdf3680f7d096c2b1649c1c9959fb5b11889f292592bb28ed56d6"
 FIND_LATEST_VERIFICATION_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindLatestVerification", "Verification", "value"),
 )
@@ -589,7 +630,7 @@ class FindLatestVerificationFound:
 
 FindLatestVerificationResult: TypeAlias = FindLatestVerificationFound
 
-FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "8b1654c9c96859b950efa6c7418cc35ef8c86b16e8d8d7bdc82ae9b834c9111a"
+FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "2df5d093238fa07c0bcc67b05071594ce762cd69431e1792fc44cb2b22292f43"
 FIND_SESSION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionById", "Session", "token"),
 )
@@ -619,7 +660,7 @@ class FindSessionByIdFound:
 
 FindSessionByIdResult: TypeAlias = FindSessionByIdFound
 
-FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "6199acea61e789824833c3b42ae301ec0c29eab51caa426444e0fbff76418205"
+FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "0e10231ef674489bc6c6de7ab095e6feafb98eee44bc41b97b0d7b82ed40a584"
 FIND_SESSION_BY_TOKEN_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionByToken", "Session", "token"),
 )
@@ -649,7 +690,37 @@ class FindSessionByTokenFound:
 
 FindSessionByTokenResult: TypeAlias = FindSessionByTokenFound
 
-FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "a4d6ddfcf66d13058e3df0c2ff960dcf069a4e2054da6e2b9cbc570bd3ffddae"
+FIND_SESSIONS_BY_TOKEN_SET_QUERY_PLAN_HASH: Final[str] = "2feafe80d152ba1575ea93e5280efcc6323caae7f2053d52200495ad8df68d16"
+FIND_SESSIONS_BY_TOKEN_SET_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindSessionsByTokenSet", "Session", "token"),
+)
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindSessionsByTokenSetParams:
+    organization_id: UUID
+    tokens: tuple[str, ...]
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindSessionsByTokenSetFoundSessions:
+    id: UUID = field(repr=False)
+    user_id: UUID = field(repr=False)
+    token: str = field(repr=False)
+    expires_at: Timestamp = field(repr=False)
+    ip_address: str | None = field(repr=False)
+    user_agent: str | None = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
+    revision: Annotated[int, "u64"] = field(repr=False)
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindSessionsByTokenSetFound:
+    sessions: tuple[FindSessionsByTokenSetFoundSessions, ...] = field(repr=False)
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+FindSessionsByTokenSetResult: TypeAlias = FindSessionsByTokenSetFound
+
+FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "7b3489dff3626252bc65db40817a6b246a0c56ce0dfb091b8727bb71ccbed87b"
 FIND_SESSIONS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionsByUserId", "Session", "token"),
 )
@@ -680,7 +751,7 @@ class FindSessionsByUserIdFound:
 
 FindSessionsByUserIdResult: TypeAlias = FindSessionsByUserIdFound
 
-FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "d085b968b4a9060e4b915525ef06f83a4fa0c9b3d014cfb400bda44bdd720d85"
+FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "1727d45f58baf467c64a8c123f735ed1ba5c8323e427267ec577c0cf1949b224"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByEmailParams:
@@ -705,7 +776,7 @@ class FindUserByEmailFound:
 
 FindUserByEmailResult: TypeAlias = FindUserByEmailFound
 
-FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "03a4223059ecd4d20ad1d193c57753923f058398ad31de57c6208531804ed770"
+FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "13809c76bb135e79514424f6c7bcd6c633b984f276f519579b5b92e51725e9e4"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByIdParams:
@@ -734,7 +805,7 @@ class FindUserByIdMissing:
 
 FindUserByIdResult: TypeAlias = FindUserByIdFound | FindUserByIdMissing
 
-FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "92edeb91a5c77dc5ed7e7068dbda5ef54f111f9d363878191cb703b112f36114"
+FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "d3af703e07e4e63a9666eb9c4a72621492ea3047853c9ce059dffef61cc2eedd"
 FIND_VERIFICATION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationById", "Verification", "value"),
 )
@@ -766,7 +837,7 @@ class FindVerificationByIdMissing:
 
 FindVerificationByIdResult: TypeAlias = FindVerificationByIdFound | FindVerificationByIdMissing
 
-FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "ee3ac63ee979a4904dd5ed191be16ce9ec4f3d1252c09e9c6b62454ca6c432f5"
+FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "25862132c6f7040db977360223e75de087d49dc6f35beaaac92b8bb5477fbff8"
 FIND_VERIFICATIONS_BY_IDENTIFIER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationsByIdentifier", "Verification", "value"),
 )
@@ -795,13 +866,44 @@ class FindVerificationsByIdentifierFound:
 
 FindVerificationsByIdentifierResult: TypeAlias = FindVerificationsByIdentifierFound
 
+CONSUME_VERIFICATION_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str, str], ...]] = (
+    ("VerificationConsumed", "value", "Verification", "value"),
+)
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ConsumeVerificationInput:
+    request_id: UUID
+    organization_id: UUID
+    verification_id: UUID
+
+CONSUME_VERIFICATION_PLAN_HASH: Final[str] = "22a3f3b01aeb537ae2b8b3f758aa19d8f8a6a58a0e284b3b347d1079972adef2"
+@dataclass(frozen=True, slots=True, kw_only=True, repr=False)
+class ConsumeVerificationVerificationConsumed:
+    value: str
+    revision: Annotated[int, "u64"]
+    created_at: Timestamp
+    expires_at: Timestamp
+    identifier: str
+    updated_at: Timestamp
+    verification_id: UUID
+    outcome: Literal["VerificationConsumed"] = field(default="VerificationConsumed", init=False)
+
+    def __repr__(self) -> str:
+        return "ConsumeVerificationVerificationConsumed(<secret outputs redacted>)"
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ConsumeVerificationVerificationConsumeMissing:
+    outcome: Literal["VerificationConsumeMissing"] = field(default="VerificationConsumeMissing", init=False)
+
+ConsumeVerificationOutcome: TypeAlias = ConsumeVerificationVerificationConsumed | ConsumeVerificationVerificationConsumeMissing
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ConsumeVerificationSetInput:
     request_id: UUID
     organization_id: UUID
     verification_ids: tuple[UUID, ...]
 
-CONSUME_VERIFICATION_SET_PLAN_HASH: Final[str] = "e90e64ce528ad3669cf37965290adda7513b4fb641ef956d64bb3cf80168b343"
+CONSUME_VERIFICATION_SET_PLAN_HASH: Final[str] = "cc5e0d69851c61f11bbbca45ad00bec80b32687a94272379e133fbf854d59780"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ConsumeVerificationSetVerificationSetConsumed:
     outcome: Literal["VerificationSetConsumed"] = field(default="VerificationSetConsumed", init=False)
@@ -869,7 +971,7 @@ class CreateOAuthUserGraphInput:
     access_token_expires_at: Timestamp | None
     refresh_token_expires_at: Timestamp | None
 
-CREATE_OAUTH_USER_GRAPH_PLAN_HASH: Final[str] = "9dcc38caa0c5cb2918ef1b383d5dcaa9f8a95d2913c632233fe5c32359c88570"
+CREATE_OAUTH_USER_GRAPH_PLAN_HASH: Final[str] = "85b55a428188899721db23354ae9b29015f1adbed3df86d4100772febf196d92"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateOAuthUserGraphOAuthUserExists:
     outcome: Literal["OAuthUserExists"] = field(default="OAuthUserExists", init=False)
@@ -1115,7 +1217,11 @@ class UpdateAccountPasswordsInput:
     request_id: UUID
     organization_id: UUID
 
-UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: Final[str] = "57601183308604db7952a227981160afbf27de0cd46154e8cd989564bd9be5c5"
+UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: Final[str] = "6189e45a0a6bd2d6cb7cfb62ea7c049643718f0baee0755fe99244760c4cf33d"
+@dataclass(frozen=True, slots=True, kw_only=True)
+class UpdateAccountPasswordsPasswordAccountStale:
+    outcome: Literal["PasswordAccountStale"] = field(default="PasswordAccountStale", init=False)
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountPasswordsPasswordAccountMissing:
     outcome: Literal["PasswordAccountMissing"] = field(default="PasswordAccountMissing", init=False)
@@ -1128,7 +1234,7 @@ class UpdateAccountPasswordsAccountPasswordsUpdated:
 class UpdateAccountPasswordsPasswordProviderMismatch:
     outcome: Literal["PasswordProviderMismatch"] = field(default="PasswordProviderMismatch", init=False)
 
-UpdateAccountPasswordsOutcome: TypeAlias = UpdateAccountPasswordsPasswordAccountMissing | UpdateAccountPasswordsAccountPasswordsUpdated | UpdateAccountPasswordsPasswordProviderMismatch
+UpdateAccountPasswordsOutcome: TypeAlias = UpdateAccountPasswordsPasswordAccountStale | UpdateAccountPasswordsPasswordAccountMissing | UpdateAccountPasswordsAccountPasswordsUpdated | UpdateAccountPasswordsPasswordProviderMismatch
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateSessionInput:
@@ -1347,23 +1453,56 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def find_accounts_by_user_id(self, parameters: FindAccountsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserIdResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindAccountsByUserId", plan_hash=FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindAccountsByUserIdFound,
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_accounts_by_user_provider(self, parameters: FindAccountsByUserProviderParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserProviderResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="FindAccountsByUserProvider", plan_hash=FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH,
+            parameters=encoded_parameters, options=options,
+        )
+        outcomes = {
+            "Found": FindAccountsByUserProviderFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
     def find_active_sessions_by_user_id(self, parameters: FindActiveSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindActiveSessionsByUserIdResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindActiveSessionsByUserId", plan_hash=FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindActiveSessionsByUserIdFound,
@@ -1371,11 +1510,18 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def find_expired_verification_ids(self, parameters: FindExpiredVerificationIdsParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindExpiredVerificationIdsResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindExpiredVerificationIds", plan_hash=FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindExpiredVerificationIdsFound,
@@ -1418,12 +1564,31 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_sessions_by_token_set(self, parameters: FindSessionsByTokenSetParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetResult]:
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="FindSessionsByTokenSet", plan_hash=FIND_SESSIONS_BY_TOKEN_SET_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": FindSessionsByTokenSetFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
     def find_sessions_by_user_id(self, parameters: FindSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByUserIdResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindSessionsByUserId", plan_hash=FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindSessionsByUserIdFound,
@@ -1469,16 +1634,41 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def find_verifications_by_identifier(self, parameters: FindVerificationsByIdentifierParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationsByIdentifierResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindVerificationsByIdentifier", plan_hash=FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindVerificationsByIdentifierFound,
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def consume_verification(self, input: ConsumeVerificationInput) -> TypedCommandResult[ConsumeVerificationOutcome]:
+        raw = self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="ConsumeVerification", plan_hash=CONSUME_VERIFICATION_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "VerificationConsumed": ConsumeVerificationVerificationConsumed,
+            "VerificationConsumeMissing": ConsumeVerificationVerificationConsumeMissing,
+        }
+        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+
+    def consume_verification_batch(
+        self, inputs: Sequence[ConsumeVerificationInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[ConsumeVerificationOutcome]:
+        return self._transport._command_batch(inputs, options, self.consume_verification, progress)
 
     def consume_verification_set(self, input: ConsumeVerificationSetInput) -> TypedCommandResult[ConsumeVerificationSetOutcome]:
         if not 1 <= len(input.verification_ids) <= 32:
@@ -1737,6 +1927,7 @@ class RiffDBBetterAuthCoreClient:
             input=encode_record(input), attempts=self._command_attempts,
         )
         outcomes = {
+            "PasswordAccountStale": UpdateAccountPasswordsPasswordAccountStale,
             "PasswordAccountMissing": UpdateAccountPasswordsPasswordAccountMissing,
             "AccountPasswordsUpdated": UpdateAccountPasswordsAccountPasswordsUpdated,
             "PasswordProviderMismatch": UpdateAccountPasswordsPasswordProviderMismatch,
@@ -1947,23 +2138,56 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def find_accounts_by_user_id(self, parameters: FindAccountsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserIdResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindAccountsByUserId", plan_hash=FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindAccountsByUserIdFound,
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_accounts_by_user_provider(self, parameters: FindAccountsByUserProviderParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserProviderResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="FindAccountsByUserProvider", plan_hash=FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH,
+            parameters=encoded_parameters, options=options,
+        )
+        outcomes = {
+            "Found": FindAccountsByUserProviderFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
     async def find_active_sessions_by_user_id(self, parameters: FindActiveSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindActiveSessionsByUserIdResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindActiveSessionsByUserId", plan_hash=FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindActiveSessionsByUserIdFound,
@@ -1971,11 +2195,18 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def find_expired_verification_ids(self, parameters: FindExpiredVerificationIdsParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindExpiredVerificationIdsResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindExpiredVerificationIds", plan_hash=FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindExpiredVerificationIdsFound,
@@ -2018,12 +2249,31 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_sessions_by_token_set(self, parameters: FindSessionsByTokenSetParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetResult]:
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="FindSessionsByTokenSet", plan_hash=FIND_SESSIONS_BY_TOKEN_SET_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": FindSessionsByTokenSetFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
     async def find_sessions_by_user_id(self, parameters: FindSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByUserIdResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindSessionsByUserId", plan_hash=FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindSessionsByUserIdFound,
@@ -2069,16 +2319,41 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def find_verifications_by_identifier(self, parameters: FindVerificationsByIdentifierParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationsByIdentifierResult]:
+        encoded_parameters = encode_record(parameters)
+        generated_cursor = parameters.after
+        if generated_cursor is not None:
+            if options.cursor is not None:
+                raise ValueError("generated cursor conflicts with query options")
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+        encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindVerificationsByIdentifier", plan_hash=FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH,
-            parameters=encode_record(parameters), options=options,
+            parameters=encoded_parameters, options=options,
         )
         outcomes = {
             "Found": FindVerificationsByIdentifierFound,
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def consume_verification(self, input: ConsumeVerificationInput) -> TypedCommandResult[ConsumeVerificationOutcome]:
+        raw = await self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="ConsumeVerification", plan_hash=CONSUME_VERIFICATION_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "VerificationConsumed": ConsumeVerificationVerificationConsumed,
+            "VerificationConsumeMissing": ConsumeVerificationVerificationConsumeMissing,
+        }
+        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+
+    async def consume_verification_batch(
+        self, inputs: Sequence[ConsumeVerificationInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[ConsumeVerificationOutcome]:
+        return await self._transport._command_batch(inputs, options, self.consume_verification, progress)
 
     async def consume_verification_set(self, input: ConsumeVerificationSetInput) -> TypedCommandResult[ConsumeVerificationSetOutcome]:
         if not 1 <= len(input.verification_ids) <= 32:
@@ -2337,6 +2612,7 @@ class AsyncRiffDBBetterAuthCoreClient:
             input=encode_record(input), attempts=self._command_attempts,
         )
         outcomes = {
+            "PasswordAccountStale": UpdateAccountPasswordsPasswordAccountStale,
             "PasswordAccountMissing": UpdateAccountPasswordsPasswordAccountMissing,
             "AccountPasswordsUpdated": UpdateAccountPasswordsAccountPasswordsUpdated,
             "PasswordProviderMismatch": UpdateAccountPasswordsPasswordProviderMismatch,

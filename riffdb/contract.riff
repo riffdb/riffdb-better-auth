@@ -80,6 +80,7 @@ contract RiffDBBetterAuthCore version 1 {
     field provider_id: string<64>
     field secret password: optional<string<1024>>
     field updated_at: timestamp
+    field expected_revision: u64
   }
 
   aggregate UserAuthData {
@@ -452,6 +453,23 @@ contract RiffDBBetterAuthCore version 1 {
     return VerificationSetConsumed {}
   }
 
+  command ConsumeVerification {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_id: uuid
+    idempotency_key request_id
+    delete Verification(organization_id, verification_id) as verification else VerificationConsumeMissing {}
+    return VerificationConsumed {
+      verification_id: verification.verification_id,
+      identifier: verification.identifier,
+      value: verification.value reveals verification.value,
+      expires_at: verification.expires_at,
+      created_at: verification.created_at,
+      updated_at: verification.updated_at,
+      revision: verification.revision
+    }
+  }
+
   bulk command UpdateAccountPasswords {
     input request_id: uuid
     input organization_id: uuid
@@ -461,8 +479,10 @@ contract RiffDBBetterAuthCore version 1 {
     for update in updates {
       mutate Account(organization_id, user_id, update.account_id) as account else PasswordAccountMissing {}
       require provider_matches: account.provider_id == update.provider_id else PasswordProviderMismatch {}
+      require current_revision: account.revision == update.expected_revision else PasswordAccountStale {}
       set account.password = update.password
       set account.updated_at = update.updated_at
+      set account.revision = account.revision + 1
     }
     return AccountPasswordsUpdated {}
   }

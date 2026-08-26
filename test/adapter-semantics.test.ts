@@ -1,6 +1,7 @@
 import type { BetterAuthOptions } from "better-auth";
 import { describe, expect, it } from "vitest";
 
+import { assertSupportedBetterAuthInstallation } from "../src/adapter.js";
 import { RiffDBBetterAuthCallError } from "../src/index.js";
 import { riffdbAdapterForTesting } from "../src/testing.js";
 import { FakeRiffDBApplicationTransport } from "./support/fake-transport.js";
@@ -185,13 +186,81 @@ describe("compiled transaction dispatch", () => {
       });
     });
 
-    expect(transport.commandLog).toEqual(["ConsumeVerificationSet"]);
+    expect(transport.commandLog).toEqual([
+      "ConsumeVerification",
+      "ConsumeVerificationSet",
+    ]);
     await expect(
       adapter.findOne({
         model: "verification",
         where: [{ field: "id", value: secondId }],
       }),
     ).resolves.toBeNull();
+  });
+
+  it("atomically returns the consumed verification preimage and gives a racer null", async () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    const firstAdapter = createAdapter(transport);
+    const secondAdapter = createAdapter(transport);
+    const now = new Date();
+    const id = crypto.randomUUID();
+    const value = `secret-${crypto.randomUUID()}`;
+    await firstAdapter.create({
+      model: "verification",
+      forceAllowId: true,
+      data: {
+        id,
+        identifier: `consume:${crypto.randomUUID()}`,
+        value,
+        expiresAt: new Date(now.getTime() + 60_000),
+        createdAt: now,
+        updatedAt: now,
+      },
+    });
+    transport.commandLog.splice(0);
+    transport.queryLog.splice(0);
+
+    const results = await Promise.all([
+      firstAdapter.consumeOne?.({ model: "verification", where: [{ field: "id", value: id }] }),
+      secondAdapter.consumeOne?.({ model: "verification", where: [{ field: "id", value: id }] }),
+    ]);
+
+    expect(results).toEqual(
+      expect.arrayContaining([expect.objectContaining({ id, value }), null]),
+    );
+    expect(transport.commandLog).toEqual(["ConsumeVerification", "ConsumeVerification"]);
+    expect(transport.queryLog).toEqual([]);
+  });
+
+  it("returns null instead of throwing for a transaction consume racer", async () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    const firstAdapter = createAdapter(transport);
+    const secondAdapter = createAdapter(transport);
+    const now = new Date();
+    const id = crypto.randomUUID();
+    await firstAdapter.create({
+      model: "verification",
+      forceAllowId: true,
+      data: {
+        id,
+        identifier: `transaction-race:${crypto.randomUUID()}`,
+        value: crypto.randomUUID(),
+        expiresAt: new Date(now.getTime() + 60_000),
+        createdAt: now,
+        updatedAt: now,
+      },
+    });
+    transport.commandLog.splice(0);
+
+    const consume = (adapter: ReturnType<typeof createAdapter>) =>
+      adapter.transaction((tx) =>
+        tx.consumeOne?.({ model: "verification", where: [{ field: "id", value: id }] }),
+      );
+    const results = await Promise.all([consume(firstAdapter), consume(secondAdapter)]);
+
+    expect(results.filter((result) => result === null)).toHaveLength(1);
+    expect(results.filter((result) => result !== null)).toHaveLength(1);
+    expect(transport.commandLog).toEqual(["ConsumeVerification", "ConsumeVerification"]);
   });
 
   it("updates, expires, and deletes verification rows through compiled operations", async () => {
@@ -263,6 +332,20 @@ describe("compiled transaction dispatch", () => {
         where: [{ field: "id", value: currentId }],
       }),
     ).resolves.toBeNull();
+  });
+
+  it("rejects unsupported verification sorting before querying RiffDB", async () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    const adapter = createAdapter(transport);
+
+    await expect(
+      adapter.findMany({
+        model: "verification",
+        where: [{ field: "identifier", value: "password-reset:user@example.test" }],
+        sortBy: { field: "createdAt", direction: "asc" },
+      }),
+    ).rejects.toMatchObject({ code: "unsupported_call_shape" });
+    expect(transport.queryLog).toEqual([]);
   });
 
   it("reads secret fields through named RiffQL without dispatching commands", async () => {
@@ -412,6 +495,83 @@ describe("compiled transaction dispatch", () => {
     ).resolves.toBeNull();
   });
 
+  it("preserves a concurrent password change across an OAuth token refresh", async () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    const adapter = createAdapter(transport);
+    const createdUser = user();
+    const createdAccount = account(createdUser.id);
+    await adapter.create({ model: "user", data: createdUser, forceAllowId: true });
+    await adapter.create({ model: "account", data: createdAccount, forceAllowId: true });
+    transport.commandLog.splice(0);
+    transport.queryLog.splice(0);
+    const updatedAt = new Date(createdAccount.updatedAt.getTime() + 1_000);
+
+    await Promise.all([
+      adapter.update({
+        model: "account",
+        where: [{ field: "id", value: createdAccount.id }],
+        update: { accessToken: "refreshed-access-token", updatedAt },
+      }),
+      adapter.updateMany({
+        model: "account",
+        where: [
+          { field: "userId", value: createdUser.id },
+          { field: "providerId", value: createdAccount.providerId },
+        ],
+        update: { password: "new-password-hash", updatedAt },
+      }),
+    ]);
+
+    await expect(
+      adapter.findOne({ model: "account", where: [{ field: "id", value: createdAccount.id }] }),
+    ).resolves.toMatchObject({
+      accessToken: "refreshed-access-token",
+      password: "new-password-hash",
+    });
+    expect(transport.queryLog).toContain("FindAccountsByUserProvider");
+    expect(transport.commandLog).toEqual(
+      expect.arrayContaining(["UpdateAccount", "UpdateAccountPasswords"]),
+    );
+  });
+
+  it("targets password updates by user and provider without scanning the user account window", async () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    const adapter = createAdapter(transport);
+    const createdUser = user();
+    const credential = account(createdUser.id);
+    await adapter.create({ model: "user", data: createdUser, forceAllowId: true });
+    await adapter.create({ model: "account", data: credential, forceAllowId: true });
+    for (let index = 0; index < 101; index += 1) {
+      await adapter.create({
+        model: "account",
+        forceAllowId: true,
+        data: {
+          ...account(createdUser.id),
+          accountId: `external-${index}`,
+          providerId: `provider-${index}`,
+        },
+      });
+    }
+    transport.commandLog.splice(0);
+    transport.queryLog.splice(0);
+
+    await expect(
+      adapter.updateMany({
+        model: "account",
+        where: [
+          { field: "userId", value: createdUser.id },
+          { field: "providerId", value: "credential" },
+        ],
+        update: {
+          password: "new-password-hash",
+          updatedAt: new Date(credential.updatedAt.getTime() + 1_000),
+        },
+      }),
+    ).resolves.toBe(1);
+    expect(transport.queryLog).toEqual(["FindAccountsByUserProvider"]);
+    expect(transport.commandLog).toEqual(["UpdateAccountPasswords"]);
+  });
+
   it("lists active sessions and revokes a bounded token set", async () => {
     const transport = new FakeRiffDBApplicationTransport();
     const adapter = createAdapter(transport);
@@ -460,6 +620,16 @@ describe("compiled transaction dispatch", () => {
         expect.objectContaining({ id: secondActive.id }),
       ]),
     );
+    expect(transport.queryLog).toContain("FindSessionsByTokenSet");
+    await expect(
+      adapter.findMany({
+        model: "session",
+        where: [
+          { field: "token", value: tokens, operator: "in" },
+          { field: "expiresAt", value: now, operator: "gt" },
+        ],
+      }),
+    ).rejects.toMatchObject({ code: "unsupported_call_shape" });
     await expect(
       adapter.deleteMany({
         model: "session",
@@ -536,5 +706,21 @@ describe("compiled transaction dispatch", () => {
       }),
     ).rejects.toThrow("Field counter not found in model user");
     expect(transport.commandLog).toEqual([]);
+    expect(transport.queryLog).toEqual([]);
+  });
+
+  it("rejects secret-bearing Better Auth debug logging and unreviewed versions", () => {
+    const transport = new FakeRiffDBApplicationTransport();
+    expect(() =>
+      riffdbAdapterForTesting({
+        transport,
+        organizationId: ORGANIZATION_ID,
+        resetModel: (model) => transport.resetModel(model),
+        debugLogs: true,
+      }),
+    ).toThrow(expect.objectContaining({ code: "invalid_configuration" }));
+    expect(() => assertSupportedBetterAuthInstallation("1.6.30")).toThrow(
+      expect.objectContaining({ code: "invalid_configuration" }),
+    );
   });
 });

@@ -1,3 +1,7 @@
+import { readFileSync } from "node:fs";
+import { dirname, join, parse } from "node:path";
+import { createRequire } from "node:module";
+
 import {
   DriverGeneratedApplicationTransport,
   type DriverApplicationTransport,
@@ -30,6 +34,7 @@ import {
   type FindVerificationsByIdentifierFound,
   type TypedCommandResult,
 } from "./generated/client.js";
+import { BETTER_AUTH_PINNED_VERSION } from "./profile.js";
 
 const CORE_SCHEMA_FIELDS = {
   user: ["name", "email", "emailVerified", "image", "createdAt", "updatedAt"],
@@ -132,6 +137,38 @@ function isUuid(value: string): boolean {
 
 function validateConfiguration(config: InternalAdapterConfig): void {
   if (!isUuid(config.organizationId)) fail("invalid_configuration", "configuration");
+  if (config.debugLogs !== undefined && config.debugLogs !== false) {
+    fail("invalid_configuration", "debugLogs");
+  }
+}
+
+export function assertSupportedBetterAuthInstallation(
+  installedVersion = resolveInstalledBetterAuthVersion(),
+): void {
+  if (installedVersion !== BETTER_AUTH_PINNED_VERSION) {
+    fail("invalid_configuration", "betterAuthVersion");
+  }
+}
+
+function resolveInstalledBetterAuthVersion(): string {
+  const require = createRequire(import.meta.url);
+  let directory = dirname(require.resolve("better-auth"));
+  const root = parse(directory).root;
+  for (let depth = 0; depth < 8 && directory !== root; depth += 1) {
+    try {
+      const manifest = JSON.parse(
+        readFileSync(join(directory, "package.json"), "utf8"),
+      ) as { readonly name?: unknown; readonly version?: unknown };
+      if (manifest.name === "better-auth" && typeof manifest.version === "string") {
+        return manifest.version;
+      }
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code !== "ENOENT" && code !== "ENOTDIR") throw error;
+    }
+    directory = dirname(directory);
+  }
+  fail("invalid_configuration", "betterAuthVersion");
 }
 
 function validateResolvedSchema(
@@ -884,27 +921,18 @@ class CoreDispatcher {
     ]);
     if (
       model === "session" &&
-      (tokenSetShape || activeTokenSetShape) &&
+      tokenSetShape &&
       sortBy === undefined
     ) {
       const tokens = whereStringSet(where!, "token", "findMany session token set");
-      const cutoff = activeTokenSetShape
-        ? whereDate(where!, "expiresAt", "findMany session token set")
-        : undefined;
-      const rows = await Promise.all(
-        tokens.map(async (token) => {
-          const result = await this.client.findSessionByToken(
-            { organization_id: this.organizationId, token },
-            this.queryOptions(),
-          );
-          return result.value.sessions[0];
-        }),
+      const result = await this.client.findSessionsByTokenSet(
+        { organization_id: this.organizationId, tokens },
+        this.queryOptions(),
       );
-      return rows
-        .filter((row) => row !== undefined)
-        .filter((row) => cutoff === undefined || fromTimestamp(row.expires_at) > cutoff)
-        .slice(0, limit)
-        .map(mapSession);
+      return result.value.sessions.slice(0, limit).map(mapSession);
+    }
+    if (model === "session" && activeTokenSetShape) {
+      return fail("unsupported_call_shape", "findMany session token set with expiry");
     }
     if (
       model === "verification" &&
@@ -921,6 +949,9 @@ class CoreDispatcher {
         this.queryOptions(),
       );
       return result.value.verifications.map(mapVerification);
+    }
+    if (model === "verification" && exactWhere(where, ["identifier"]) && sortBy !== undefined) {
+      return fail("unsupported_call_shape", "findMany verification sort");
     }
     if (model === "verification" && exactWhere(where, ["identifier"]) && limit <= 32) {
       const result = await this.client.findVerificationsByIdentifier(
@@ -1194,17 +1225,15 @@ class CoreDispatcher {
     if (model !== "verification" || !exactWhere(where, ["id"])) {
       return fail("unsupported_call_shape", `consumeOne ${model}`);
     }
-    const row = await this.findOne(model, where);
-    if (row === null) return null;
-    const result = await this.client.consumeVerificationSet({
+    const result = await this.client.consumeVerification({
       request_id: nextRequestId(),
       organization_id: this.organizationId,
-      verification_ids: [requiredString(row, "id", "consumeOne verification")],
+      verification_id: whereValue(where, "id", "consumeOne verification"),
     });
     this.observeCommit(result);
     if (result.outcome.outcome === "VerificationConsumeMissing") return null;
-    requireOutcome(result, "consumeOne verification", "VerificationSetConsumed");
-    return row;
+    requireOutcome(result, "consumeOne verification", "VerificationConsumed");
+    return mapVerification(result.outcome);
   }
 
   public async updateMany(
@@ -1218,37 +1247,52 @@ class CoreDispatcher {
     const update = asRecord(updateValue, "updateMany account");
     const updateFields = Object.keys(update).sort();
     if (
-      JSON.stringify(updateFields) !== JSON.stringify(["password", "updatedAt"]) &&
-      JSON.stringify(updateFields) !== JSON.stringify(["password"])
+      JSON.stringify(updateFields) !== JSON.stringify(["password", "updatedAt"])
     ) {
       fail("unsupported_call_shape", "updateMany account");
     }
     const userId = whereValue(where, "userId", "updateMany account");
     const providerId = whereValue(where, "providerId", "updateMany account");
-    const userClause = where.find((clause) => clause.field === "userId");
-    if (userClause === undefined) fail("unsupported_call_shape", "updateMany account");
-    const accounts = (await this.findMany("account", [userClause], 100)).filter(
-      (account) => account.providerId === providerId,
-    );
-    if (accounts.length === 0) return 0;
-    if (accounts.length > 8) fail("result_bound_exceeded", "updateMany account");
     const updatedAt = requiredDate(update, "updatedAt", "updateMany account");
-    const result = await this.client.updateAccountPasswords({
-      request_id: nextRequestId(),
-      organization_id: this.organizationId,
-      user_id: userId,
-      updates: accounts.map((account) => ({
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const found = await this.client.findAccountsByUserProvider(
+        {
+          organization_id: this.organizationId,
+          user_id: userId,
+          provider_id: providerId,
+          after: null,
+        },
+        this.queryOptions(),
+      );
+      if (found.nextCursor !== undefined) fail("result_bound_exceeded", "updateMany account");
+      const accounts = found.value.accounts;
+      if (accounts.length === 0) return 0;
+      const result = await this.client.updateAccountPasswords({
+        request_id: nextRequestId(),
         organization_id: this.organizationId,
         user_id: userId,
-        account_id: requiredString(account, "id", "updateMany account"),
-        provider_id: providerId,
-        password: nullableString(update, "password", "updateMany account"),
-        updated_at: toTimestamp(updatedAt),
-      })),
-    });
-    this.observeCommit(result);
-    requireOutcome(result, "updateMany account", "AccountPasswordsUpdated");
-    return accounts.length;
+        updates: accounts.map((account) => ({
+          organization_id: this.organizationId,
+          user_id: userId,
+          account_id: account.id,
+          provider_id: providerId,
+          password: nullableString(update, "password", "updateMany account"),
+          updated_at: toTimestamp(updatedAt),
+          expected_revision: account.revision,
+        })),
+      });
+      this.observeCommit(result);
+      if (
+        result.outcome.outcome === "PasswordAccountStale" ||
+        result.outcome.outcome === "PasswordAccountMissing" ||
+        result.outcome.outcome === "PasswordProviderMismatch"
+      ) {
+        continue;
+      }
+      requireOutcome(result, "updateMany account", "AccountPasswordsUpdated");
+      return accounts.length;
+    }
+    return fail("declared_outcome", "updateMany account", "PasswordAccountStale");
   }
 
   public async commitSignup(records: readonly DeferredCreate[]): Promise<void> {
@@ -1430,8 +1474,10 @@ function genericUpdate(
 
 class TransactionRecorder {
   private readonly creates: DeferredCreate[] = [];
-  private consumedVerificationId: string | undefined;
+  private consumeAttempted = false;
+  private consumedVerification: Record<string, unknown> | null | undefined;
   private verificationDeleteRows: Record<string, unknown>[] | undefined;
+  private verificationDeleteIdentifier: string | undefined;
 
   public constructor(private readonly dispatcher: CoreDispatcher) {}
 
@@ -1451,23 +1497,33 @@ class TransactionRecorder {
       updateMany: async () => fail("unsupported_transaction_shape", "transaction updateMany"),
       delete: async () => fail("unsupported_transaction_shape", "transaction delete"),
       deleteMany: async ({ model, where }) => {
-        if (model !== "verification" || !exactWhere(where, ["identifier"])) {
+        if (
+          model !== "verification" ||
+          !exactWhere(where, ["identifier"]) ||
+          !this.consumeAttempted ||
+          this.verificationDeleteRows !== undefined
+        ) {
           return fail("unsupported_transaction_shape", "transaction deleteMany");
         }
+        this.verificationDeleteIdentifier = whereValue(
+          where,
+          "identifier",
+          "transaction deleteMany verification",
+        );
         this.verificationDeleteRows = await this.dispatcher.findMany("verification", where, 32);
         return this.verificationDeleteRows.length;
       },
       consumeOne: genericConsumeOne(async ({ model, where }) => {
-        if (model !== "verification" || !exactWhere(where, ["id"])) {
+        if (
+          model !== "verification" ||
+          !exactWhere(where, ["id"]) ||
+          this.consumeAttempted
+        ) {
           return fail("unsupported_transaction_shape", "transaction consumeOne");
         }
-        const row = await this.dispatcher.findOne(model, where);
-        if (row === null) return null;
-        this.consumedVerificationId = requiredString(
-          row,
-          "id",
-          "transaction consumeOne verification",
-        );
+        this.consumeAttempted = true;
+        const row = await this.dispatcher.consumeOne(model, where);
+        this.consumedVerification = row;
         return row;
       }),
       incrementOne: async () => fail("unsupported_transaction_shape", "transaction incrementOne"),
@@ -1476,7 +1532,7 @@ class TransactionRecorder {
 
   public async commit(): Promise<void> {
     const hasVerificationMutation =
-      this.consumedVerificationId !== undefined || this.verificationDeleteRows !== undefined;
+      this.consumeAttempted || this.verificationDeleteRows !== undefined;
     if (this.creates.length > 0 && hasVerificationMutation) {
       fail("unsupported_transaction_shape", "mixed transaction");
     }
@@ -1489,17 +1545,19 @@ class TransactionRecorder {
       return;
     }
     if (hasVerificationMutation) {
-      if (this.consumedVerificationId === undefined || this.verificationDeleteRows === undefined) {
+      if (!this.consumeAttempted || this.consumedVerification === undefined) {
         fail("unsupported_transaction_shape", "transaction verification consume");
       }
+      if (this.verificationDeleteRows === undefined) return;
       if (
-        !this.verificationDeleteRows.some(
-          (row) => row.id === this.consumedVerificationId,
-        )
+        this.consumedVerification !== null &&
+        this.consumedVerification.identifier !== this.verificationDeleteIdentifier
       ) {
         fail("unsupported_transaction_shape", "transaction verification consume");
       }
-      await this.dispatcher.commitVerificationConsume(this.verificationDeleteRows);
+      if (this.verificationDeleteRows.length > 0) {
+        await this.dispatcher.commitVerificationConsume(this.verificationDeleteRows);
+      }
     }
   }
 }
@@ -1538,6 +1596,7 @@ const BASE_FACTORY_CONFIG = {
 export function buildRiffDBBetterAuthAdapter(
   config: InternalAdapterConfig,
 ): AdapterFactory<BetterAuthOptions> {
+  assertSupportedBetterAuthInstallation();
   validateConfiguration(config);
   return (options: BetterAuthOptions): DBAdapter<BetterAuthOptions> => {
     const dispatcher = new CoreDispatcher(
@@ -1548,7 +1607,7 @@ export function buildRiffDBBetterAuthAdapter(
     const factory = createAdapterFactory({
       config: {
         ...BASE_FACTORY_CONFIG,
-        debugLogs: config.debugLogs ?? false,
+        debugLogs: false,
         transaction: async (callback) => {
           const recorder = new TransactionRecorder(dispatcher);
           const transactionFactory = createAdapterFactory({
