@@ -1,0 +1,17 @@
+query FindMemberByUserId(
+    $tenant_id: Member.tenant_id,
+    $user_id: Member.user_id,
+    $after: Cursor?,
+) {
+    many members from Member
+        where tenant_id == $tenant_id
+          && user_id == $user_id
+        order by organization_id asc, member_id asc
+        take 50 after $after
+
+    return Found {
+        members: members { organization_id member_id created_at role user_id revision }
+    }
+
+    outcomes Found
+}

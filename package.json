@@ -28,10 +28,11 @@
     "check": "npm run typecheck && npm test && npm run profiles:check && npm pack --dry-run --cache ./node_modules/.cache/npm",
     "prepack": "npm run build",
     "start": "node scripts/real-riffdb-runner.mjs",
-    "profiles:check": "npm run build && node scripts/profile-example.mjs --check",
+    "profiles:check": "npm run build && node scripts/profile-example.mjs --check && node scripts/materialize-profile.mjs --check",
     "profiles:write": "npm run build && node scripts/profile-example.mjs --write",
     "test": "vitest run",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "profiles:materialize": "npm run build && node scripts/materialize-profile.mjs --write"
   },
   "engines": {
     "node": ">=22"

@@ -23,7 +23,7 @@ def _compact_tag(value: object, tag: str, keys: frozenset[str]) -> dict[str, obj
 CONTRACT_LINEAGE: Final[str] = "RiffDBBetterAuthCore"
 CONTRACT_VERSION: Final[int] = 1
 CONTRACT_BUNDLE_HASH: Final[str] = "dff3e37c6ec7f6d6f6c14738743ad7b79be0d532eaa5cbd24ec577b17246c9bc"
-QUERY_MODULE_HASH: Final[str] = "7a91bcf8d04f0cbbd380810635485d6263c5dec7131ba48ba6e35245fc0ba2cb"
+QUERY_MODULE_HASH: Final[str] = "3fe583823cf92ebf127f5c9d23141b92ae7c86bcf903b556e7ae171d06b06e74"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -89,7 +89,7 @@ class AccountPasswordUpdate:
     organization_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "c230e2b48fa79645a580a081f4f1dc94ff899076f467422fe8d744a1e9de84c2"
+ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "823376b710fee7c4f5205ede0f8e5f0dfa2831518a76772a9893ada5785a429d"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersAllEmailAscParams:
@@ -123,7 +123,7 @@ class AdminUsersAllEmailAscFound:
 
 AdminUsersAllEmailAscResult: TypeAlias = AdminUsersAllEmailAscFound
 
-ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "a2ffb7aba45510a8223108221f234f01afc1d04148960414025920b47b6e6527"
+ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "62a2981ce788c2260d2671393fea864d7aa7f60a71b22ffe373e8922418a5ab5"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersContainsAscParams:
@@ -157,7 +157,7 @@ class AdminUsersContainsAscFound:
 
 AdminUsersContainsAscResult: TypeAlias = AdminUsersContainsAscFound
 
-ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "2c8daae520d1de4fccbffa1cfdedc26f33a99fa25bd3df41f7922e84c9466740"
+ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "f01844bb49f3a5c99279f712dfd1c20c62232dfdc8aafdbc3f555285cf5209b2"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersContainsDescParams:
@@ -191,7 +191,7 @@ class AdminUsersContainsDescFound:
 
 AdminUsersContainsDescResult: TypeAlias = AdminUsersContainsDescFound
 
-ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "a8fbf727fc16a5a76ec0607a4ec1acbd8c1e9193384bab8130bd357ea8784473"
+ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "b15bb5a5f0a0b6385bf8e082534ce98522f097795e064a125fcd4e61d2a4218e"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEmailContainsCreatedDescParams:
@@ -225,7 +225,7 @@ class AdminUsersEmailContainsCreatedDescFound:
 
 AdminUsersEmailContainsCreatedDescResult: TypeAlias = AdminUsersEmailContainsCreatedDescFound
 
-ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "7633f7c70bdd26ed7b1a6928f1eae7a834f2f31617ad2e05670e3e23216905c8"
+ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "938b66a9c92572cc2321119ee519ca6b61121e18db7d975614d35de540f7826e"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEmailContainsImageAscParams:
@@ -259,7 +259,7 @@ class AdminUsersEmailContainsImageAscFound:
 
 AdminUsersEmailContainsImageAscResult: TypeAlias = AdminUsersEmailContainsImageAscFound
 
-ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "de8a156dd9eb2e12eb5dd150e40ce7af69f5ff584f59d789127518a2a36c49a9"
+ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "091ec1f1d003690e39fd0a23d403ad7df0f0a9003a2758d53a89fe102c13bbf0"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEndsWithAscParams:
@@ -293,7 +293,7 @@ class AdminUsersEndsWithAscFound:
 
 AdminUsersEndsWithAscResult: TypeAlias = AdminUsersEndsWithAscFound
 
-ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "4378509c2aba6e5705d90a6bb014c22be51344003b6f67bb6ca95c26297b4cee"
+ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "3975ffd01eccfa6dd4423451c21b4bd2c3eaff3117d3c119e9602ff3fc502148"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEndsWithDescParams:
@@ -327,7 +327,7 @@ class AdminUsersEndsWithDescFound:
 
 AdminUsersEndsWithDescResult: TypeAlias = AdminUsersEndsWithDescFound
 
-ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "95ef1052619026bfa7293485e835bb5231b831b026dc2f6e57162c4728fef30e"
+ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "7c6572aabe194058ec2cab7c37b29daec04ec04288398f342e28752da959e8c6"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersStartsWithAscParams:
@@ -361,7 +361,7 @@ class AdminUsersStartsWithAscFound:
 
 AdminUsersStartsWithAscResult: TypeAlias = AdminUsersStartsWithAscFound
 
-ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "b99e8451f5cc732e4027340815950958a66420d450df3935d2c38c857a61162c"
+ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "a80fac335b8dde747aaed0ecfd53cd0a9eac489ebb5b2a2fdf867500bcb2dd4f"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersStartsWithDescParams:
@@ -1321,6 +1321,8 @@ class RiffDBBetterAuthCoreClient:
         self._command_attempts = command_attempts
 
     def admin_users_all_email_asc(self, parameters: AdminUsersAllEmailAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersAllEmailAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1333,6 +1335,8 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def admin_users_contains_asc(self, parameters: AdminUsersContainsAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1345,6 +1349,8 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def admin_users_contains_desc(self, parameters: AdminUsersContainsDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsDescResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1357,6 +1363,8 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def admin_users_email_contains_created_desc(self, parameters: AdminUsersEmailContainsCreatedDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsCreatedDescResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1369,6 +1377,8 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def admin_users_email_contains_image_asc(self, parameters: AdminUsersEmailContainsImageAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsImageAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1381,6 +1391,8 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def admin_users_ends_with_asc(self, parameters: AdminUsersEndsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1393,6 +1405,8 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def admin_users_ends_with_desc(self, parameters: AdminUsersEndsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithDescResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1405,6 +1419,8 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def admin_users_starts_with_asc(self, parameters: AdminUsersStartsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1417,6 +1433,8 @@ class RiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     def admin_users_starts_with_desc(self, parameters: AdminUsersStartsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithDescResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1458,7 +1476,7 @@ class RiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -1477,7 +1495,7 @@ class RiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -1496,7 +1514,7 @@ class RiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -1515,7 +1533,7 @@ class RiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -1582,7 +1600,7 @@ class RiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -1639,7 +1657,7 @@ class RiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2006,6 +2024,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         self._command_attempts = command_attempts
 
     async def admin_users_all_email_asc(self, parameters: AdminUsersAllEmailAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersAllEmailAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2018,6 +2038,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def admin_users_contains_asc(self, parameters: AdminUsersContainsAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2030,6 +2052,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def admin_users_contains_desc(self, parameters: AdminUsersContainsDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsDescResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2042,6 +2066,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def admin_users_email_contains_created_desc(self, parameters: AdminUsersEmailContainsCreatedDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsCreatedDescResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2054,6 +2080,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def admin_users_email_contains_image_asc(self, parameters: AdminUsersEmailContainsImageAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsImageAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2066,6 +2094,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def admin_users_ends_with_asc(self, parameters: AdminUsersEndsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2078,6 +2108,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def admin_users_ends_with_desc(self, parameters: AdminUsersEndsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithDescResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2090,6 +2122,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def admin_users_starts_with_asc(self, parameters: AdminUsersStartsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithAscResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2102,6 +2136,8 @@ class AsyncRiffDBBetterAuthCoreClient:
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
     async def admin_users_starts_with_desc(self, parameters: AdminUsersStartsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithDescResult]:
+        if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
+            raise ValueError("limit must be an integer from 1 through 100")
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2143,7 +2179,7 @@ class AsyncRiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2162,7 +2198,7 @@ class AsyncRiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2181,7 +2217,7 @@ class AsyncRiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2200,7 +2236,7 @@ class AsyncRiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2267,7 +2303,7 @@ class AsyncRiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2324,7 +2360,7 @@ class AsyncRiffDBBetterAuthCoreClient:
         if generated_cursor is not None:
             if options.cursor is not None:
                 raise ValueError("generated cursor conflicts with query options")
-            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit)
+            options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,

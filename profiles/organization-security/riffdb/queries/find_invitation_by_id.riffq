@@ -1,0 +1,18 @@
+query FindInvitationById(
+    $tenant_id: Invitation.tenant_id,
+    $user_id: Invitation.user_id,
+    $invitation_id: Invitation.invitation_id,
+) {
+    many invitations from Invitation
+        where tenant_id == $tenant_id
+          && user_id == $user_id
+          && invitation_id == $invitation_id
+        order by invitation_id asc
+        take 1
+
+    return Found {
+        invitations: invitations { user_id invitation_id created_at email expires_at organization_id role status team_id revision }
+    }
+
+    outcomes Found
+}

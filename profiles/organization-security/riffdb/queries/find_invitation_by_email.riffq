@@ -1,0 +1,17 @@
+query FindInvitationByEmail(
+    $tenant_id: Invitation.tenant_id,
+    $email: Invitation.email,
+    $after: Cursor?,
+) {
+    many invitations from Invitation
+        where tenant_id == $tenant_id
+          && email == $email
+        order by user_id asc, invitation_id asc
+        take 50 after $after
+
+    return Found {
+        invitations: invitations { user_id invitation_id created_at email expires_at organization_id role status team_id revision }
+    }
+
+    outcomes Found
+}

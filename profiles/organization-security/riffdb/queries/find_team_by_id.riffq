@@ -1,0 +1,18 @@
+query FindTeamById(
+    $tenant_id: Team.tenant_id,
+    $organization_id: Team.organization_id,
+    $team_id: Team.team_id,
+) {
+    many teams from Team
+        where tenant_id == $tenant_id
+          && organization_id == $organization_id
+          && team_id == $team_id
+        order by team_id asc
+        take 1
+
+    return Found {
+        teams: teams { organization_id team_id created_at name updated_at revision }
+    }
+
+    outcomes Found
+}

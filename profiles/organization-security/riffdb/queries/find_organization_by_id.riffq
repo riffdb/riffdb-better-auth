@@ -1,0 +1,16 @@
+query FindOrganizationById(
+    $tenant_id: Organization.tenant_id,
+    $organization_id: Organization.organization_id,
+) {
+    many organizations from Organization
+        where tenant_id == $tenant_id
+          && organization_id == $organization_id
+        order by organization_id asc
+        take 1
+
+    return Found {
+        organizations: organizations { organization_id created_at logo metadata name slug revision }
+    }
+
+    outcomes Found
+}

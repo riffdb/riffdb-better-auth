@@ -2,7 +2,7 @@ query AdminUsersStartsWithAsc(
     $organization_id: User.organization_id,
     $needle: User.email,
     $user_id: User.user_id?,
-    $limit: Limit = 50,
+    $limit: Limit<100> = 50,
     $offset: u64 = 0
 ) {
     many users from User

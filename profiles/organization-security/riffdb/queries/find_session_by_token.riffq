@@ -1,0 +1,17 @@
+query FindSessionByToken(
+    $tenant_id: Session.tenant_id,
+    $token: Session.token,
+    $after: Cursor?,
+) {
+    many sessions from Session
+        where tenant_id == $tenant_id
+          && token == $token
+        order by user_id asc, session_id asc
+        take 1
+
+    return Found {
+        sessions: sessions { user_id session_id active_organization_id active_team_id created_at expires_at ip_address token reveals sessions.token updated_at user_agent revision }
+    }
+
+    outcomes Found
+}

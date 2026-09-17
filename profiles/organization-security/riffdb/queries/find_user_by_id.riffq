@@ -1,0 +1,16 @@
+query FindUserById(
+    $tenant_id: User.tenant_id,
+    $user_id: User.user_id,
+) {
+    many users from User
+        where tenant_id == $tenant_id
+          && user_id == $user_id
+        order by user_id asc
+        take 1
+
+    return Found {
+        users: users { user_id created_at email email_verified image locale name two_factor_enabled updated_at revision }
+    }
+
+    outcomes Found
+}

@@ -31,3 +31,14 @@ export {
   type RiffDBBetterAuthAdapterConfig,
   type RiffDBBetterAuthCallErrorCode,
 } from "./adapter.js";
+export {
+  materializeRiffDBBetterAuthProfile,
+  RiffDBBetterAuthMaterializationError,
+  type RiffDBBetterAuthAggregateReport,
+  type RiffDBBetterAuthGeneratedQuery,
+  type RiffDBBetterAuthMaterialization,
+  type RiffDBBetterAuthMaterializationErrorCode,
+  type RiffDBBetterAuthMaterializationOptions,
+  type RiffDBBetterAuthMaterializationReport,
+  type RiffDBBetterAuthUnenforcedReference,
+} from "./profile-contract.js";

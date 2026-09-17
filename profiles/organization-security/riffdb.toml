@@ -1,0 +1,7 @@
+[client]
+endpoint = "http://127.0.0.1:7443"
+database = "better-auth-development"
+
+[project]
+schema = "riffdb.application.json"
+generators = []

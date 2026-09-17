@@ -1,0 +1,17 @@
+query FindUserByEmail(
+    $tenant_id: User.tenant_id,
+    $email: User.email,
+    $after: Cursor?,
+) {
+    many users from User
+        where tenant_id == $tenant_id
+          && email == $email
+        order by user_id asc
+        take 1
+
+    return Found {
+        users: users { user_id created_at email email_verified image locale name two_factor_enabled updated_at revision }
+    }
+
+    outcomes Found
+}

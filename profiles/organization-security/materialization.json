@@ -1,0 +1,48 @@
+{
+  "aggregates": [
+    {
+      "name": "OrganizationData",
+      "root": "organization",
+      "children": [
+        "member",
+        "team"
+      ]
+    },
+    {
+      "name": "UserData",
+      "root": "user",
+      "children": [
+        "account",
+        "invitation",
+        "session",
+        "teamMember",
+        "twoFactor"
+      ]
+    },
+    {
+      "name": "VerificationData",
+      "root": "verification",
+      "children": []
+    }
+  ],
+  "unenforcedReferences": [
+    {
+      "model": "invitation",
+      "field": "organizationId",
+      "targetModel": "organization",
+      "reason": "cross_aggregate_edge"
+    },
+    {
+      "model": "member",
+      "field": "userId",
+      "targetModel": "user",
+      "reason": "cross_aggregate_edge"
+    },
+    {
+      "model": "teamMember",
+      "field": "teamId",
+      "targetModel": "team",
+      "reason": "cross_aggregate_edge"
+    }
+  ]
+}

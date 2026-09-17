@@ -1,0 +1,17 @@
+query FindVerificationByIdentifier(
+    $tenant_id: Verification.tenant_id,
+    $identifier: Verification.identifier,
+    $after: Cursor?,
+) {
+    many verifications from Verification
+        where tenant_id == $tenant_id
+          && identifier == $identifier
+        order by verification_id asc
+        take 50 after $after
+
+    return Found {
+        verifications: verifications { verification_id created_at expires_at identifier updated_at value reveals verifications.value revision }
+    }
+
+    outcomes Found
+}

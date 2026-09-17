@@ -1,0 +1,766 @@
+contract BetterAuthOrganizationSecurity version 1 {
+  entity Account {
+    key (tenant_id: uuid, user_id: uuid, account_row_id: uuid)
+    field secret access_token: optional<string<2048>>
+    field secret access_token_expires_at: optional<timestamp>
+    field account_id: string<2048>
+    field created_at: timestamp
+    field secret id_token: optional<string<2048>>
+    field secret password: optional<string<2048>>
+    field provider_id: string<2048>
+    field secret refresh_token: optional<string<2048>>
+    field secret refresh_token_expires_at: optional<timestamp>
+    field scope: optional<string<2048>>
+    field updated_at: timestamp
+    field revision: u64
+    index by_parent (tenant_id, user_id, account_row_id)
+    reference account_parent (tenant_id, user_id) -> User(tenant_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity Invitation {
+    key (tenant_id: uuid, user_id: uuid, invitation_id: uuid)
+    field created_at: timestamp
+    field email: string<2048>
+    field expires_at: timestamp
+    field organization_id: uuid
+    field role: optional<string<2048>>
+    field status: string<2048>
+    field team_id: optional<string<2048>>
+    field revision: u64
+    index by_email (tenant_id, email, user_id, invitation_id)
+    index by_organization_id (tenant_id, organization_id, user_id, invitation_id)
+    index by_parent (tenant_id, user_id, invitation_id)
+    reference invitation_parent (tenant_id, user_id) -> User(tenant_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity Member {
+    key (tenant_id: uuid, organization_id: uuid, member_id: uuid)
+    field created_at: timestamp
+    field role: string<2048>
+    field user_id: uuid
+    field revision: u64
+    index by_user_id (tenant_id, user_id, organization_id, member_id)
+    index by_parent (tenant_id, organization_id, member_id)
+    reference member_parent (tenant_id, organization_id) -> Organization(tenant_id, organization_id)
+    delete_policy no_inbound
+  }
+
+  entity Organization {
+    key (tenant_id: uuid, organization_id: uuid)
+    field created_at: timestamp
+    field logo: optional<string<2048>>
+    field metadata: optional<string<2048>>
+    field name: string<2048>
+    field slug: string<2048>
+    field revision: u64
+    unique organization_slug (tenant_id, slug)
+    index by_slug (tenant_id, slug, organization_id)
+    delete_policy cascade {
+      relationship Member.member_parent using Member.by_parent maximum 32
+      relationship Team.team_parent using Team.by_parent maximum 32
+    }
+  }
+
+  entity Session {
+    key (tenant_id: uuid, user_id: uuid, session_id: uuid)
+    field active_organization_id: optional<string<2048>>
+    field active_team_id: optional<string<2048>>
+    field created_at: timestamp
+    field expires_at: timestamp
+    field ip_address: optional<string<2048>>
+    field secret token: string<2048>
+    field updated_at: timestamp
+    field user_agent: optional<string<2048>>
+    field revision: u64
+    unique session_token (tenant_id, token)
+    index by_token (tenant_id, token, user_id, session_id)
+    index by_parent (tenant_id, user_id, session_id)
+    reference session_parent (tenant_id, user_id) -> User(tenant_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity Team {
+    key (tenant_id: uuid, organization_id: uuid, team_id: uuid)
+    field created_at: timestamp
+    field name: string<2048>
+    field updated_at: optional<timestamp>
+    field revision: u64
+    index by_parent (tenant_id, organization_id, team_id)
+    reference team_parent (tenant_id, organization_id) -> Organization(tenant_id, organization_id)
+    delete_policy no_inbound
+  }
+
+  entity TeamMember {
+    key (tenant_id: uuid, user_id: uuid, team_member_id: uuid)
+    field created_at: optional<timestamp>
+    field team_id: uuid
+    field revision: u64
+    index by_team_id (tenant_id, team_id, user_id, team_member_id)
+    index by_parent (tenant_id, user_id, team_member_id)
+    reference team_member_parent (tenant_id, user_id) -> User(tenant_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity TwoFactor {
+    key (tenant_id: uuid, user_id: uuid, two_factor_id: uuid)
+    field secret backup_codes: string<2048>
+    field secret failed_verification_count: optional<i64>
+    field secret locked_until: optional<timestamp>
+    field secret secret: string<2048>
+    field verified: optional<bool>
+    field revision: u64
+    index by_secret (tenant_id, secret, user_id, two_factor_id)
+    index by_parent (tenant_id, user_id, two_factor_id)
+    reference two_factor_parent (tenant_id, user_id) -> User(tenant_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity User {
+    key (tenant_id: uuid, user_id: uuid)
+    field created_at: timestamp
+    field email: string<2048>
+    field email_verified: bool
+    field image: optional<string<2048>>
+    field locale: optional<string<2048>>
+    field name: string<2048>
+    field two_factor_enabled: optional<bool>
+    field updated_at: timestamp
+    field revision: u64
+    unique user_email (tenant_id, email)
+    index by_email (tenant_id, email, user_id)
+    delete_policy cascade {
+      relationship Account.account_parent using Account.by_parent maximum 32
+      relationship Invitation.invitation_parent using Invitation.by_parent maximum 32
+      relationship Session.session_parent using Session.by_parent maximum 32
+      relationship TeamMember.team_member_parent using TeamMember.by_parent maximum 32
+      relationship TwoFactor.two_factor_parent using TwoFactor.by_parent maximum 32
+    }
+  }
+
+  entity Verification {
+    key (tenant_id: uuid, verification_id: uuid)
+    field created_at: timestamp
+    field expires_at: timestamp
+    field identifier: string<2048>
+    field updated_at: timestamp
+    field secret value: string<2048>
+    field revision: u64
+    index by_identifier (tenant_id, identifier, verification_id)
+    delete_policy no_inbound
+  }
+
+  aggregate OrganizationData {
+    root Organization
+    child Member
+    child Team
+    partition_by tenant_id
+    conflict_key (tenant_id, organization_id)
+  }
+
+  aggregate UserData {
+    root User
+    child Account
+    child Invitation
+    child Session
+    child TeamMember
+    child TwoFactor
+    partition_by tenant_id
+    conflict_key (tenant_id, user_id)
+  }
+
+  aggregate VerificationData {
+    root Verification
+    partition_by tenant_id
+    conflict_key (tenant_id, verification_id)
+  }
+
+  command CreateAccount {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input account_row_id: uuid
+    input access_token: optional<string<2048>>
+    input access_token_expires_at: optional<timestamp>
+    input account_id: string<2048>
+    input created_at: timestamp
+    input id_token: optional<string<2048>>
+    input password: optional<string<2048>>
+    input provider_id: string<2048>
+    input refresh_token: optional<string<2048>>
+    input refresh_token_expires_at: optional<timestamp>
+    input scope: optional<string<2048>>
+    input updated_at: timestamp
+    idempotency_key request_id
+    read User(tenant_id, user_id) as user else AccountParentMissing {}
+    create Account(tenant_id, user_id, account_row_id) as account else AccountAlreadyExists {}
+    set account.access_token = access_token
+    set account.access_token_expires_at = access_token_expires_at
+    set account.account_id = account_id
+    set account.created_at = created_at
+    set account.id_token = id_token
+    set account.password = password
+    set account.provider_id = provider_id
+    set account.refresh_token = refresh_token
+    set account.refresh_token_expires_at = refresh_token_expires_at
+    set account.scope = scope
+    set account.updated_at = updated_at
+    set account.revision = 1
+    return AccountCreated {}
+  }
+
+  command UpdateAccount {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input account_row_id: uuid
+    input expected_revision: u64
+    input access_token: optional<string<2048>>
+    input access_token_expires_at: optional<timestamp>
+    input account_id: string<2048>
+    input created_at: timestamp
+    input id_token: optional<string<2048>>
+    input password: optional<string<2048>>
+    input provider_id: string<2048>
+    input refresh_token: optional<string<2048>>
+    input refresh_token_expires_at: optional<timestamp>
+    input scope: optional<string<2048>>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Account(tenant_id, user_id, account_row_id) as account else AccountUpdateMissing {}
+    require current_revision: account.revision == expected_revision else AccountUpdateStale {}
+    set account.access_token = access_token
+    set account.access_token_expires_at = access_token_expires_at
+    set account.account_id = account_id
+    set account.created_at = created_at
+    set account.id_token = id_token
+    set account.password = password
+    set account.provider_id = provider_id
+    set account.refresh_token = refresh_token
+    set account.refresh_token_expires_at = refresh_token_expires_at
+    set account.scope = scope
+    set account.updated_at = updated_at
+    set account.revision = account.revision + 1
+    return AccountUpdated {}
+  }
+
+  bulk command DeleteAccount {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input account_row_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for account_row_id in account_row_ids {
+      delete Account(tenant_id, user_id, account_row_id) as account else AccountMissing {}
+    }
+    return AccountDeleted {}
+  }
+
+  command CreateInvitation {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input invitation_id: uuid
+    input created_at: timestamp
+    input email: string<2048>
+    input expires_at: timestamp
+    input organization_id: uuid
+    input role: optional<string<2048>>
+    input status: string<2048>
+    input team_id: optional<string<2048>>
+    idempotency_key request_id
+    read User(tenant_id, user_id) as user else InvitationParentMissing {}
+    create Invitation(tenant_id, user_id, invitation_id) as invitation else InvitationAlreadyExists {}
+    set invitation.created_at = created_at
+    set invitation.email = email
+    set invitation.expires_at = expires_at
+    set invitation.organization_id = organization_id
+    set invitation.role = role
+    set invitation.status = status
+    set invitation.team_id = team_id
+    set invitation.revision = 1
+    return InvitationCreated {}
+  }
+
+  command UpdateInvitation {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input invitation_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input email: string<2048>
+    input expires_at: timestamp
+    input organization_id: uuid
+    input role: optional<string<2048>>
+    input status: string<2048>
+    input team_id: optional<string<2048>>
+    idempotency_key request_id
+    mutate Invitation(tenant_id, user_id, invitation_id) as invitation else InvitationUpdateMissing {}
+    require current_revision: invitation.revision == expected_revision else InvitationUpdateStale {}
+    set invitation.created_at = created_at
+    set invitation.email = email
+    set invitation.expires_at = expires_at
+    set invitation.organization_id = organization_id
+    set invitation.role = role
+    set invitation.status = status
+    set invitation.team_id = team_id
+    set invitation.revision = invitation.revision + 1
+    return InvitationUpdated {}
+  }
+
+  bulk command DeleteInvitation {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input invitation_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for invitation_id in invitation_ids {
+      delete Invitation(tenant_id, user_id, invitation_id) as invitation else InvitationMissing {}
+    }
+    return InvitationDeleted {}
+  }
+
+  command CreateMember {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_id: uuid
+    input member_id: uuid
+    input created_at: timestamp
+    input role: string<2048>
+    input user_id: uuid
+    idempotency_key request_id
+    read Organization(tenant_id, organization_id) as organization else MemberParentMissing {}
+    create Member(tenant_id, organization_id, member_id) as member else MemberAlreadyExists {}
+    set member.created_at = created_at
+    set member.role = role
+    set member.user_id = user_id
+    set member.revision = 1
+    return MemberCreated {}
+  }
+
+  command UpdateMember {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_id: uuid
+    input member_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input role: string<2048>
+    input user_id: uuid
+    idempotency_key request_id
+    mutate Member(tenant_id, organization_id, member_id) as member else MemberUpdateMissing {}
+    require current_revision: member.revision == expected_revision else MemberUpdateStale {}
+    set member.created_at = created_at
+    set member.role = role
+    set member.user_id = user_id
+    set member.revision = member.revision + 1
+    return MemberUpdated {}
+  }
+
+  bulk command DeleteMember {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_id: uuid
+    input member_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for member_id in member_ids {
+      delete Member(tenant_id, organization_id, member_id) as member else MemberMissing {}
+    }
+    return MemberDeleted {}
+  }
+
+  command CreateOrganization {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_id: uuid
+    input created_at: timestamp
+    input logo: optional<string<2048>>
+    input metadata: optional<string<2048>>
+    input name: string<2048>
+    input slug: string<2048>
+    idempotency_key request_id
+    create Organization(tenant_id, organization_id) as organization else OrganizationAlreadyExists {}
+    set organization.created_at = created_at
+    set organization.logo = logo
+    set organization.metadata = metadata
+    set organization.name = name
+    set organization.slug = slug
+    set organization.revision = 1
+    return OrganizationCreated {}
+  }
+
+  command UpdateOrganization {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input logo: optional<string<2048>>
+    input metadata: optional<string<2048>>
+    input name: string<2048>
+    input slug: string<2048>
+    idempotency_key request_id
+    mutate Organization(tenant_id, organization_id) as organization else OrganizationUpdateMissing {}
+    require current_revision: organization.revision == expected_revision else OrganizationUpdateStale {}
+    set organization.created_at = created_at
+    set organization.logo = logo
+    set organization.metadata = metadata
+    set organization.name = name
+    set organization.slug = slug
+    set organization.revision = organization.revision + 1
+    return OrganizationUpdated {}
+  }
+
+  bulk command DeleteOrganization {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_ids: list<uuid, 1..3>
+    idempotency_key request_id
+    for organization_id in organization_ids {
+      delete Organization(tenant_id, organization_id) as organization else OrganizationMissing {}
+        cascade OrganizationCascadeLimitExceeded {}
+    }
+    return OrganizationDeleted {}
+  }
+
+  command CreateSession {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input session_id: uuid
+    input active_organization_id: optional<string<2048>>
+    input active_team_id: optional<string<2048>>
+    input created_at: timestamp
+    input expires_at: timestamp
+    input ip_address: optional<string<2048>>
+    input token: string<2048>
+    input updated_at: timestamp
+    input user_agent: optional<string<2048>>
+    idempotency_key request_id
+    read User(tenant_id, user_id) as user else SessionParentMissing {}
+    create Session(tenant_id, user_id, session_id) as session else SessionAlreadyExists {}
+    set session.active_organization_id = active_organization_id
+    set session.active_team_id = active_team_id
+    set session.created_at = created_at
+    set session.expires_at = expires_at
+    set session.ip_address = ip_address
+    set session.token = token
+    set session.updated_at = updated_at
+    set session.user_agent = user_agent
+    set session.revision = 1
+    return SessionCreated {}
+  }
+
+  command UpdateSession {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input session_id: uuid
+    input expected_revision: u64
+    input active_organization_id: optional<string<2048>>
+    input active_team_id: optional<string<2048>>
+    input created_at: timestamp
+    input expires_at: timestamp
+    input ip_address: optional<string<2048>>
+    input token: string<2048>
+    input updated_at: timestamp
+    input user_agent: optional<string<2048>>
+    idempotency_key request_id
+    mutate Session(tenant_id, user_id, session_id) as session else SessionUpdateMissing {}
+    require current_revision: session.revision == expected_revision else SessionUpdateStale {}
+    set session.active_organization_id = active_organization_id
+    set session.active_team_id = active_team_id
+    set session.created_at = created_at
+    set session.expires_at = expires_at
+    set session.ip_address = ip_address
+    set session.token = token
+    set session.updated_at = updated_at
+    set session.user_agent = user_agent
+    set session.revision = session.revision + 1
+    return SessionUpdated {}
+  }
+
+  bulk command DeleteSession {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input session_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for session_id in session_ids {
+      delete Session(tenant_id, user_id, session_id) as session else SessionMissing {}
+    }
+    return SessionDeleted {}
+  }
+
+  command CreateTeam {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_id: uuid
+    input team_id: uuid
+    input created_at: timestamp
+    input name: string<2048>
+    input updated_at: optional<timestamp>
+    idempotency_key request_id
+    read Organization(tenant_id, organization_id) as organization else TeamParentMissing {}
+    create Team(tenant_id, organization_id, team_id) as team else TeamAlreadyExists {}
+    set team.created_at = created_at
+    set team.name = name
+    set team.updated_at = updated_at
+    set team.revision = 1
+    return TeamCreated {}
+  }
+
+  command UpdateTeam {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_id: uuid
+    input team_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input name: string<2048>
+    input updated_at: optional<timestamp>
+    idempotency_key request_id
+    mutate Team(tenant_id, organization_id, team_id) as team else TeamUpdateMissing {}
+    require current_revision: team.revision == expected_revision else TeamUpdateStale {}
+    set team.created_at = created_at
+    set team.name = name
+    set team.updated_at = updated_at
+    set team.revision = team.revision + 1
+    return TeamUpdated {}
+  }
+
+  bulk command DeleteTeam {
+    input request_id: uuid
+    input tenant_id: uuid
+    input organization_id: uuid
+    input team_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for team_id in team_ids {
+      delete Team(tenant_id, organization_id, team_id) as team else TeamMissing {}
+    }
+    return TeamDeleted {}
+  }
+
+  command CreateTeamMember {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input team_member_id: uuid
+    input created_at: optional<timestamp>
+    input team_id: uuid
+    idempotency_key request_id
+    read User(tenant_id, user_id) as user else TeamMemberParentMissing {}
+    create TeamMember(tenant_id, user_id, team_member_id) as team_member else TeamMemberAlreadyExists {}
+    set team_member.created_at = created_at
+    set team_member.team_id = team_id
+    set team_member.revision = 1
+    return TeamMemberCreated {}
+  }
+
+  command UpdateTeamMember {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input team_member_id: uuid
+    input expected_revision: u64
+    input created_at: optional<timestamp>
+    input team_id: uuid
+    idempotency_key request_id
+    mutate TeamMember(tenant_id, user_id, team_member_id) as team_member else TeamMemberUpdateMissing {}
+    require current_revision: team_member.revision == expected_revision else TeamMemberUpdateStale {}
+    set team_member.created_at = created_at
+    set team_member.team_id = team_id
+    set team_member.revision = team_member.revision + 1
+    return TeamMemberUpdated {}
+  }
+
+  bulk command DeleteTeamMember {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input team_member_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for team_member_id in team_member_ids {
+      delete TeamMember(tenant_id, user_id, team_member_id) as team_member else TeamMemberMissing {}
+    }
+    return TeamMemberDeleted {}
+  }
+
+  command CreateTwoFactor {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input two_factor_id: uuid
+    input backup_codes: string<2048>
+    input failed_verification_count: optional<i64>
+    input locked_until: optional<timestamp>
+    input secret: string<2048>
+    input verified: optional<bool>
+    idempotency_key request_id
+    read User(tenant_id, user_id) as user else TwoFactorParentMissing {}
+    create TwoFactor(tenant_id, user_id, two_factor_id) as two_factor else TwoFactorAlreadyExists {}
+    set two_factor.backup_codes = backup_codes
+    set two_factor.failed_verification_count = failed_verification_count
+    set two_factor.locked_until = locked_until
+    set two_factor.secret = secret
+    set two_factor.verified = verified
+    set two_factor.revision = 1
+    return TwoFactorCreated {}
+  }
+
+  command UpdateTwoFactor {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input two_factor_id: uuid
+    input expected_revision: u64
+    input backup_codes: string<2048>
+    input failed_verification_count: optional<i64>
+    input locked_until: optional<timestamp>
+    input secret: string<2048>
+    input verified: optional<bool>
+    idempotency_key request_id
+    mutate TwoFactor(tenant_id, user_id, two_factor_id) as two_factor else TwoFactorUpdateMissing {}
+    require current_revision: two_factor.revision == expected_revision else TwoFactorUpdateStale {}
+    set two_factor.backup_codes = backup_codes
+    set two_factor.failed_verification_count = failed_verification_count
+    set two_factor.locked_until = locked_until
+    set two_factor.secret = secret
+    set two_factor.verified = verified
+    set two_factor.revision = two_factor.revision + 1
+    return TwoFactorUpdated {}
+  }
+
+  bulk command DeleteTwoFactor {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input two_factor_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for two_factor_id in two_factor_ids {
+      delete TwoFactor(tenant_id, user_id, two_factor_id) as two_factor else TwoFactorMissing {}
+    }
+    return TwoFactorDeleted {}
+  }
+
+  command CreateUser {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input created_at: timestamp
+    input email: string<2048>
+    input email_verified: bool
+    input image: optional<string<2048>>
+    input locale: optional<string<2048>>
+    input name: string<2048>
+    input two_factor_enabled: optional<bool>
+    input updated_at: timestamp
+    idempotency_key request_id
+    create User(tenant_id, user_id) as user else UserAlreadyExists {}
+    set user.created_at = created_at
+    set user.email = email
+    set user.email_verified = email_verified
+    set user.image = image
+    set user.locale = locale
+    set user.name = name
+    set user.two_factor_enabled = two_factor_enabled
+    set user.updated_at = updated_at
+    set user.revision = 1
+    return UserCreated {}
+  }
+
+  command UpdateUser {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input email: string<2048>
+    input email_verified: bool
+    input image: optional<string<2048>>
+    input locale: optional<string<2048>>
+    input name: string<2048>
+    input two_factor_enabled: optional<bool>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate User(tenant_id, user_id) as user else UserUpdateMissing {}
+    require current_revision: user.revision == expected_revision else UserUpdateStale {}
+    set user.created_at = created_at
+    set user.email = email
+    set user.email_verified = email_verified
+    set user.image = image
+    set user.locale = locale
+    set user.name = name
+    set user.two_factor_enabled = two_factor_enabled
+    set user.updated_at = updated_at
+    set user.revision = user.revision + 1
+    return UserUpdated {}
+  }
+
+  bulk command DeleteUser {
+    input request_id: uuid
+    input tenant_id: uuid
+    input user_ids: list<uuid, 1..1>
+    idempotency_key request_id
+    for user_id in user_ids {
+      delete User(tenant_id, user_id) as user else UserMissing {}
+        cascade UserCascadeLimitExceeded {}
+    }
+    return UserDeleted {}
+  }
+
+  command CreateVerification {
+    input request_id: uuid
+    input tenant_id: uuid
+    input verification_id: uuid
+    input created_at: timestamp
+    input expires_at: timestamp
+    input identifier: string<2048>
+    input updated_at: timestamp
+    input value: string<2048>
+    idempotency_key request_id
+    create Verification(tenant_id, verification_id) as verification else VerificationAlreadyExists {}
+    set verification.created_at = created_at
+    set verification.expires_at = expires_at
+    set verification.identifier = identifier
+    set verification.updated_at = updated_at
+    set verification.value = value
+    set verification.revision = 1
+    return VerificationCreated {}
+  }
+
+  command UpdateVerification {
+    input request_id: uuid
+    input tenant_id: uuid
+    input verification_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input expires_at: timestamp
+    input identifier: string<2048>
+    input updated_at: timestamp
+    input value: string<2048>
+    idempotency_key request_id
+    mutate Verification(tenant_id, verification_id) as verification else VerificationUpdateMissing {}
+    require current_revision: verification.revision == expected_revision else VerificationUpdateStale {}
+    set verification.created_at = created_at
+    set verification.expires_at = expires_at
+    set verification.identifier = identifier
+    set verification.updated_at = updated_at
+    set verification.value = value
+    set verification.revision = verification.revision + 1
+    return VerificationUpdated {}
+  }
+
+  bulk command DeleteVerification {
+    input request_id: uuid
+    input tenant_id: uuid
+    input verification_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for verification_id in verification_ids {
+      delete Verification(tenant_id, verification_id) as verification else VerificationMissing {}
+    }
+    return VerificationDeleted {}
+  }
+}

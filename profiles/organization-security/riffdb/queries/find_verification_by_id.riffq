@@ -1,0 +1,16 @@
+query FindVerificationById(
+    $tenant_id: Verification.tenant_id,
+    $verification_id: Verification.verification_id,
+) {
+    many verifications from Verification
+        where tenant_id == $tenant_id
+          && verification_id == $verification_id
+        order by verification_id asc
+        take 1
+
+    return Found {
+        verifications: verifications { verification_id created_at expires_at identifier updated_at value reveals verifications.value revision }
+    }
+
+    outcomes Found
+}

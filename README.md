@@ -4,8 +4,11 @@ An external Better Auth database adapter for RiffDB.
 
 Status: pre-alpha, unpublished. The core runtime profile is implemented and
 passes Better Auth's pinned authentication-flow suite plus a real RiffDB
-loopback suite. Profile planning is implemented for custom fields and plugins;
-those generated plans are not yet runtime profiles.
+loopback suite. Profile planning is implemented for custom fields and plugins,
+and a reviewed plan now materializes into a RiffDB contract, named queries, and
+application source that compile. Binding a materialized profile to a running
+adapter instance is not implemented: the adapter still dispatches only to the
+core profile's generated client.
 
 ## Architecture boundary
 
@@ -25,7 +28,8 @@ The shipped runtime profile is deliberately exact:
 
 Unsupported configuration fails before any RiffDB request. A custom or plugin
 profile requires its own generated contract, named operations, client facade,
-and conformance tests. Adapter construction also verifies that the resolved
+and conformance tests; `npm run profiles:materialize` generates the first two
+from a reviewed plan. Adapter construction also verifies that the resolved
 `better-auth` installation is exactly `1.6.29`; package-manager overrides do
 not bypass that runtime check. Secret-bearing Better Auth debug logging is
 rejected rather than forwarded to the factory logger.

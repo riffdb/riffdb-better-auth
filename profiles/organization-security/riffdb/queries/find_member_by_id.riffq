@@ -1,0 +1,18 @@
+query FindMemberById(
+    $tenant_id: Member.tenant_id,
+    $organization_id: Member.organization_id,
+    $member_id: Member.member_id,
+) {
+    many members from Member
+        where tenant_id == $tenant_id
+          && organization_id == $organization_id
+          && member_id == $member_id
+        order by member_id asc
+        take 1
+
+    return Found {
+        members: members { organization_id member_id created_at role user_id revision }
+    }
+
+    outcomes Found
+}

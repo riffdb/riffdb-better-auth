@@ -1,0 +1,18 @@
+query FindAccountById(
+    $tenant_id: Account.tenant_id,
+    $user_id: Account.user_id,
+    $account_row_id: Account.account_row_id,
+) {
+    many accounts from Account
+        where tenant_id == $tenant_id
+          && user_id == $user_id
+          && account_row_id == $account_row_id
+        order by account_row_id asc
+        take 1
+
+    return Found {
+        accounts: accounts { user_id account_row_id access_token reveals accounts.access_token access_token_expires_at reveals accounts.access_token_expires_at account_id created_at id_token reveals accounts.id_token password reveals accounts.password provider_id refresh_token reveals accounts.refresh_token refresh_token_expires_at reveals accounts.refresh_token_expires_at scope updated_at revision }
+    }
+
+    outcomes Found
+}

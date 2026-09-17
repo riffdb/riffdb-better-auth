@@ -30,6 +30,14 @@ const { execute } = await testAdapter({
   tests: [
     authFlowTestSuite({
       disableTests: {
+        // This test adds a `dateField` to the user model through
+        // `modifyBetterAuthOptions` and rebuilds the adapter in place. The
+        // harness re-invokes the adapter factory without re-running
+        // migrations, so there is no point at which a contract carrying that
+        // field could be compiled. Passing it would require storing unplanned
+        // fields dynamically, which is the generic-CRUD escape hatch this
+        // adapter exists to refuse. Additional fields are supported through a
+        // materialized profile instead; see DESIGN.md "Materialization".
         "should sign up with additional fields": true,
       },
     }),

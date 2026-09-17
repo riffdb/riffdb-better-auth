@@ -1,0 +1,17 @@
+query FindOrganizationBySlug(
+    $tenant_id: Organization.tenant_id,
+    $slug: Organization.slug,
+    $after: Cursor?,
+) {
+    many organizations from Organization
+        where tenant_id == $tenant_id
+          && slug == $slug
+        order by organization_id asc
+        take 1
+
+    return Found {
+        organizations: organizations { organization_id created_at logo metadata name slug revision }
+    }
+
+    outcomes Found
+}

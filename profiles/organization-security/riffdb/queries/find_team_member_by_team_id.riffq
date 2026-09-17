@@ -1,0 +1,17 @@
+query FindTeamMemberByTeamId(
+    $tenant_id: TeamMember.tenant_id,
+    $team_id: TeamMember.team_id,
+    $after: Cursor?,
+) {
+    many team_members from TeamMember
+        where tenant_id == $tenant_id
+          && team_id == $team_id
+        order by user_id asc, team_member_id asc
+        take 50 after $after
+
+    return Found {
+        team_members: team_members { user_id team_member_id created_at team_id revision }
+    }
+
+    outcomes Found
+}

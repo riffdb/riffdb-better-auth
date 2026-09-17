@@ -1,0 +1,18 @@
+query FindTwoFactorById(
+    $tenant_id: TwoFactor.tenant_id,
+    $user_id: TwoFactor.user_id,
+    $two_factor_id: TwoFactor.two_factor_id,
+) {
+    many two_factors from TwoFactor
+        where tenant_id == $tenant_id
+          && user_id == $user_id
+          && two_factor_id == $two_factor_id
+        order by two_factor_id asc
+        take 1
+
+    return Found {
+        two_factors: two_factors { user_id two_factor_id backup_codes reveals two_factors.backup_codes failed_verification_count reveals two_factors.failed_verification_count locked_until reveals two_factors.locked_until secret reveals two_factors.secret verified revision }
+    }
+
+    outcomes Found
+}

@@ -1,0 +1,167 @@
+{
+  "schema": "riffdb.application-source/v6",
+  "application": "better-auth-organization-security",
+  "contract": {
+    "source": "riffdb/contract.riff",
+    "lineage": "BetterAuthOrganizationSecurity",
+    "version": 1
+  },
+  "generation": {
+    "go": "generated/go/client.go",
+    "mcp": "generated/mcp/tools.json",
+    "python": "generated/python/client.py",
+    "rust": "generated/rust/client.rs",
+    "typescript": "src/generated/client.ts"
+  },
+  "migrations": [],
+  "query_modules": [
+    {
+      "name": "better_auth_organization_security",
+      "version": 1,
+      "queries": [
+        {
+          "name": "FindAccountById",
+          "source": "riffdb/queries/find_account_by_id.riffq"
+        },
+        {
+          "name": "FindInvitationById",
+          "source": "riffdb/queries/find_invitation_by_id.riffq"
+        },
+        {
+          "name": "FindInvitationByEmail",
+          "source": "riffdb/queries/find_invitation_by_email.riffq"
+        },
+        {
+          "name": "FindInvitationByOrganizationId",
+          "source": "riffdb/queries/find_invitation_by_organization_id.riffq"
+        },
+        {
+          "name": "FindMemberById",
+          "source": "riffdb/queries/find_member_by_id.riffq"
+        },
+        {
+          "name": "FindMemberByUserId",
+          "source": "riffdb/queries/find_member_by_user_id.riffq"
+        },
+        {
+          "name": "FindOrganizationById",
+          "source": "riffdb/queries/find_organization_by_id.riffq"
+        },
+        {
+          "name": "FindOrganizationBySlug",
+          "source": "riffdb/queries/find_organization_by_slug.riffq"
+        },
+        {
+          "name": "FindSessionById",
+          "source": "riffdb/queries/find_session_by_id.riffq"
+        },
+        {
+          "name": "FindSessionByToken",
+          "source": "riffdb/queries/find_session_by_token.riffq"
+        },
+        {
+          "name": "FindTeamById",
+          "source": "riffdb/queries/find_team_by_id.riffq"
+        },
+        {
+          "name": "FindTeamMemberById",
+          "source": "riffdb/queries/find_team_member_by_id.riffq"
+        },
+        {
+          "name": "FindTeamMemberByTeamId",
+          "source": "riffdb/queries/find_team_member_by_team_id.riffq"
+        },
+        {
+          "name": "FindTwoFactorById",
+          "source": "riffdb/queries/find_two_factor_by_id.riffq"
+        },
+        {
+          "name": "FindTwoFactorBySecret",
+          "source": "riffdb/queries/find_two_factor_by_secret.riffq"
+        },
+        {
+          "name": "FindUserById",
+          "source": "riffdb/queries/find_user_by_id.riffq"
+        },
+        {
+          "name": "FindUserByEmail",
+          "source": "riffdb/queries/find_user_by_email.riffq"
+        },
+        {
+          "name": "FindVerificationById",
+          "source": "riffdb/queries/find_verification_by_id.riffq"
+        },
+        {
+          "name": "FindVerificationByIdentifier",
+          "source": "riffdb/queries/find_verification_by_identifier.riffq"
+        }
+      ]
+    }
+  ],
+  "reactive_modules": [],
+  "roles": [
+    {
+      "name": "BetterAuthServer",
+      "environment": "development",
+      "tenant_scope": "global",
+      "queries": [
+        "FindAccountById",
+        "FindInvitationById",
+        "FindInvitationByEmail",
+        "FindInvitationByOrganizationId",
+        "FindMemberById",
+        "FindMemberByUserId",
+        "FindOrganizationById",
+        "FindOrganizationBySlug",
+        "FindSessionById",
+        "FindSessionByToken",
+        "FindTeamById",
+        "FindTeamMemberById",
+        "FindTeamMemberByTeamId",
+        "FindTwoFactorById",
+        "FindTwoFactorBySecret",
+        "FindUserById",
+        "FindUserByEmail",
+        "FindVerificationById",
+        "FindVerificationByIdentifier"
+      ],
+      "commands": [
+        "CreateAccount",
+        "UpdateAccount",
+        "DeleteAccount",
+        "CreateInvitation",
+        "UpdateInvitation",
+        "DeleteInvitation",
+        "CreateMember",
+        "UpdateMember",
+        "DeleteMember",
+        "CreateOrganization",
+        "UpdateOrganization",
+        "DeleteOrganization",
+        "CreateSession",
+        "UpdateSession",
+        "DeleteSession",
+        "CreateTeam",
+        "UpdateTeam",
+        "DeleteTeam",
+        "CreateTeamMember",
+        "UpdateTeamMember",
+        "DeleteTeamMember",
+        "CreateTwoFactor",
+        "UpdateTwoFactor",
+        "DeleteTwoFactor",
+        "CreateUser",
+        "UpdateUser",
+        "DeleteUser",
+        "CreateVerification",
+        "UpdateVerification",
+        "DeleteVerification"
+      ],
+      "event_streams": [],
+      "watch_queries": [],
+      "agent_subscriptions": [],
+      "row_policies": []
+    }
+  ],
+  "seed_inputs": []
+}
