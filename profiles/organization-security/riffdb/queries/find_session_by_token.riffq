@@ -1,7 +1,6 @@
 query FindSessionByToken(
     $tenant_id: Session.tenant_id,
     $token: Session.token,
-    $after: Cursor?,
 ) {
     many sessions from Session
         where tenant_id == $tenant_id

@@ -29,6 +29,16 @@ function materialize() {
 }
 
 describe("profile materialization", () => {
+  it("declares cursors only on paginated lookups", () => {
+    const { queries } = materialize();
+    const exact = queries.find((query) => query.name === "FindOrganizationBySlug")!;
+    expect(exact.code).toContain("take 1");
+    expect(exact.code).not.toContain("$after: Cursor?");
+    const paginated = queries.find((query) => query.name === "FindMemberByUserId")!;
+    expect(paginated.code).toContain("$after: Cursor?");
+    expect(paginated.code).toContain("take 50 after $after");
+  });
+
   it("emits one contract carrying the declared lineage", () => {
     const { contract } = materialize();
     expect(contract).toContain("contract BetterAuthOrganizationSecurity version 1 {");

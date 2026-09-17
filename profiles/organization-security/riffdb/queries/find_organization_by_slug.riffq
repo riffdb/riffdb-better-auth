@@ -1,7 +1,6 @@
 query FindOrganizationBySlug(
     $tenant_id: Organization.tenant_id,
     $slug: Organization.slug,
-    $after: Cursor?,
 ) {
     many organizations from Organization
         where tenant_id == $tenant_id

@@ -1,7 +1,6 @@
 query FindUserByEmail(
     $tenant_id: User.tenant_id,
     $email: User.email,
-    $after: Cursor?,
 ) {
     many users from User
         where tenant_id == $tenant_id

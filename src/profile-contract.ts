@@ -616,7 +616,7 @@ function emitQueries(
         [
           `$${PARTITION_FIELD}: ${entity}.${PARTITION_FIELD}`,
           `$${column}: ${entity}.${column}`,
-          "$after: Cursor?",
+          ...(field.unique ? [] : ["$after: Cursor?"]),
         ],
         [`${PARTITION_FIELD} == $${PARTITION_FIELD}`, `${column} == $${column}`],
         // The serving index is (tenant, field, ...key tail), so the bounded
