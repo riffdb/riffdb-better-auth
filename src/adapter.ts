@@ -265,10 +265,6 @@ function timestampOrNull(value: Date | null): Timestamp | null {
   return value === null ? null : toTimestamp(value);
 }
 
-function nextRequestId(): string {
-  return crypto.randomUUID();
-}
-
 function exactWhere(
   where: readonly CleanedWhere[] | undefined,
   fields: readonly string[],
@@ -458,32 +454,17 @@ function mapVerification(
 }
 
 class CoreDispatcher {
-  private readAfterCommit: bigint | undefined;
-
   public constructor(
     private readonly client: RiffDBBetterAuthCoreClient,
     private readonly organizationId: string,
     private readonly resetModelForTesting?: (model: string) => number | Promise<number>,
   ) {}
 
-  private observeCommit(result: { readonly commitSequence?: bigint }): void {
-    if (
-      result.commitSequence !== undefined &&
-      (this.readAfterCommit === undefined || result.commitSequence > this.readAfterCommit)
-    ) {
-      this.readAfterCommit = result.commitSequence;
-    }
-  }
-
-  private queryOptions(): { readonly readAfterCommit?: bigint } {
-    return this.readAfterCommit === undefined ? {} : { readAfterCommit: this.readAfterCommit };
-  }
-
   public async create(model: string, dataValue: RecordValue): Promise<Record<string, unknown>> {
     const data = asRecord(dataValue, `create ${model}`);
     if (model === "user") {
       const result = await this.client.createUser({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         id: requiredString(data, "id", "create user"),
         name: requiredString(data, "name", "create user"),
@@ -493,13 +474,12 @@ class CoreDispatcher {
         created_at: toTimestamp(requiredDate(data, "createdAt", "create user")),
         updated_at: toTimestamp(requiredDate(data, "updatedAt", "create user")),
       });
-      this.observeCommit(result);
       requireOutcome(result, "create user", "UserCreated");
       return { ...data, image: data.image ?? null };
     }
     if (model === "account") {
       const result = await this.client.createAccount({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         id: requiredString(data, "id", "create account"),
         user_id: requiredString(data, "userId", "create account"),
@@ -519,14 +499,13 @@ class CoreDispatcher {
         created_at: toTimestamp(requiredDate(data, "createdAt", "create account")),
         updated_at: toTimestamp(requiredDate(data, "updatedAt", "create account")),
       });
-      this.observeCommit(result);
       requireOutcome(result, "create account", "AccountCreated");
       return { ...data };
     }
     if (model === "session") {
       const token = requiredString(data, "token", "create session");
       const result = await this.client.createSession({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         id: requiredString(data, "id", "create session"),
         user_id: requiredString(data, "userId", "create session"),
@@ -537,13 +516,12 @@ class CoreDispatcher {
         created_at: toTimestamp(requiredDate(data, "createdAt", "create session")),
         updated_at: toTimestamp(requiredDate(data, "updatedAt", "create session")),
       });
-      this.observeCommit(result);
       requireOutcome(result, "create session", "SessionCreated");
       return { ...data };
     }
     if (model === "verification") {
       const result = await this.client.createVerification({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         id: requiredString(data, "id", "create verification"),
         identifier: requiredString(data, "identifier", "create verification"),
@@ -552,7 +530,6 @@ class CoreDispatcher {
         created_at: toTimestamp(requiredDate(data, "createdAt", "create verification")),
         updated_at: toTimestamp(requiredDate(data, "updatedAt", "create verification")),
       });
-      this.observeCommit(result);
       requireOutcome(result, "create verification", "VerificationCreated");
       return { ...data };
     }
@@ -566,77 +543,59 @@ class CoreDispatcher {
   ): Promise<Record<string, unknown> | null> {
     assertNoJoin(join, `findOne ${model}`);
     if (model === "user" && exactWhere(where, ["email"])) {
-      const result = await this.client.findUserByEmail(
-        {
-          organization_id: this.organizationId,
-          email: whereValue(where, "email", "findOne user"),
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findUserByEmail({
+        organization_id: this.organizationId,
+        email: whereValue(where, "email", "findOne user"),
+      });
       const row = (result.value as FindUserByEmailFound).users[0];
       return row === undefined ? null : mapUser(row);
     }
     if (model === "user" && exactWhere(where, ["id"])) {
-      const result = await this.client.findUserById(
-        {
-          organization_id: this.organizationId,
-          id: whereValue(where, "id", "findOne user"),
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findUserById({
+        organization_id: this.organizationId,
+        id: whereValue(where, "id", "findOne user"),
+      });
       return result.value.outcome === "Missing" ? null : mapUser(result.value.user);
     }
     if (model === "session" && exactWhere(where, ["token"])) {
       const token = whereValue(where, "token", "findOne session");
-      const result = await this.client.findSessionByToken(
-        { organization_id: this.organizationId, token },
-        this.queryOptions(),
-      );
+      const result = await this.client.findSessionByToken({
+        organization_id: this.organizationId,
+        token,
+      });
       const row = (result.value as FindSessionByTokenFound).sessions[0];
       return row === undefined ? null : mapSession(row);
     }
     if (model === "session" && exactWhere(where, ["id"])) {
-      const result = await this.client.findSessionById(
-        {
-          organization_id: this.organizationId,
-          id: whereValue(where, "id", "findOne session"),
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findSessionById({
+        organization_id: this.organizationId,
+        id: whereValue(where, "id", "findOne session"),
+      });
       const row = (result.value as FindSessionByIdFound).sessions[0];
       return row === undefined ? null : mapSession(row);
     }
     if (model === "account" && exactWhere(where, ["id"])) {
-      const result = await this.client.findAccountById(
-        {
-          organization_id: this.organizationId,
-          id: whereValue(where, "id", "findOne account"),
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findAccountById({
+        organization_id: this.organizationId,
+        id: whereValue(where, "id", "findOne account"),
+      });
       const row = result.value.accounts[0];
       return row === undefined ? null : mapAccount(row);
     }
     if (model === "account" && exactWhere(where, ["accountId", "providerId"])) {
-      const result = await this.client.findAccountByProvider(
-        {
-          organization_id: this.organizationId,
-          account_id: whereValue(where, "accountId", "findOne account"),
-          provider_id: whereValue(where, "providerId", "findOne account"),
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findAccountByProvider({
+        organization_id: this.organizationId,
+        account_id: whereValue(where, "accountId", "findOne account"),
+        provider_id: whereValue(where, "providerId", "findOne account"),
+      });
       const row = result.value.accounts[0];
       return row === undefined ? null : mapAccount(row);
     }
     if (model === "verification" && exactWhere(where, ["id"])) {
-      const result = await this.client.findVerificationById(
-        {
-          organization_id: this.organizationId,
-          id: whereValue(where, "id", "findOne verification"),
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findVerificationById({
+        organization_id: this.organizationId,
+        id: whereValue(where, "id", "findOne verification"),
+      });
       const value: FindVerificationByIdResult = result.value;
       return value.outcome === "Missing"
         ? null
@@ -670,15 +629,15 @@ class CoreDispatcher {
       }
       const id = whereValue(where, "id", "update account");
       for (let attempt = 0; attempt < 3; attempt += 1) {
-        const found = await this.client.findAccountById(
-          { organization_id: this.organizationId, id },
-          this.queryOptions(),
-        );
+        const found = await this.client.findAccountById({
+          organization_id: this.organizationId,
+          id,
+        });
         const row = found.value.accounts[0];
         if (row === undefined) return null;
         const successor = { ...mapAccount(row), ...update };
         const updated = await this.client.updateAccount({
-          request_id: nextRequestId(),
+          request_id: "",
           organization_id: this.organizationId,
           user_id: row.user_id,
           account_id: row.id,
@@ -698,7 +657,6 @@ class CoreDispatcher {
           password: nullableString(successor, "password", "update account"),
           updated_at: toTimestamp(requiredDate(successor, "updatedAt", "update account")),
         });
-        this.observeCommit(updated);
         if (updated.outcome.outcome === "AccountUpdateStale") continue;
         if (updated.outcome.outcome === "AccountUpdateMissing") return null;
         requireOutcome(updated, "update account", "AccountUpdated");
@@ -718,26 +676,20 @@ class CoreDispatcher {
       }
       for (let attempt = 0; attempt < 3; attempt += 1) {
         const result = exactWhere(where, ["id"])
-          ? await this.client.findSessionById(
-              {
-                organization_id: this.organizationId,
-                id: whereValue(where, "id", "update session"),
-              },
-              this.queryOptions(),
-            )
-          : await this.client.findSessionByToken(
-              {
-                organization_id: this.organizationId,
-                token: whereValue(where, "token", "update session"),
-              },
-              this.queryOptions(),
-            );
+          ? await this.client.findSessionById({
+              organization_id: this.organizationId,
+              id: whereValue(where, "id", "update session"),
+            })
+          : await this.client.findSessionByToken({
+              organization_id: this.organizationId,
+              token: whereValue(where, "token", "update session"),
+            });
         const row = result.value.sessions[0];
         if (row === undefined) return null;
         const current = mapSession(row);
         const successor = { ...current, ...update };
         const updated = await this.client.updateSession({
-          request_id: nextRequestId(),
+          request_id: "",
           organization_id: this.organizationId,
           user_id: row.user_id,
           session_id: row.id,
@@ -747,7 +699,6 @@ class CoreDispatcher {
           user_agent: nullableString(successor, "userAgent", "update session"),
           updated_at: toTimestamp(requiredDate(successor, "updatedAt", "update session")),
         });
-        this.observeCommit(updated);
         if (updated.outcome.outcome === "SessionUpdateStale") continue;
         if (updated.outcome.outcome === "SessionUpdateMissing") return null;
         requireOutcome(updated, "update session", "SessionUpdated");
@@ -770,15 +721,15 @@ class CoreDispatcher {
       }
       const identifier = whereValue(where, "identifier", "update verification");
       for (let attempt = 0; attempt < 3; attempt += 1) {
-        const found = await this.client.findLatestVerification(
-          { organization_id: this.organizationId, identifier },
-          this.queryOptions(),
-        );
+        const found = await this.client.findLatestVerification({
+          organization_id: this.organizationId,
+          identifier,
+        });
         const row = found.value.verifications[0];
         if (row === undefined) return null;
         const successor = { ...mapVerification(row), ...update };
         const result = await this.client.updateVerification({
-          request_id: nextRequestId(),
+          request_id: "",
           organization_id: this.organizationId,
           verification_id: row.verification_id,
           expected_revision: row.revision,
@@ -790,7 +741,6 @@ class CoreDispatcher {
             requiredDate(successor, "updatedAt", "update verification"),
           ),
         });
-        this.observeCommit(result);
         if (result.outcome.outcome === "VerificationUpdateStale") continue;
         if (result.outcome.outcome === "VerificationUpdateMissing") return null;
         requireOutcome(result, "update verification", "VerificationUpdated");
@@ -814,16 +764,16 @@ class CoreDispatcher {
     for (let attempt = 0; attempt < 3; attempt += 1) {
       const row = userId === undefined
         ? (
-            await this.client.findUserByEmail(
-              { organization_id: this.organizationId, email: initialEmail! },
-              this.queryOptions(),
-            )
+            await this.client.findUserByEmail({
+              organization_id: this.organizationId,
+              email: initialEmail!,
+            })
           ).value.users[0]
         : (
-            await this.client.findUserById(
-              { organization_id: this.organizationId, id: userId },
-              this.queryOptions(),
-            )
+            await this.client.findUserById({
+              organization_id: this.organizationId,
+              id: userId,
+            })
           ).value;
       if (row === undefined || ("outcome" in row && row.outcome === "Missing")) return null;
       const resolved = "outcome" in row ? row.user : row;
@@ -831,7 +781,7 @@ class CoreDispatcher {
       const current = mapUser(resolved);
       const successor = { ...current, ...update };
       const result = await this.client.updateUser({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         user_id: userId,
         expected_revision: resolved.revision,
@@ -841,7 +791,6 @@ class CoreDispatcher {
         image: nullableString(successor, "image", "update user"),
         updated_at: toTimestamp(requiredDate(successor, "updatedAt", "update user")),
       });
-      this.observeCommit(result);
       if (result.outcome.outcome === "UserUpdateStale") continue;
       if (result.outcome.outcome === "UserUpdateMissing") return null;
       requireOutcome(result, "update user", "UserUpdated");
@@ -867,26 +816,20 @@ class CoreDispatcher {
     if (offset !== undefined && offset !== 0) fail("unsupported_call_shape", `findMany ${model}`);
     if (model === "account" && exactWhere(where, ["userId"]) && sortBy === undefined) {
       if (limit > 100) fail("result_bound_exceeded", "findMany account");
-      const result = await this.client.findAccountsByUserId(
-        {
-          organization_id: this.organizationId,
-          user_id: whereValue(where!, "userId", "findMany account"),
-          after: null,
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findAccountsByUserId({
+        organization_id: this.organizationId,
+        user_id: whereValue(where!, "userId", "findMany account"),
+        after: null,
+      });
       if (result.nextCursor !== undefined) fail("result_bound_exceeded", "findMany account");
       return result.value.accounts.slice(0, limit).map(mapAccount);
     }
     if (model === "session" && exactWhere(where, ["userId"]) && sortBy === undefined) {
-      const result = await this.client.findSessionsByUserId(
-        {
-          organization_id: this.organizationId,
-          user_id: whereValue(where!, "userId", "findMany session"),
-          after: null,
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findSessionsByUserId({
+        organization_id: this.organizationId,
+        user_id: whereValue(where!, "userId", "findMany session"),
+        after: null,
+      });
       if (result.nextCursor !== undefined) fail("result_bound_exceeded", "findMany session");
       return result.value.sessions.slice(0, limit).map(mapSession);
     }
@@ -898,17 +841,14 @@ class CoreDispatcher {
       ]) &&
       sortBy === undefined
     ) {
-      const result = await this.client.findActiveSessionsByUserId(
-        {
-          organization_id: this.organizationId,
-          user_id: whereValue(where!, "userId", "findMany active session"),
-          expires_after: toTimestamp(
-            whereDate(where!, "expiresAt", "findMany active session"),
-          ),
-          after: null,
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findActiveSessionsByUserId({
+        organization_id: this.organizationId,
+        user_id: whereValue(where!, "userId", "findMany active session"),
+        expires_after: toTimestamp(
+          whereDate(where!, "expiresAt", "findMany active session"),
+        ),
+        after: null,
+      });
       if (result.nextCursor !== undefined) {
         fail("result_bound_exceeded", "findMany active session");
       }
@@ -925,10 +865,10 @@ class CoreDispatcher {
       sortBy === undefined
     ) {
       const tokens = whereStringSet(where!, "token", "findMany session token set");
-      const result = await this.client.findSessionsByTokenSet(
-        { organization_id: this.organizationId, tokens },
-        this.queryOptions(),
-      );
+      const result = await this.client.findSessionsByTokenSet({
+        organization_id: this.organizationId,
+        tokens,
+      });
       return result.value.sessions.slice(0, limit).map(mapSession);
     }
     if (model === "session" && activeTokenSetShape) {
@@ -941,27 +881,21 @@ class CoreDispatcher {
       sortBy.direction === "desc" &&
       limit === 1
     ) {
-      const result = await this.client.findLatestVerification(
-        {
-          organization_id: this.organizationId,
-          identifier: whereValue(where!, "identifier", "findMany verification"),
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findLatestVerification({
+        organization_id: this.organizationId,
+        identifier: whereValue(where!, "identifier", "findMany verification"),
+      });
       return result.value.verifications.map(mapVerification);
     }
     if (model === "verification" && exactWhere(where, ["identifier"]) && sortBy !== undefined) {
       return fail("unsupported_call_shape", "findMany verification sort");
     }
     if (model === "verification" && exactWhere(where, ["identifier"]) && limit <= 32) {
-      const result = await this.client.findVerificationsByIdentifier(
-        {
-          organization_id: this.organizationId,
-          identifier: whereValue(where!, "identifier", "findMany verification"),
-          after: null,
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findVerificationsByIdentifier({
+        organization_id: this.organizationId,
+        identifier: whereValue(where!, "identifier", "findMany verification"),
+        after: null,
+      });
       if (result.nextCursor !== undefined) fail("result_bound_exceeded", "findMany verification");
       return result.value.verifications.slice(0, limit).map(mapVerification);
     }
@@ -988,10 +922,10 @@ class CoreDispatcher {
       if (sortBy !== undefined && (sortBy.field !== "email" || sortBy.direction !== "asc")) {
         fail("unsupported_call_shape", "findMany user sort");
       }
-      const result = await this.client.adminUsersAllEmailAsc(
-        { ...parameters, minimum_email: "" },
-        this.queryOptions(),
-      );
+      const result = await this.client.adminUsersAllEmailAsc({
+        ...parameters,
+        minimum_email: "",
+      });
       return result.value;
     }
 
@@ -999,36 +933,26 @@ class CoreDispatcher {
     const field = sortBy?.field ?? "email";
     const searchParameters = { ...parameters, needle: selected.needle! };
     if (field === "createdAt" && direction === "desc" && selected.operator === "contains") {
-      return (
-        await this.client.adminUsersEmailContainsCreatedDesc(
-          searchParameters,
-          this.queryOptions(),
-        )
-      ).value;
+      return (await this.client.adminUsersEmailContainsCreatedDesc(searchParameters)).value;
     }
     if (field === "image" && direction === "asc" && selected.operator === "contains") {
-      return (
-        await this.client.adminUsersEmailContainsImageAsc(
-          searchParameters,
-          this.queryOptions(),
-        )
-      ).value;
+      return (await this.client.adminUsersEmailContainsImageAsc(searchParameters)).value;
     }
     if (field !== "email") fail("unsupported_call_shape", "findMany user sort");
 
     if (selected.operator === "contains") {
       return direction === "asc"
-        ? (await this.client.adminUsersContainsAsc(searchParameters, this.queryOptions())).value
-        : (await this.client.adminUsersContainsDesc(searchParameters, this.queryOptions())).value;
+        ? (await this.client.adminUsersContainsAsc(searchParameters)).value
+        : (await this.client.adminUsersContainsDesc(searchParameters)).value;
     }
     if (selected.operator === "starts_with") {
       return direction === "asc"
-        ? (await this.client.adminUsersStartsWithAsc(searchParameters, this.queryOptions())).value
-        : (await this.client.adminUsersStartsWithDesc(searchParameters, this.queryOptions())).value;
+        ? (await this.client.adminUsersStartsWithAsc(searchParameters)).value
+        : (await this.client.adminUsersStartsWithDesc(searchParameters)).value;
     }
     return direction === "asc"
-      ? (await this.client.adminUsersEndsWithAsc(searchParameters, this.queryOptions())).value
-      : (await this.client.adminUsersEndsWithDesc(searchParameters, this.queryOptions())).value;
+      ? (await this.client.adminUsersEndsWithAsc(searchParameters)).value
+      : (await this.client.adminUsersEndsWithDesc(searchParameters)).value;
   }
 
   public async count(
@@ -1045,11 +969,10 @@ class CoreDispatcher {
   public async delete(model: string, where: readonly CleanedWhere[]): Promise<void> {
     if (model === "user" && exactWhere(where, ["id"])) {
       const result = await this.client.deleteUser({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         user_ids: [whereValue(where, "id", "delete user")],
       });
-      this.observeCommit(result);
       if (result.outcome.outcome === "DeleteUserCascadeLimitExceeded") {
         fail("result_bound_exceeded", "delete user", result.outcome.outcome);
       }
@@ -1062,12 +985,11 @@ class CoreDispatcher {
       const account = await this.findOne(model, where);
       if (account === null) return;
       const result = await this.client.deleteAccount({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         user_id: requiredString(account, "userId", "delete account"),
         account_ids: [requiredString(account, "id", "delete account")],
       });
-      this.observeCommit(result);
       if (!new Set(["AccountDeleted", "AccountMissing"]).has(result.outcome.outcome)) {
         fail("declared_outcome", "delete account", result.outcome.outcome);
       }
@@ -1075,11 +997,10 @@ class CoreDispatcher {
     }
     if (model === "verification" && exactWhere(where, ["id"])) {
       const result = await this.client.deleteVerification({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         verification_ids: [whereValue(where, "id", "delete verification")],
       });
-      this.observeCommit(result);
       if (!new Set(["VerificationDeleted", "VerificationMissing"]).has(result.outcome.outcome)) {
         fail("declared_outcome", "delete verification", result.outcome.outcome);
       }
@@ -1089,13 +1010,12 @@ class CoreDispatcher {
       const rows = await this.findMany("verification", where, 32);
       if (rows.length === 0) return;
       const result = await this.client.deleteVerification({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         verification_ids: rows.map((row) =>
           requiredString(row, "id", "delete verification by identifier"),
         ),
       });
-      this.observeCommit(result);
       requireOutcome(result, "delete verification by identifier", "VerificationDeleted");
       return;
     }
@@ -1106,12 +1026,11 @@ class CoreDispatcher {
       const session = await this.findOne("session", where);
       if (session === null) return;
       const result = await this.client.deleteSession({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         user_id: requiredString(session, "userId", "delete session"),
         session_ids: [requiredString(session, "id", "delete session")],
       });
-      this.observeCommit(result);
       if (!new Set(["SessionDeleted", "SessionMissing"]).has(result.outcome.outcome)) {
         fail("declared_outcome", "delete session", result.outcome.outcome);
       }
@@ -1128,12 +1047,11 @@ class CoreDispatcher {
       const rows = await this.findMany(model, where, 32);
       if (rows.length === 0) return 0;
       const result = await this.client.deleteSession({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         user_id: whereValue(where, "userId", "deleteMany session"),
         session_ids: rows.map((row) => requiredString(row, "id", "deleteMany session")),
       });
-      this.observeCommit(result);
       requireOutcome(result, "deleteMany session", "SessionDeleted");
       return rows.length;
     }
@@ -1151,12 +1069,11 @@ class CoreDispatcher {
       }
       for (const [userId, sessionIds] of byUser) {
         const result = await this.client.deleteSession({
-          request_id: nextRequestId(),
+          request_id: "",
           organization_id: this.organizationId,
           user_id: userId,
           session_ids: sessionIds,
         });
-        this.observeCommit(result);
         requireOutcome(result, "deleteMany session token set", "SessionDeleted");
       }
       return rows.length;
@@ -1166,12 +1083,11 @@ class CoreDispatcher {
       if (rows.length === 0) return 0;
       if (rows.length > 32) fail("result_bound_exceeded", "deleteMany account");
       const result = await this.client.deleteAccount({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         user_id: whereValue(where, "userId", "deleteMany account"),
         account_ids: rows.map((row) => requiredString(row, "id", "deleteMany account")),
       });
-      this.observeCommit(result);
       requireOutcome(result, "deleteMany account", "AccountDeleted");
       return rows.length;
     }
@@ -1179,27 +1095,23 @@ class CoreDispatcher {
       model === "verification" &&
       exactWhereShape(where, [{ field: "expiresAt", operator: "lt" }])
     ) {
-      const result = await this.client.findExpiredVerificationIds(
-        {
-          organization_id: this.organizationId,
-          expires_before: toTimestamp(
-            whereDate(where, "expiresAt", "deleteMany expired verification"),
-          ),
-          after: null,
-        },
-        this.queryOptions(),
-      );
+      const result = await this.client.findExpiredVerificationIds({
+        organization_id: this.organizationId,
+        expires_before: toTimestamp(
+          whereDate(where, "expiresAt", "deleteMany expired verification"),
+        ),
+        after: null,
+      });
       if (result.nextCursor !== undefined) {
         fail("result_bound_exceeded", "deleteMany expired verification");
       }
       const ids = result.value.verifications.map((row) => row.verification_id);
       if (ids.length === 0) return 0;
       const deleted = await this.client.deleteVerification({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         verification_ids: ids,
       });
-      this.observeCommit(deleted);
       requireOutcome(deleted, "deleteMany expired verification", "VerificationDeleted");
       return ids.length;
     }
@@ -1209,11 +1121,10 @@ class CoreDispatcher {
     const rows = await this.findMany("verification", where, 32);
     if (rows.length === 0) return 0;
     const result = await this.client.consumeVerificationSet({
-      request_id: nextRequestId(),
+      request_id: "",
       organization_id: this.organizationId,
       verification_ids: rows.map((row) => requiredString(row, "id", "deleteMany verification")),
     });
-    this.observeCommit(result);
     requireOutcome(result, "deleteMany verification", "VerificationSetConsumed");
     return rows.length;
   }
@@ -1226,11 +1137,10 @@ class CoreDispatcher {
       return fail("unsupported_call_shape", `consumeOne ${model}`);
     }
     const result = await this.client.consumeVerification({
-      request_id: nextRequestId(),
+      request_id: "",
       organization_id: this.organizationId,
       verification_id: whereValue(where, "id", "consumeOne verification"),
     });
-    this.observeCommit(result);
     if (result.outcome.outcome === "VerificationConsumeMissing") return null;
     requireOutcome(result, "consumeOne verification", "VerificationConsumed");
     return mapVerification(result.outcome);
@@ -1255,20 +1165,17 @@ class CoreDispatcher {
     const providerId = whereValue(where, "providerId", "updateMany account");
     const updatedAt = requiredDate(update, "updatedAt", "updateMany account");
     for (let attempt = 0; attempt < 3; attempt += 1) {
-      const found = await this.client.findAccountsByUserProvider(
-        {
-          organization_id: this.organizationId,
-          user_id: userId,
-          provider_id: providerId,
-          after: null,
-        },
-        this.queryOptions(),
-      );
+      const found = await this.client.findAccountsByUserProvider({
+        organization_id: this.organizationId,
+        user_id: userId,
+        provider_id: providerId,
+        after: null,
+      });
       if (found.nextCursor !== undefined) fail("result_bound_exceeded", "updateMany account");
       const accounts = found.value.accounts;
       if (accounts.length === 0) return 0;
       const result = await this.client.updateAccountPasswords({
-        request_id: nextRequestId(),
+        request_id: "",
         organization_id: this.organizationId,
         user_id: userId,
         updates: accounts.map((account) => ({
@@ -1281,7 +1188,6 @@ class CoreDispatcher {
           expected_revision: account.revision,
         })),
       });
-      this.observeCommit(result);
       if (
         result.outcome.outcome === "PasswordAccountStale" ||
         result.outcome.outcome === "PasswordAccountMissing" ||
@@ -1313,7 +1219,7 @@ class CoreDispatcher {
       fail("unsupported_transaction_shape", "transaction signup");
     }
     const result = await this.client.createSignupGraph({
-      request_id: nextRequestId(),
+      request_id: "",
       organization_id: this.organizationId,
       user_id: userId,
       user_name: requiredString(user, "name", "transaction signup"),
@@ -1336,7 +1242,6 @@ class CoreDispatcher {
       session_created_at: toTimestamp(requiredDate(session, "createdAt", "transaction signup")),
       session_updated_at: toTimestamp(requiredDate(session, "updatedAt", "transaction signup")),
     });
-    this.observeCommit(result);
     requireOutcome(result, "transaction signup", "SignupGraphCreated");
   }
 
@@ -1353,7 +1258,7 @@ class CoreDispatcher {
       fail("unsupported_transaction_shape", "transaction OAuth user");
     }
     const result = await this.client.createOAuthUserGraph({
-      request_id: nextRequestId(),
+      request_id: "",
       organization_id: this.organizationId,
       user_id: userId,
       user_name: requiredString(user, "name", "transaction OAuth user"),
@@ -1383,7 +1288,6 @@ class CoreDispatcher {
         requiredDate(account, "updatedAt", "transaction OAuth user"),
       ),
     });
-    this.observeCommit(result);
     requireOutcome(result, "transaction OAuth user", "OAuthUserGraphCreated");
   }
 
@@ -1392,13 +1296,12 @@ class CoreDispatcher {
       fail("unsupported_transaction_shape", "transaction verification consume");
     }
     const result = await this.client.consumeVerificationSet({
-      request_id: nextRequestId(),
+      request_id: "",
       organization_id: this.organizationId,
       verification_ids: rows.map((row) =>
         requiredString(row, "id", "transaction verification consume"),
       ),
     });
-    this.observeCommit(result);
     requireOutcome(result, "transaction verification consume", "VerificationSetConsumed");
   }
 }
@@ -1600,7 +1503,7 @@ export function buildRiffDBBetterAuthAdapter(
   validateConfiguration(config);
   return (options: BetterAuthOptions): DBAdapter<BetterAuthOptions> => {
     const dispatcher = new CoreDispatcher(
-      config.client,
+      config.client.causalSession(),
       config.organizationId,
       config.resetModelForTesting,
     );

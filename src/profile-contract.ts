@@ -510,8 +510,9 @@ function emitCommands(
   lines.push(
     `    require current_revision: ${binding}.revision == expected_revision else ${entity}UpdateStale {}`,
   );
+  const checkedBy = assignment.parentOf.has(model.name) ? " checked_by current_revision" : "";
   for (const field of stored) {
-    lines.push(`    set ${binding}.${snake(field.name)} = ${snake(field.name)}`);
+    lines.push(`    set ${binding}.${snake(field.name)} = ${snake(field.name)}${checkedBy}`);
   }
   lines.push(`    set ${binding}.revision = ${binding}.revision + 1`);
   lines.push(`    return ${entity}Updated {}`);

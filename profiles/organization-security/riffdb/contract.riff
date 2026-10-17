@@ -230,17 +230,17 @@ contract BetterAuthOrganizationSecurity version 1 {
     idempotency_key request_id
     mutate Account(tenant_id, user_id, account_row_id) as account else AccountUpdateMissing {}
     require current_revision: account.revision == expected_revision else AccountUpdateStale {}
-    set account.access_token = access_token
-    set account.access_token_expires_at = access_token_expires_at
-    set account.account_id = account_id
-    set account.created_at = created_at
-    set account.id_token = id_token
-    set account.password = password
-    set account.provider_id = provider_id
-    set account.refresh_token = refresh_token
-    set account.refresh_token_expires_at = refresh_token_expires_at
-    set account.scope = scope
-    set account.updated_at = updated_at
+    set account.access_token = access_token checked_by current_revision
+    set account.access_token_expires_at = access_token_expires_at checked_by current_revision
+    set account.account_id = account_id checked_by current_revision
+    set account.created_at = created_at checked_by current_revision
+    set account.id_token = id_token checked_by current_revision
+    set account.password = password checked_by current_revision
+    set account.provider_id = provider_id checked_by current_revision
+    set account.refresh_token = refresh_token checked_by current_revision
+    set account.refresh_token_expires_at = refresh_token_expires_at checked_by current_revision
+    set account.scope = scope checked_by current_revision
+    set account.updated_at = updated_at checked_by current_revision
     set account.revision = account.revision + 1
     return AccountUpdated {}
   }
@@ -299,13 +299,13 @@ contract BetterAuthOrganizationSecurity version 1 {
     idempotency_key request_id
     mutate Invitation(tenant_id, user_id, invitation_id) as invitation else InvitationUpdateMissing {}
     require current_revision: invitation.revision == expected_revision else InvitationUpdateStale {}
-    set invitation.created_at = created_at
-    set invitation.email = email
-    set invitation.expires_at = expires_at
-    set invitation.organization_id = organization_id
-    set invitation.role = role
-    set invitation.status = status
-    set invitation.team_id = team_id
+    set invitation.created_at = created_at checked_by current_revision
+    set invitation.email = email checked_by current_revision
+    set invitation.expires_at = expires_at checked_by current_revision
+    set invitation.organization_id = organization_id checked_by current_revision
+    set invitation.role = role checked_by current_revision
+    set invitation.status = status checked_by current_revision
+    set invitation.team_id = team_id checked_by current_revision
     set invitation.revision = invitation.revision + 1
     return InvitationUpdated {}
   }
@@ -352,9 +352,9 @@ contract BetterAuthOrganizationSecurity version 1 {
     idempotency_key request_id
     mutate Member(tenant_id, organization_id, member_id) as member else MemberUpdateMissing {}
     require current_revision: member.revision == expected_revision else MemberUpdateStale {}
-    set member.created_at = created_at
-    set member.role = role
-    set member.user_id = user_id
+    set member.created_at = created_at checked_by current_revision
+    set member.role = role checked_by current_revision
+    set member.user_id = user_id checked_by current_revision
     set member.revision = member.revision + 1
     return MemberUpdated {}
   }
@@ -470,14 +470,14 @@ contract BetterAuthOrganizationSecurity version 1 {
     idempotency_key request_id
     mutate Session(tenant_id, user_id, session_id) as session else SessionUpdateMissing {}
     require current_revision: session.revision == expected_revision else SessionUpdateStale {}
-    set session.active_organization_id = active_organization_id
-    set session.active_team_id = active_team_id
-    set session.created_at = created_at
-    set session.expires_at = expires_at
-    set session.ip_address = ip_address
-    set session.token = token
-    set session.updated_at = updated_at
-    set session.user_agent = user_agent
+    set session.active_organization_id = active_organization_id checked_by current_revision
+    set session.active_team_id = active_team_id checked_by current_revision
+    set session.created_at = created_at checked_by current_revision
+    set session.expires_at = expires_at checked_by current_revision
+    set session.ip_address = ip_address checked_by current_revision
+    set session.token = token checked_by current_revision
+    set session.updated_at = updated_at checked_by current_revision
+    set session.user_agent = user_agent checked_by current_revision
     set session.revision = session.revision + 1
     return SessionUpdated {}
   }
@@ -524,9 +524,9 @@ contract BetterAuthOrganizationSecurity version 1 {
     idempotency_key request_id
     mutate Team(tenant_id, organization_id, team_id) as team else TeamUpdateMissing {}
     require current_revision: team.revision == expected_revision else TeamUpdateStale {}
-    set team.created_at = created_at
-    set team.name = name
-    set team.updated_at = updated_at
+    set team.created_at = created_at checked_by current_revision
+    set team.name = name checked_by current_revision
+    set team.updated_at = updated_at checked_by current_revision
     set team.revision = team.revision + 1
     return TeamUpdated {}
   }
@@ -570,8 +570,8 @@ contract BetterAuthOrganizationSecurity version 1 {
     idempotency_key request_id
     mutate TeamMember(tenant_id, user_id, team_member_id) as team_member else TeamMemberUpdateMissing {}
     require current_revision: team_member.revision == expected_revision else TeamMemberUpdateStale {}
-    set team_member.created_at = created_at
-    set team_member.team_id = team_id
+    set team_member.created_at = created_at checked_by current_revision
+    set team_member.team_id = team_id checked_by current_revision
     set team_member.revision = team_member.revision + 1
     return TeamMemberUpdated {}
   }
@@ -624,11 +624,11 @@ contract BetterAuthOrganizationSecurity version 1 {
     idempotency_key request_id
     mutate TwoFactor(tenant_id, user_id, two_factor_id) as two_factor else TwoFactorUpdateMissing {}
     require current_revision: two_factor.revision == expected_revision else TwoFactorUpdateStale {}
-    set two_factor.backup_codes = backup_codes
-    set two_factor.failed_verification_count = failed_verification_count
-    set two_factor.locked_until = locked_until
-    set two_factor.secret = secret
-    set two_factor.verified = verified
+    set two_factor.backup_codes = backup_codes checked_by current_revision
+    set two_factor.failed_verification_count = failed_verification_count checked_by current_revision
+    set two_factor.locked_until = locked_until checked_by current_revision
+    set two_factor.secret = secret checked_by current_revision
+    set two_factor.verified = verified checked_by current_revision
     set two_factor.revision = two_factor.revision + 1
     return TwoFactorUpdated {}
   }

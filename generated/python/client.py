@@ -22,8 +22,8 @@ def _compact_tag(value: object, tag: str, keys: frozenset[str]) -> dict[str, obj
 
 CONTRACT_LINEAGE: Final[str] = "RiffDBBetterAuthCore"
 CONTRACT_VERSION: Final[int] = 1
-CONTRACT_BUNDLE_HASH: Final[str] = "dff3e37c6ec7f6d6f6c14738743ad7b79be0d532eaa5cbd24ec577b17246c9bc"
-QUERY_MODULE_HASH: Final[str] = "3fe583823cf92ebf127f5c9d23141b92ae7c86bcf903b556e7ae171d06b06e74"
+CONTRACT_BUNDLE_HASH: Final[str] = "11c5a37724f40b92bf10b195e6a66ef30037f73f3df79a98e4c4ed1076883d2e"
+QUERY_MODULE_HASH: Final[str] = "18cfd99921406e15722f3ac45867d3fbe0cebd4f2ecdd86c0ba099547c58cd91"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -89,7 +89,7 @@ class AccountPasswordUpdate:
     organization_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "823376b710fee7c4f5205ede0f8e5f0dfa2831518a76772a9893ada5785a429d"
+ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "ea5056df116418329d03bc536a195247148360378e11444c10e7ca37df54c547"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersAllEmailAscParams:
@@ -121,9 +121,15 @@ class AdminUsersAllEmailAscFound:
     total: AdminUsersAllEmailAscFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersAllEmailAscFound:
+        return self
+
 AdminUsersAllEmailAscResult: TypeAlias = AdminUsersAllEmailAscFound
 
-ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "62a2981ce788c2260d2671393fea864d7aa7f60a71b22ffe373e8922418a5ab5"
+ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "56132d4a48f43731e36b69e0fe922d67491bc0ad611375fbc3d372a840b739df"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersContainsAscParams:
@@ -155,9 +161,15 @@ class AdminUsersContainsAscFound:
     total: AdminUsersContainsAscFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersContainsAscFound:
+        return self
+
 AdminUsersContainsAscResult: TypeAlias = AdminUsersContainsAscFound
 
-ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "f01844bb49f3a5c99279f712dfd1c20c62232dfdc8aafdbc3f555285cf5209b2"
+ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "470b720e68aa2261d902378ebc7fb1ce5be51582761672da7ecb87bece977f0f"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersContainsDescParams:
@@ -189,9 +201,15 @@ class AdminUsersContainsDescFound:
     total: AdminUsersContainsDescFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersContainsDescFound:
+        return self
+
 AdminUsersContainsDescResult: TypeAlias = AdminUsersContainsDescFound
 
-ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "b15bb5a5f0a0b6385bf8e082534ce98522f097795e064a125fcd4e61d2a4218e"
+ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "51def4488ff2a35fee0c5d7f267daaca11e60a03521be0fdaf8923c5486c5485"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEmailContainsCreatedDescParams:
@@ -223,9 +241,15 @@ class AdminUsersEmailContainsCreatedDescFound:
     total: AdminUsersEmailContainsCreatedDescFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersEmailContainsCreatedDescFound:
+        return self
+
 AdminUsersEmailContainsCreatedDescResult: TypeAlias = AdminUsersEmailContainsCreatedDescFound
 
-ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "938b66a9c92572cc2321119ee519ca6b61121e18db7d975614d35de540f7826e"
+ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "fd5dc86099567113dcce8ef61c280b22f35a2c3b9e6fc592f0bcfaded4008f80"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEmailContainsImageAscParams:
@@ -257,9 +281,15 @@ class AdminUsersEmailContainsImageAscFound:
     total: AdminUsersEmailContainsImageAscFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersEmailContainsImageAscFound:
+        return self
+
 AdminUsersEmailContainsImageAscResult: TypeAlias = AdminUsersEmailContainsImageAscFound
 
-ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "091ec1f1d003690e39fd0a23d403ad7df0f0a9003a2758d53a89fe102c13bbf0"
+ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "a83229249df961abbc113e7b808af6beca7ca915835ddcd06cd5c28bb7d3c920"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEndsWithAscParams:
@@ -291,9 +321,15 @@ class AdminUsersEndsWithAscFound:
     total: AdminUsersEndsWithAscFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersEndsWithAscFound:
+        return self
+
 AdminUsersEndsWithAscResult: TypeAlias = AdminUsersEndsWithAscFound
 
-ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "3975ffd01eccfa6dd4423451c21b4bd2c3eaff3117d3c119e9602ff3fc502148"
+ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "ac6fdfacb6f36e2a68e36429171b5d8d502b2fd43f781d72541ece961f1da93c"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEndsWithDescParams:
@@ -325,9 +361,15 @@ class AdminUsersEndsWithDescFound:
     total: AdminUsersEndsWithDescFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersEndsWithDescFound:
+        return self
+
 AdminUsersEndsWithDescResult: TypeAlias = AdminUsersEndsWithDescFound
 
-ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "7c6572aabe194058ec2cab7c37b29daec04ec04288398f342e28752da959e8c6"
+ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "e9594b9b9631b78e8cbd9a89c4a2f1b43cb40b62ef55bb18b704f790044b2332"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersStartsWithAscParams:
@@ -359,9 +401,15 @@ class AdminUsersStartsWithAscFound:
     total: AdminUsersStartsWithAscFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersStartsWithAscFound:
+        return self
+
 AdminUsersStartsWithAscResult: TypeAlias = AdminUsersStartsWithAscFound
 
-ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "a80fac335b8dde747aaed0ecfd53cd0a9eac489ebb5b2a2fdf867500bcb2dd4f"
+ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "1f52bcc4f1f3e778f33e3e47299009ce70d3f4c541d1bed35e6f953d0e79ffea"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersStartsWithDescParams:
@@ -393,9 +441,15 @@ class AdminUsersStartsWithDescFound:
     total: AdminUsersStartsWithDescFoundTotal
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> AdminUsersStartsWithDescFound:
+        return self
+
 AdminUsersStartsWithDescResult: TypeAlias = AdminUsersStartsWithDescFound
 
-FIND_ACCOUNT_BY_ID_QUERY_PLAN_HASH: Final[str] = "64c60351fa0548d6a893ef53debc89884e05ab0b4e9b2639c74250af4edae3c4"
+FIND_ACCOUNT_BY_ID_QUERY_PLAN_HASH: Final[str] = "51ece0c8e7396f3f9efea7595a4224f856ae7984ff9bf15bcf9049427ad1f110"
 FIND_ACCOUNT_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountById", "Account", "access_token"),
     ("FindAccountById", "Account", "refresh_token"),
@@ -431,9 +485,15 @@ class FindAccountByIdFound:
     accounts: tuple[FindAccountByIdFoundAccounts, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindAccountByIdFound:
+        return self
+
 FindAccountByIdResult: TypeAlias = FindAccountByIdFound
 
-FIND_ACCOUNT_BY_PROVIDER_QUERY_PLAN_HASH: Final[str] = "f3acc5eec87721b34ec59187491f01a95cff751f58dd24baa10e25d3723be450"
+FIND_ACCOUNT_BY_PROVIDER_QUERY_PLAN_HASH: Final[str] = "b104b38050396d747e59735cea4b562c305dccb7614a973f5177501825c91089"
 FIND_ACCOUNT_BY_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountByProvider", "Account", "access_token"),
     ("FindAccountByProvider", "Account", "refresh_token"),
@@ -470,9 +530,15 @@ class FindAccountByProviderFound:
     accounts: tuple[FindAccountByProviderFoundAccounts, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindAccountByProviderFound:
+        return self
+
 FindAccountByProviderResult: TypeAlias = FindAccountByProviderFound
 
-FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "29909609dcd9b0b409c02a288ba414ae787865bc7c5029db7257018719d50ed2"
+FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "0e517c2b2a10d95c12812d6374107379c80ce4638b962fad6f9092cc6b8b6c2e"
 FIND_ACCOUNTS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserId", "Account", "access_token"),
     ("FindAccountsByUserId", "Account", "refresh_token"),
@@ -509,9 +575,15 @@ class FindAccountsByUserIdFound:
     accounts: tuple[FindAccountsByUserIdFoundAccounts, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindAccountsByUserIdFound:
+        return self
+
 FindAccountsByUserIdResult: TypeAlias = FindAccountsByUserIdFound
 
-FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "83e479154169492ae1c7b52b2e81853b2cbee3fdb93806da0b12e4dc855b64f8"
+FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "44124fb19b8f7fe35bb15824b87a0ed593c86b5821e81ad7fae1ab8636725183"
 FIND_ACCOUNTS_BY_USER_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserProvider", "Account", "access_token"),
     ("FindAccountsByUserProvider", "Account", "refresh_token"),
@@ -549,9 +621,15 @@ class FindAccountsByUserProviderFound:
     accounts: tuple[FindAccountsByUserProviderFoundAccounts, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindAccountsByUserProviderFound:
+        return self
+
 FindAccountsByUserProviderResult: TypeAlias = FindAccountsByUserProviderFound
 
-FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "1fc7efc311d11178acb917d9080e50c5ae507d401d98fa1ad75f5c4ad117a329"
+FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "218dbdff73dce68ba48b7f8a179791e6b46139ee84da3edbd96438045f60f8dc"
 FIND_ACTIVE_SESSIONS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindActiveSessionsByUserId", "Session", "token"),
 )
@@ -581,9 +659,15 @@ class FindActiveSessionsByUserIdFound:
     sessions: tuple[FindActiveSessionsByUserIdFoundSessions, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindActiveSessionsByUserIdFound:
+        return self
+
 FindActiveSessionsByUserIdResult: TypeAlias = FindActiveSessionsByUserIdFound
 
-FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH: Final[str] = "084333809eca6633f7f2a80209593a1028532770fd7429cdc678643152289417"
+FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH: Final[str] = "e24fe82a3a724a9d45044dc668d450e61b1177f5866423c07bd33100d49428c1"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindExpiredVerificationIdsParams:
@@ -600,9 +684,15 @@ class FindExpiredVerificationIdsFound:
     verifications: tuple[FindExpiredVerificationIdsFoundVerifications, ...]
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindExpiredVerificationIdsFound:
+        return self
+
 FindExpiredVerificationIdsResult: TypeAlias = FindExpiredVerificationIdsFound
 
-FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "c29b954bf84bdf3680f7d096c2b1649c1c9959fb5b11889f292592bb28ed56d6"
+FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "54336205fa315da75d390d062055723e36d07ef6596e19f756d319a8bc875023"
 FIND_LATEST_VERIFICATION_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindLatestVerification", "Verification", "value"),
 )
@@ -628,9 +718,15 @@ class FindLatestVerificationFound:
     verifications: tuple[FindLatestVerificationFoundVerifications, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindLatestVerificationFound:
+        return self
+
 FindLatestVerificationResult: TypeAlias = FindLatestVerificationFound
 
-FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "2df5d093238fa07c0bcc67b05071594ce762cd69431e1792fc44cb2b22292f43"
+FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "653cfab6a75b5e2624620b0b5504b19d36f778c8775606fa0f3bb0c1d51e6bc0"
 FIND_SESSION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionById", "Session", "token"),
 )
@@ -658,9 +754,15 @@ class FindSessionByIdFound:
     sessions: tuple[FindSessionByIdFoundSessions, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindSessionByIdFound:
+        return self
+
 FindSessionByIdResult: TypeAlias = FindSessionByIdFound
 
-FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "0e10231ef674489bc6c6de7ab095e6feafb98eee44bc41b97b0d7b82ed40a584"
+FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "b5e701701b0ac99b4328200089b2507f31c0be55df78a275d83f7be99f8b7061"
 FIND_SESSION_BY_TOKEN_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionByToken", "Session", "token"),
 )
@@ -688,9 +790,15 @@ class FindSessionByTokenFound:
     sessions: tuple[FindSessionByTokenFoundSessions, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindSessionByTokenFound:
+        return self
+
 FindSessionByTokenResult: TypeAlias = FindSessionByTokenFound
 
-FIND_SESSIONS_BY_TOKEN_SET_QUERY_PLAN_HASH: Final[str] = "2feafe80d152ba1575ea93e5280efcc6323caae7f2053d52200495ad8df68d16"
+FIND_SESSIONS_BY_TOKEN_SET_QUERY_PLAN_HASH: Final[str] = "56c683d1815bf0c3e14c0585f314de378b43f9f4e401312c645efc70bd42969b"
 FIND_SESSIONS_BY_TOKEN_SET_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionsByTokenSet", "Session", "token"),
 )
@@ -718,9 +826,15 @@ class FindSessionsByTokenSetFound:
     sessions: tuple[FindSessionsByTokenSetFoundSessions, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindSessionsByTokenSetFound:
+        return self
+
 FindSessionsByTokenSetResult: TypeAlias = FindSessionsByTokenSetFound
 
-FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "7b3489dff3626252bc65db40817a6b246a0c56ce0dfb091b8727bb71ccbed87b"
+FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "84de4cd840d30dc9cd575e1f1daea8de94f0efa63187b646e273ba633a5d693f"
 FIND_SESSIONS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionsByUserId", "Session", "token"),
 )
@@ -749,9 +863,15 @@ class FindSessionsByUserIdFound:
     sessions: tuple[FindSessionsByUserIdFoundSessions, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindSessionsByUserIdFound:
+        return self
+
 FindSessionsByUserIdResult: TypeAlias = FindSessionsByUserIdFound
 
-FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "1727d45f58baf467c64a8c123f735ed1ba5c8323e427267ec577c0cf1949b224"
+FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "ef647a48d55b825dbe566c29b03dd3fb97444df49f991bd0441d60cbb4115078"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByEmailParams:
@@ -774,9 +894,38 @@ class FindUserByEmailFound:
     users: tuple[FindUserByEmailFoundUsers, ...]
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindUserByEmailFound:
+        return self
+
 FindUserByEmailResult: TypeAlias = FindUserByEmailFound
 
-FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "13809c76bb135e79514424f6c7bcd6c633b984f276f519579b5b92e51725e9e4"
+def _decode_find_user_by_email_compact(value: object) -> FindUserByEmailResult:
+    if not isinstance(value, dict) or frozenset(value) != frozenset(("$riffdb_compact",)):
+        raise ValueError("invalid RiffDB compact result")
+    compact = value["$riffdb_compact"]
+    if not isinstance(compact, dict) or frozenset(compact) != frozenset(("outcome", "result_name", "entity", "fields", "rows")) or compact["outcome"] != "Found" or compact["result_name"] != "users" or compact["entity"] != "User" or compact["fields"] != ["created_at", "email", "email_verified", "image", "name", "revision", "updated_at", "user_id"] or not isinstance(compact["rows"], list) or len(compact["rows"]) > 1:
+        raise ValueError("invalid RiffDB compact result")
+    decoded: list[FindUserByEmailFoundUsers] = []
+    for row in compact["rows"]:
+        if not isinstance(row, list) or len(row) != 8:
+            raise ValueError("invalid RiffDB compact result")
+        decoded.append(FindUserByEmailFoundUsers(
+
+            created_at=Timestamp(seconds=int(_compact_tag(row[0], "timestamp", frozenset(("$riffdb", "seconds", "nanos")))["seconds"]), nanos=int(_compact_tag(row[0], "timestamp", frozenset(("$riffdb", "seconds", "nanos")))["nanos"])),
+            email=(row[1] if isinstance(row[1], str) and len(row[1].encode("utf-8")) <= 320 else (_ for _ in ()).throw(ValueError("invalid RiffDB compact string"))),
+            email_verified=(row[2] if type(row[2]) is bool else (_ for _ in ()).throw(ValueError("invalid RiffDB compact bool"))),
+            image=None if row[3] is None else (row[3] if isinstance(row[3], str) and len(row[3].encode("utf-8")) <= 2048 else (_ for _ in ()).throw(ValueError("invalid RiffDB compact string"))),
+            name=(row[4] if isinstance(row[4], str) and len(row[4].encode("utf-8")) <= 256 else (_ for _ in ()).throw(ValueError("invalid RiffDB compact string"))),
+            revision=(row[5] if type(row[5]) is int and 0 <= row[5] < 2**64 else (_ for _ in ()).throw(ValueError("invalid RiffDB compact u64"))),
+            updated_at=Timestamp(seconds=int(_compact_tag(row[6], "timestamp", frozenset(("$riffdb", "seconds", "nanos")))["seconds"]), nanos=int(_compact_tag(row[6], "timestamp", frozenset(("$riffdb", "seconds", "nanos")))["nanos"])),
+            user_id=UUID(str(_compact_tag(row[7], "uuid", frozenset(("$riffdb", "value")))["value"])),
+        ))
+    return FindUserByEmailFound(users=tuple(decoded))
+
+FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "45fe0e1bda91ecd52e3a5c64c656c168c1200b1869b0f68665fd9e578439b9fd"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByIdParams:
@@ -799,13 +948,31 @@ class FindUserByIdFound:
     user: FindUserByIdFoundUser
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def is_missing(self) -> bool:
+        return False
+
+    def unwrap_found(self) -> FindUserByIdFound:
+        return self
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByIdMissing:
     outcome: Literal["Missing"] = field(default="Missing", init=False)
 
+    def is_found(self) -> bool:
+        return False
+
+    def is_missing(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindUserByIdFound:
+        raise ValueError("expected FindUserById outcome found")
+
 FindUserByIdResult: TypeAlias = FindUserByIdFound | FindUserByIdMissing
 
-FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "d3af703e07e4e63a9666eb9c4a72621492ea3047853c9ce059dffef61cc2eedd"
+FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "3755eceb567801c6795c13a9e8868955cfe1bf185d204196f4c614d29f78c6aa"
 FIND_VERIFICATION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationById", "Verification", "value"),
 )
@@ -831,13 +998,31 @@ class FindVerificationByIdFound:
     verification: FindVerificationByIdFoundVerification = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def is_missing(self) -> bool:
+        return False
+
+    def unwrap_found(self) -> FindVerificationByIdFound:
+        return self
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindVerificationByIdMissing:
     outcome: Literal["Missing"] = field(default="Missing", init=False)
 
+    def is_found(self) -> bool:
+        return False
+
+    def is_missing(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindVerificationByIdFound:
+        raise ValueError("expected FindVerificationById outcome found")
+
 FindVerificationByIdResult: TypeAlias = FindVerificationByIdFound | FindVerificationByIdMissing
 
-FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "25862132c6f7040db977360223e75de087d49dc6f35beaaac92b8bb5477fbff8"
+FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "d98f43e146032b3cd1d0dfb2eacd432795f1545fcfa00e0e45b0fbd891d8b3ed"
 FIND_VERIFICATIONS_BY_IDENTIFIER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationsByIdentifier", "Verification", "value"),
 )
@@ -864,6 +1049,12 @@ class FindVerificationsByIdentifierFound:
     verifications: tuple[FindVerificationsByIdentifierFoundVerifications, ...] = field(repr=False)
     outcome: Literal["Found"] = field(default="Found", init=False)
 
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindVerificationsByIdentifierFound:
+        return self
+
 FindVerificationsByIdentifierResult: TypeAlias = FindVerificationsByIdentifierFound
 
 CONSUME_VERIFICATION_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str, str], ...]] = (
@@ -888,12 +1079,24 @@ class ConsumeVerificationVerificationConsumed:
     verification_id: UUID
     outcome: Literal["VerificationConsumed"] = field(default="VerificationConsumed", init=False)
 
+    def is_verification_consumed(self) -> bool:
+        return True
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
     def __repr__(self) -> str:
         return "ConsumeVerificationVerificationConsumed(<secret outputs redacted>)"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ConsumeVerificationVerificationConsumeMissing:
     outcome: Literal["VerificationConsumeMissing"] = field(default="VerificationConsumeMissing", init=False)
+
+    def is_verification_consumed(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return True
 
 ConsumeVerificationOutcome: TypeAlias = ConsumeVerificationVerificationConsumed | ConsumeVerificationVerificationConsumeMissing
 
@@ -908,9 +1111,21 @@ CONSUME_VERIFICATION_SET_PLAN_HASH: Final[str] = "cc5e0d69851c61f11bbbca45ad00be
 class ConsumeVerificationSetVerificationSetConsumed:
     outcome: Literal["VerificationSetConsumed"] = field(default="VerificationSetConsumed", init=False)
 
+    def is_verification_set_consumed(self) -> bool:
+        return True
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ConsumeVerificationSetVerificationConsumeMissing:
     outcome: Literal["VerificationConsumeMissing"] = field(default="VerificationConsumeMissing", init=False)
+
+    def is_verification_set_consumed(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return True
 
 ConsumeVerificationSetOutcome: TypeAlias = ConsumeVerificationSetVerificationSetConsumed | ConsumeVerificationSetVerificationConsumeMissing
 
@@ -932,18 +1147,45 @@ class CreateAccountInput:
     access_token_expires_at: Timestamp | None
     refresh_token_expires_at: Timestamp | None
 
-CREATE_ACCOUNT_PLAN_HASH: Final[str] = "0cc0a4c41781ceb4f85b025899be7d8addde85ae6aa2f06225cf67b3ba00f4e2"
+CREATE_ACCOUNT_PLAN_HASH: Final[str] = "53f2e7b330780eb514a299ceb673da4f1eeaea81beb45253267a52e41a7fd0b2"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateAccountAccountCreated:
     outcome: Literal["AccountCreated"] = field(default="AccountCreated", init=False)
+
+    def is_account_created(self) -> bool:
+        return True
+
+    def is_account_user_missing(self) -> bool:
+        return False
+
+    def is_account_already_exists(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateAccountAccountUserMissing:
     outcome: Literal["AccountUserMissing"] = field(default="AccountUserMissing", init=False)
 
+    def is_account_created(self) -> bool:
+        return False
+
+    def is_account_user_missing(self) -> bool:
+        return True
+
+    def is_account_already_exists(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateAccountAccountAlreadyExists:
     outcome: Literal["AccountAlreadyExists"] = field(default="AccountAlreadyExists", init=False)
+
+    def is_account_created(self) -> bool:
+        return False
+
+    def is_account_user_missing(self) -> bool:
+        return False
+
+    def is_account_already_exists(self) -> bool:
+        return True
 
 CreateAccountOutcome: TypeAlias = CreateAccountAccountCreated | CreateAccountAccountUserMissing | CreateAccountAccountAlreadyExists
 
@@ -971,18 +1213,45 @@ class CreateOAuthUserGraphInput:
     access_token_expires_at: Timestamp | None
     refresh_token_expires_at: Timestamp | None
 
-CREATE_OAUTH_USER_GRAPH_PLAN_HASH: Final[str] = "85b55a428188899721db23354ae9b29015f1adbed3df86d4100772febf196d92"
+CREATE_OAUTH_USER_GRAPH_PLAN_HASH: Final[str] = "a30c6faca9666ff17536e1f4ec35f0306e970430a064e0d72a66adccefad7407"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateOAuthUserGraphOAuthUserExists:
     outcome: Literal["OAuthUserExists"] = field(default="OAuthUserExists", init=False)
+
+    def is_oauth_user_exists(self) -> bool:
+        return True
+
+    def is_oauth_account_exists(self) -> bool:
+        return False
+
+    def is_oauth_user_graph_created(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateOAuthUserGraphOAuthAccountExists:
     outcome: Literal["OAuthAccountExists"] = field(default="OAuthAccountExists", init=False)
 
+    def is_oauth_user_exists(self) -> bool:
+        return False
+
+    def is_oauth_account_exists(self) -> bool:
+        return True
+
+    def is_oauth_user_graph_created(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateOAuthUserGraphOAuthUserGraphCreated:
     outcome: Literal["OAuthUserGraphCreated"] = field(default="OAuthUserGraphCreated", init=False)
+
+    def is_oauth_user_exists(self) -> bool:
+        return False
+
+    def is_oauth_account_exists(self) -> bool:
+        return False
+
+    def is_oauth_user_graph_created(self) -> bool:
+        return True
 
 CreateOAuthUserGraphOutcome: TypeAlias = CreateOAuthUserGraphOAuthUserExists | CreateOAuthUserGraphOAuthAccountExists | CreateOAuthUserGraphOAuthUserGraphCreated
 
@@ -999,18 +1268,45 @@ class CreateSessionInput:
     user_agent: str | None
     organization_id: UUID
 
-CREATE_SESSION_PLAN_HASH: Final[str] = "4292ddb74c4fbb26975f0754683be9cac597e054d5703935ecb4379b73bae5f1"
+CREATE_SESSION_PLAN_HASH: Final[str] = "c5e41496adb0a45f87503008fa43da87c6c729674bb1f521625ff16183059050"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSessionSessionCreated:
     outcome: Literal["SessionCreated"] = field(default="SessionCreated", init=False)
+
+    def is_session_created(self) -> bool:
+        return True
+
+    def is_session_user_missing(self) -> bool:
+        return False
+
+    def is_session_already_exists(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSessionSessionUserMissing:
     outcome: Literal["SessionUserMissing"] = field(default="SessionUserMissing", init=False)
 
+    def is_session_created(self) -> bool:
+        return False
+
+    def is_session_user_missing(self) -> bool:
+        return True
+
+    def is_session_already_exists(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSessionSessionAlreadyExists:
     outcome: Literal["SessionAlreadyExists"] = field(default="SessionAlreadyExists", init=False)
+
+    def is_session_created(self) -> bool:
+        return False
+
+    def is_session_user_missing(self) -> bool:
+        return False
+
+    def is_session_already_exists(self) -> bool:
+        return True
 
 CreateSessionOutcome: TypeAlias = CreateSessionSessionCreated | CreateSessionSessionUserMissing | CreateSessionSessionAlreadyExists
 
@@ -1039,22 +1335,70 @@ class CreateSignupGraphInput:
     external_account_id: str
     user_email_verified: bool
 
-CREATE_SIGNUP_GRAPH_PLAN_HASH: Final[str] = "8caecfbea3708c720d98f3acf53351c6734513c9b76bc7eaff0feb216bf7f910"
+CREATE_SIGNUP_GRAPH_PLAN_HASH: Final[str] = "01e4e118b1cc5c3a16c19259284cd0845e8a2e405fc02f81ab9b1fcafc79d0b8"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSignupGraphSignupUserExists:
     outcome: Literal["SignupUserExists"] = field(default="SignupUserExists", init=False)
+
+    def is_signup_user_exists(self) -> bool:
+        return True
+
+    def is_signup_graph_created(self) -> bool:
+        return False
+
+    def is_signup_account_exists(self) -> bool:
+        return False
+
+    def is_signup_session_exists(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSignupGraphSignupGraphCreated:
     outcome: Literal["SignupGraphCreated"] = field(default="SignupGraphCreated", init=False)
 
+    def is_signup_user_exists(self) -> bool:
+        return False
+
+    def is_signup_graph_created(self) -> bool:
+        return True
+
+    def is_signup_account_exists(self) -> bool:
+        return False
+
+    def is_signup_session_exists(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSignupGraphSignupAccountExists:
     outcome: Literal["SignupAccountExists"] = field(default="SignupAccountExists", init=False)
 
+    def is_signup_user_exists(self) -> bool:
+        return False
+
+    def is_signup_graph_created(self) -> bool:
+        return False
+
+    def is_signup_account_exists(self) -> bool:
+        return True
+
+    def is_signup_session_exists(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateSignupGraphSignupSessionExists:
     outcome: Literal["SignupSessionExists"] = field(default="SignupSessionExists", init=False)
+
+    def is_signup_user_exists(self) -> bool:
+        return False
+
+    def is_signup_graph_created(self) -> bool:
+        return False
+
+    def is_signup_account_exists(self) -> bool:
+        return False
+
+    def is_signup_session_exists(self) -> bool:
+        return True
 
 CreateSignupGraphOutcome: TypeAlias = CreateSignupGraphSignupUserExists | CreateSignupGraphSignupGraphCreated | CreateSignupGraphSignupAccountExists | CreateSignupGraphSignupSessionExists
 
@@ -1070,14 +1414,26 @@ class CreateUserInput:
     email_verified: bool
     organization_id: UUID
 
-CREATE_USER_PLAN_HASH: Final[str] = "f21d7e06a6a6d137696d1618e2f311dc5a72a20ad2071631e0d8a2d927d8bd1d"
+CREATE_USER_PLAN_HASH: Final[str] = "752d7d404aa418b5c1a08065ce9a8efbb28ab2b62f18969c98a13a06092fd8b3"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateUserUserCreated:
     outcome: Literal["UserCreated"] = field(default="UserCreated", init=False)
 
+    def is_user_created(self) -> bool:
+        return True
+
+    def is_user_already_exists(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateUserUserAlreadyExists:
     outcome: Literal["UserAlreadyExists"] = field(default="UserAlreadyExists", init=False)
+
+    def is_user_created(self) -> bool:
+        return False
+
+    def is_user_already_exists(self) -> bool:
+        return True
 
 CreateUserOutcome: TypeAlias = CreateUserUserCreated | CreateUserUserAlreadyExists
 
@@ -1092,14 +1448,26 @@ class CreateVerificationInput:
     updated_at: Timestamp
     organization_id: UUID
 
-CREATE_VERIFICATION_PLAN_HASH: Final[str] = "586f67d309e0edde648ffb62139733dd86eb3f53e322503b7f26aa1ed3c4ea2e"
+CREATE_VERIFICATION_PLAN_HASH: Final[str] = "82bce005457b1fcf1d069a69304f7bf4e2eeb7d2718d5289dc9d25e197309e35"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateVerificationVerificationCreated:
     outcome: Literal["VerificationCreated"] = field(default="VerificationCreated", init=False)
 
+    def is_verification_created(self) -> bool:
+        return True
+
+    def is_verification_already_exists(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateVerificationVerificationAlreadyExists:
     outcome: Literal["VerificationAlreadyExists"] = field(default="VerificationAlreadyExists", init=False)
+
+    def is_verification_created(self) -> bool:
+        return False
+
+    def is_verification_already_exists(self) -> bool:
+        return True
 
 CreateVerificationOutcome: TypeAlias = CreateVerificationVerificationCreated | CreateVerificationVerificationAlreadyExists
 
@@ -1115,9 +1483,21 @@ DELETE_ACCOUNT_PLAN_HASH: Final[str] = "6429ebe6e70797c57c44a4738c8a511bbe5304e5
 class DeleteAccountAccountDeleted:
     outcome: Literal["AccountDeleted"] = field(default="AccountDeleted", init=False)
 
+    def is_account_deleted(self) -> bool:
+        return True
+
+    def is_account_missing(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteAccountAccountMissing:
     outcome: Literal["AccountMissing"] = field(default="AccountMissing", init=False)
+
+    def is_account_deleted(self) -> bool:
+        return False
+
+    def is_account_missing(self) -> bool:
+        return True
 
 DeleteAccountOutcome: TypeAlias = DeleteAccountAccountDeleted | DeleteAccountAccountMissing
 
@@ -1133,9 +1513,21 @@ DELETE_SESSION_PLAN_HASH: Final[str] = "a3901beb6c2d2754fd3d2c64252b6f5059cd1792
 class DeleteSessionSessionDeleted:
     outcome: Literal["SessionDeleted"] = field(default="SessionDeleted", init=False)
 
+    def is_session_deleted(self) -> bool:
+        return True
+
+    def is_session_missing(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteSessionSessionMissing:
     outcome: Literal["SessionMissing"] = field(default="SessionMissing", init=False)
+
+    def is_session_deleted(self) -> bool:
+        return False
+
+    def is_session_missing(self) -> bool:
+        return True
 
 DeleteSessionOutcome: TypeAlias = DeleteSessionSessionDeleted | DeleteSessionSessionMissing
 
@@ -1145,18 +1537,45 @@ class DeleteUserInput:
     request_id: UUID
     organization_id: UUID
 
-DELETE_USER_PLAN_HASH: Final[str] = "d027f85aea0e28d30219cc1f995352a1d00ad669a29885ae74b5fb25497cbc34"
+DELETE_USER_PLAN_HASH: Final[str] = "f7195857c4f50a68b37ee0f8516c27dd03b08d5cd5ba45f53d9f9345d2f90985"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteUserUserDeleted:
     outcome: Literal["UserDeleted"] = field(default="UserDeleted", init=False)
+
+    def is_user_deleted(self) -> bool:
+        return True
+
+    def is_delete_user_missing(self) -> bool:
+        return False
+
+    def is_delete_user_cascade_limit_exceeded(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteUserDeleteUserMissing:
     outcome: Literal["DeleteUserMissing"] = field(default="DeleteUserMissing", init=False)
 
+    def is_user_deleted(self) -> bool:
+        return False
+
+    def is_delete_user_missing(self) -> bool:
+        return True
+
+    def is_delete_user_cascade_limit_exceeded(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteUserDeleteUserCascadeLimitExceeded:
     outcome: Literal["DeleteUserCascadeLimitExceeded"] = field(default="DeleteUserCascadeLimitExceeded", init=False)
+
+    def is_user_deleted(self) -> bool:
+        return False
+
+    def is_delete_user_missing(self) -> bool:
+        return False
+
+    def is_delete_user_cascade_limit_exceeded(self) -> bool:
+        return True
 
 DeleteUserOutcome: TypeAlias = DeleteUserUserDeleted | DeleteUserDeleteUserMissing | DeleteUserDeleteUserCascadeLimitExceeded
 
@@ -1171,9 +1590,21 @@ DELETE_VERIFICATION_PLAN_HASH: Final[str] = "bffc0c5ef5ad2b602954492d043e833785e
 class DeleteVerificationVerificationDeleted:
     outcome: Literal["VerificationDeleted"] = field(default="VerificationDeleted", init=False)
 
+    def is_verification_deleted(self) -> bool:
+        return True
+
+    def is_verification_missing(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class DeleteVerificationVerificationMissing:
     outcome: Literal["VerificationMissing"] = field(default="VerificationMissing", init=False)
+
+    def is_verification_deleted(self) -> bool:
+        return False
+
+    def is_verification_missing(self) -> bool:
+        return True
 
 DeleteVerificationOutcome: TypeAlias = DeleteVerificationVerificationDeleted | DeleteVerificationVerificationMissing
 
@@ -1195,18 +1626,45 @@ class UpdateAccountInput:
     access_token_expires_at: Timestamp | None
     refresh_token_expires_at: Timestamp | None
 
-UPDATE_ACCOUNT_PLAN_HASH: Final[str] = "35e545a7ba4ec5e39d040cb3c832c175b07331aa39e9c329b435fa680f4c3c13"
+UPDATE_ACCOUNT_PLAN_HASH: Final[str] = "1556cd92effd135225904f0313f1cdf146ebe82f72621ebeccb2686c5442b849"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountAccountUpdated:
     outcome: Literal["AccountUpdated"] = field(default="AccountUpdated", init=False)
+
+    def is_account_updated(self) -> bool:
+        return True
+
+    def is_account_update_stale(self) -> bool:
+        return False
+
+    def is_account_update_missing(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountAccountUpdateStale:
     outcome: Literal["AccountUpdateStale"] = field(default="AccountUpdateStale", init=False)
 
+    def is_account_updated(self) -> bool:
+        return False
+
+    def is_account_update_stale(self) -> bool:
+        return True
+
+    def is_account_update_missing(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountAccountUpdateMissing:
     outcome: Literal["AccountUpdateMissing"] = field(default="AccountUpdateMissing", init=False)
+
+    def is_account_updated(self) -> bool:
+        return False
+
+    def is_account_update_stale(self) -> bool:
+        return False
+
+    def is_account_update_missing(self) -> bool:
+        return True
 
 UpdateAccountOutcome: TypeAlias = UpdateAccountAccountUpdated | UpdateAccountAccountUpdateStale | UpdateAccountAccountUpdateMissing
 
@@ -1217,22 +1675,70 @@ class UpdateAccountPasswordsInput:
     request_id: UUID
     organization_id: UUID
 
-UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: Final[str] = "6189e45a0a6bd2d6cb7cfb62ea7c049643718f0baee0755fe99244760c4cf33d"
+UPDATE_ACCOUNT_PASSWORDS_PLAN_HASH: Final[str] = "5f18c741b5e9c09203c67b5985af9d034fad670462ecdda32a0a1f031ef288f6"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountPasswordsPasswordAccountStale:
     outcome: Literal["PasswordAccountStale"] = field(default="PasswordAccountStale", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return True
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_account_passwords_updated(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountPasswordsPasswordAccountMissing:
     outcome: Literal["PasswordAccountMissing"] = field(default="PasswordAccountMissing", init=False)
 
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return True
+
+    def is_account_passwords_updated(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountPasswordsAccountPasswordsUpdated:
     outcome: Literal["AccountPasswordsUpdated"] = field(default="AccountPasswordsUpdated", init=False)
 
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_account_passwords_updated(self) -> bool:
+        return True
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountPasswordsPasswordProviderMismatch:
     outcome: Literal["PasswordProviderMismatch"] = field(default="PasswordProviderMismatch", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_account_passwords_updated(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return True
 
 UpdateAccountPasswordsOutcome: TypeAlias = UpdateAccountPasswordsPasswordAccountStale | UpdateAccountPasswordsPasswordAccountMissing | UpdateAccountPasswordsAccountPasswordsUpdated | UpdateAccountPasswordsPasswordProviderMismatch
 
@@ -1248,18 +1754,45 @@ class UpdateSessionInput:
     organization_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-UPDATE_SESSION_PLAN_HASH: Final[str] = "47a20c198db83b859b152dd8b500daa501acf8f4b0f0fd232f9aa26b9e021fb7"
+UPDATE_SESSION_PLAN_HASH: Final[str] = "4c1184c5c0a1f8b8935a8b96204ad839afe84e1752f2ba24cdf63feef4f7ce3a"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateSessionSessionUpdated:
     outcome: Literal["SessionUpdated"] = field(default="SessionUpdated", init=False)
+
+    def is_session_updated(self) -> bool:
+        return True
+
+    def is_session_update_stale(self) -> bool:
+        return False
+
+    def is_session_update_missing(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateSessionSessionUpdateStale:
     outcome: Literal["SessionUpdateStale"] = field(default="SessionUpdateStale", init=False)
 
+    def is_session_updated(self) -> bool:
+        return False
+
+    def is_session_update_stale(self) -> bool:
+        return True
+
+    def is_session_update_missing(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateSessionSessionUpdateMissing:
     outcome: Literal["SessionUpdateMissing"] = field(default="SessionUpdateMissing", init=False)
+
+    def is_session_updated(self) -> bool:
+        return False
+
+    def is_session_update_stale(self) -> bool:
+        return False
+
+    def is_session_update_missing(self) -> bool:
+        return True
 
 UpdateSessionOutcome: TypeAlias = UpdateSessionSessionUpdated | UpdateSessionSessionUpdateStale | UpdateSessionSessionUpdateMissing
 
@@ -1275,18 +1808,45 @@ class UpdateUserInput:
     organization_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-UPDATE_USER_PLAN_HASH: Final[str] = "0681fe24aaece6ae71a3de15046ea5a8006d89690b2e51f6f20e478585c5a3fd"
+UPDATE_USER_PLAN_HASH: Final[str] = "cd0d3c8108976d4b2413f41fd68791b3e9276a763787f40b82bef17219091194"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateUserUserUpdated:
     outcome: Literal["UserUpdated"] = field(default="UserUpdated", init=False)
+
+    def is_user_updated(self) -> bool:
+        return True
+
+    def is_user_update_stale(self) -> bool:
+        return False
+
+    def is_user_update_missing(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateUserUserUpdateStale:
     outcome: Literal["UserUpdateStale"] = field(default="UserUpdateStale", init=False)
 
+    def is_user_updated(self) -> bool:
+        return False
+
+    def is_user_update_stale(self) -> bool:
+        return True
+
+    def is_user_update_missing(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateUserUserUpdateMissing:
     outcome: Literal["UserUpdateMissing"] = field(default="UserUpdateMissing", init=False)
+
+    def is_user_updated(self) -> bool:
+        return False
+
+    def is_user_update_stale(self) -> bool:
+        return False
+
+    def is_user_update_missing(self) -> bool:
+        return True
 
 UpdateUserOutcome: TypeAlias = UpdateUserUserUpdated | UpdateUserUserUpdateStale | UpdateUserUserUpdateMissing
 
@@ -1300,29 +1860,74 @@ class UpdateVerificationInput:
     verification_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-UPDATE_VERIFICATION_PLAN_HASH: Final[str] = "1be4b743bd9dc1ef4fd421d7ec7de8d88d86aad6ac069080fd2cd4f9b61f5231"
+UPDATE_VERIFICATION_PLAN_HASH: Final[str] = "b9ea963db584e7fd9dbce1069d982dc0f53ebb06b72b41b060578b284596018f"
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateVerificationVerificationUpdated:
     outcome: Literal["VerificationUpdated"] = field(default="VerificationUpdated", init=False)
+
+    def is_verification_updated(self) -> bool:
+        return True
+
+    def is_verification_update_stale(self) -> bool:
+        return False
+
+    def is_verification_update_missing(self) -> bool:
+        return False
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateVerificationVerificationUpdateStale:
     outcome: Literal["VerificationUpdateStale"] = field(default="VerificationUpdateStale", init=False)
 
+    def is_verification_updated(self) -> bool:
+        return False
+
+    def is_verification_update_stale(self) -> bool:
+        return True
+
+    def is_verification_update_missing(self) -> bool:
+        return False
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateVerificationVerificationUpdateMissing:
     outcome: Literal["VerificationUpdateMissing"] = field(default="VerificationUpdateMissing", init=False)
 
+    def is_verification_updated(self) -> bool:
+        return False
+
+    def is_verification_update_stale(self) -> bool:
+        return False
+
+    def is_verification_update_missing(self) -> bool:
+        return True
+
 UpdateVerificationOutcome: TypeAlias = UpdateVerificationVerificationUpdated | UpdateVerificationVerificationUpdateStale | UpdateVerificationVerificationUpdateMissing
 
 class RiffDBBetterAuthCoreClient:
-    def __init__(self, transport: SyncApplicationTransport, command_attempts: AttemptBudget) -> None:
+    def __init__(self, transport: SyncApplicationTransport, command_attempts: AttemptBudget = AttemptBudget(3), *, read_after_commit: int | None = None, track_causal_writes: bool = True) -> None:
         self._transport = transport
         self._command_attempts = command_attempts
+        self._read_after_commit = read_after_commit
+        self._track_causal_writes = track_causal_writes
+
+    @classmethod
+    def from_transport(cls, transport: SyncApplicationTransport, command_attempts: AttemptBudget = AttemptBudget(3)) -> RiffDBBetterAuthCoreClient:
+        return cls(transport, command_attempts)
+
+    def with_read_after_commit(self, commit_sequence: int | None) -> RiffDBBetterAuthCoreClient:
+        return RiffDBBetterAuthCoreClient(self._transport, self._command_attempts, read_after_commit=commit_sequence, track_causal_writes=self._track_causal_writes)
+
+    def causal_session(self, initial_commit_sequence: int | None = None) -> RiffDBBetterAuthCoreClient:
+        return RiffDBBetterAuthCoreClient(self._transport, self._command_attempts, read_after_commit=initial_commit_sequence if initial_commit_sequence is not None else self._read_after_commit, track_causal_writes=True)
+
+    @property
+    def last_commit_sequence(self) -> int | None:
+        return self._read_after_commit
 
     def admin_users_all_email_asc(self, parameters: AdminUsersAllEmailAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersAllEmailAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1334,9 +1939,14 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_all_email_asc_after_commit(self, parameters: AdminUsersAllEmailAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersAllEmailAscResult]:
+        return self.admin_users_all_email_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def admin_users_contains_asc(self, parameters: AdminUsersContainsAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1348,9 +1958,14 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_contains_asc_after_commit(self, parameters: AdminUsersContainsAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsAscResult]:
+        return self.admin_users_contains_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def admin_users_contains_desc(self, parameters: AdminUsersContainsDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsDescResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1362,9 +1977,14 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_contains_desc_after_commit(self, parameters: AdminUsersContainsDescParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsDescResult]:
+        return self.admin_users_contains_desc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def admin_users_email_contains_created_desc(self, parameters: AdminUsersEmailContainsCreatedDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsCreatedDescResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1376,9 +1996,14 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_email_contains_created_desc_after_commit(self, parameters: AdminUsersEmailContainsCreatedDescParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsCreatedDescResult]:
+        return self.admin_users_email_contains_created_desc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def admin_users_email_contains_image_asc(self, parameters: AdminUsersEmailContainsImageAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsImageAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1390,9 +2015,14 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_email_contains_image_asc_after_commit(self, parameters: AdminUsersEmailContainsImageAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsImageAscResult]:
+        return self.admin_users_email_contains_image_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def admin_users_ends_with_asc(self, parameters: AdminUsersEndsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1404,9 +2034,14 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_ends_with_asc_after_commit(self, parameters: AdminUsersEndsWithAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithAscResult]:
+        return self.admin_users_ends_with_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def admin_users_ends_with_desc(self, parameters: AdminUsersEndsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithDescResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1418,9 +2053,14 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_ends_with_desc_after_commit(self, parameters: AdminUsersEndsWithDescParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithDescResult]:
+        return self.admin_users_ends_with_desc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def admin_users_starts_with_asc(self, parameters: AdminUsersStartsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1432,9 +2072,14 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_starts_with_asc_after_commit(self, parameters: AdminUsersStartsWithAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithAscResult]:
+        return self.admin_users_starts_with_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def admin_users_starts_with_desc(self, parameters: AdminUsersStartsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithDescResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1446,7 +2091,12 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def admin_users_starts_with_desc_after_commit(self, parameters: AdminUsersStartsWithDescParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithDescResult]:
+        return self.admin_users_starts_with_desc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_account_by_id(self, parameters: FindAccountByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByIdResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1458,7 +2108,12 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_account_by_id_after_commit(self, parameters: FindAccountByIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByIdResult]:
+        return self.find_account_by_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_account_by_provider(self, parameters: FindAccountByProviderParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByProviderResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1470,6 +2125,9 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_account_by_provider_after_commit(self, parameters: FindAccountByProviderParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByProviderResult]:
+        return self.find_account_by_provider(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_accounts_by_user_id(self, parameters: FindAccountsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserIdResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -1478,6 +2136,8 @@ class RiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1489,6 +2149,25 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_accounts_by_user_id_after_commit(self, parameters: FindAccountsByUserIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserIdResult]:
+        return self.find_accounts_by_user_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    def find_accounts_by_user_id_pages(self, parameters: FindAccountsByUserIdParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindAccountsByUserIdResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindAccountsByUserIdResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindAccountsByUserIdParams(organization_id=parameters.organization_id, user_id=parameters.user_id, after=None)
+            page = self.find_accounts_by_user_id(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     def find_accounts_by_user_provider(self, parameters: FindAccountsByUserProviderParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserProviderResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -1497,6 +2176,8 @@ class RiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1508,6 +2189,25 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_accounts_by_user_provider_after_commit(self, parameters: FindAccountsByUserProviderParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserProviderResult]:
+        return self.find_accounts_by_user_provider(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    def find_accounts_by_user_provider_pages(self, parameters: FindAccountsByUserProviderParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindAccountsByUserProviderResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindAccountsByUserProviderResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindAccountsByUserProviderParams(organization_id=parameters.organization_id, user_id=parameters.user_id, provider_id=parameters.provider_id, after=None)
+            page = self.find_accounts_by_user_provider(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     def find_active_sessions_by_user_id(self, parameters: FindActiveSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindActiveSessionsByUserIdResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -1516,6 +2216,8 @@ class RiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1527,6 +2229,25 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_active_sessions_by_user_id_after_commit(self, parameters: FindActiveSessionsByUserIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindActiveSessionsByUserIdResult]:
+        return self.find_active_sessions_by_user_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    def find_active_sessions_by_user_id_pages(self, parameters: FindActiveSessionsByUserIdParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindActiveSessionsByUserIdResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindActiveSessionsByUserIdResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindActiveSessionsByUserIdParams(organization_id=parameters.organization_id, user_id=parameters.user_id, expires_after=parameters.expires_after, after=None)
+            page = self.find_active_sessions_by_user_id(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     def find_expired_verification_ids(self, parameters: FindExpiredVerificationIdsParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindExpiredVerificationIdsResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -1535,6 +2256,8 @@ class RiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1546,7 +2269,28 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_expired_verification_ids_after_commit(self, parameters: FindExpiredVerificationIdsParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindExpiredVerificationIdsResult]:
+        return self.find_expired_verification_ids(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    def find_expired_verification_ids_pages(self, parameters: FindExpiredVerificationIdsParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindExpiredVerificationIdsResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindExpiredVerificationIdsResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindExpiredVerificationIdsParams(organization_id=parameters.organization_id, expires_before=parameters.expires_before, after=None)
+            page = self.find_expired_verification_ids(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     def find_latest_verification(self, parameters: FindLatestVerificationParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindLatestVerificationResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1558,7 +2302,12 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_latest_verification_after_commit(self, parameters: FindLatestVerificationParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindLatestVerificationResult]:
+        return self.find_latest_verification(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_session_by_id(self, parameters: FindSessionByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionByIdResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1570,7 +2319,12 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_session_by_id_after_commit(self, parameters: FindSessionByIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionByIdResult]:
+        return self.find_session_by_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_session_by_token(self, parameters: FindSessionByTokenParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionByTokenResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1582,7 +2336,12 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_session_by_token_after_commit(self, parameters: FindSessionByTokenParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionByTokenResult]:
+        return self.find_session_by_token(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_sessions_by_token_set(self, parameters: FindSessionsByTokenSetParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1594,6 +2353,9 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_sessions_by_token_set_after_commit(self, parameters: FindSessionsByTokenSetParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetResult]:
+        return self.find_sessions_by_token_set(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_sessions_by_user_id(self, parameters: FindSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByUserIdResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -1602,6 +2364,8 @@ class RiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1613,19 +2377,46 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_sessions_by_user_id_after_commit(self, parameters: FindSessionsByUserIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByUserIdResult]:
+        return self.find_sessions_by_user_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    def find_sessions_by_user_id_pages(self, parameters: FindSessionsByUserIdParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindSessionsByUserIdResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindSessionsByUserIdResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindSessionsByUserIdParams(organization_id=parameters.organization_id, user_id=parameters.user_id, after=None)
+            page = self.find_sessions_by_user_id(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     def find_user_by_email(self, parameters: FindUserByEmailParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindUserByEmailResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindUserByEmail", plan_hash=FIND_USER_BY_EMAIL_QUERY_PLAN_HASH,
             parameters=encode_record(parameters), options=options,
+            accept_compact_result=True,
         )
         outcomes = {
             "Found": FindUserByEmailFound,
         }
-        return raw._map_value(lambda value: decode_variant(outcomes, value))
+        return raw._map_value(lambda value: _decode_find_user_by_email_compact(value) if isinstance(value, dict) and "$riffdb_compact" in value else decode_variant(outcomes, value))
+
+    def find_user_by_email_after_commit(self, parameters: FindUserByEmailParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindUserByEmailResult]:
+        return self.find_user_by_email(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
 
     def find_user_by_id(self, parameters: FindUserByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindUserByIdResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1638,7 +2429,12 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_user_by_id_after_commit(self, parameters: FindUserByIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindUserByIdResult]:
+        return self.find_user_by_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_verification_by_id(self, parameters: FindVerificationByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationByIdResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1651,6 +2447,9 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_verification_by_id_after_commit(self, parameters: FindVerificationByIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationByIdResult]:
+        return self.find_verification_by_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_verifications_by_identifier(self, parameters: FindVerificationsByIdentifierParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationsByIdentifierResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -1659,6 +2458,8 @@ class RiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -1670,6 +2471,25 @@ class RiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    def find_verifications_by_identifier_after_commit(self, parameters: FindVerificationsByIdentifierParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationsByIdentifierResult]:
+        return self.find_verifications_by_identifier(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    def find_verifications_by_identifier_pages(self, parameters: FindVerificationsByIdentifierParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindVerificationsByIdentifierResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindVerificationsByIdentifierResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindVerificationsByIdentifierParams(organization_id=parameters.organization_id, identifier=parameters.identifier, after=None)
+            page = self.find_verifications_by_identifier(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     def consume_verification(self, input: ConsumeVerificationInput) -> TypedCommandResult[ConsumeVerificationOutcome]:
         raw = self._transport._execute_command(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -1680,7 +2500,10 @@ class RiffDBBetterAuthCoreClient:
             "VerificationConsumed": ConsumeVerificationVerificationConsumed,
             "VerificationConsumeMissing": ConsumeVerificationVerificationConsumeMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[ConsumeVerificationOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def consume_verification_batch(
         self, inputs: Sequence[ConsumeVerificationInput], options: CommandBatchOptions,
@@ -1700,7 +2523,10 @@ class RiffDBBetterAuthCoreClient:
             "VerificationSetConsumed": ConsumeVerificationSetVerificationSetConsumed,
             "VerificationConsumeMissing": ConsumeVerificationSetVerificationConsumeMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[ConsumeVerificationSetOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def consume_verification_set_batch(
         self, inputs: Sequence[ConsumeVerificationSetInput], options: CommandBatchOptions,
@@ -1722,7 +2548,10 @@ class RiffDBBetterAuthCoreClient:
             "AccountUserMissing": CreateAccountAccountUserMissing,
             "AccountAlreadyExists": CreateAccountAccountAlreadyExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateAccountOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def create_account_batch(
         self, inputs: Sequence[CreateAccountInput], options: CommandBatchOptions,
@@ -1741,7 +2570,10 @@ class RiffDBBetterAuthCoreClient:
             "OAuthAccountExists": CreateOAuthUserGraphOAuthAccountExists,
             "OAuthUserGraphCreated": CreateOAuthUserGraphOAuthUserGraphCreated,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateOAuthUserGraphOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def create_oauth_user_graph_batch(
         self, inputs: Sequence[CreateOAuthUserGraphInput], options: CommandBatchOptions,
@@ -1760,7 +2592,10 @@ class RiffDBBetterAuthCoreClient:
             "SessionUserMissing": CreateSessionSessionUserMissing,
             "SessionAlreadyExists": CreateSessionSessionAlreadyExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateSessionOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def create_session_batch(
         self, inputs: Sequence[CreateSessionInput], options: CommandBatchOptions,
@@ -1780,7 +2615,10 @@ class RiffDBBetterAuthCoreClient:
             "SignupAccountExists": CreateSignupGraphSignupAccountExists,
             "SignupSessionExists": CreateSignupGraphSignupSessionExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateSignupGraphOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def create_signup_graph_batch(
         self, inputs: Sequence[CreateSignupGraphInput], options: CommandBatchOptions,
@@ -1798,7 +2636,10 @@ class RiffDBBetterAuthCoreClient:
             "UserCreated": CreateUserUserCreated,
             "UserAlreadyExists": CreateUserUserAlreadyExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateUserOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def create_user_batch(
         self, inputs: Sequence[CreateUserInput], options: CommandBatchOptions,
@@ -1816,7 +2657,10 @@ class RiffDBBetterAuthCoreClient:
             "VerificationCreated": CreateVerificationVerificationCreated,
             "VerificationAlreadyExists": CreateVerificationVerificationAlreadyExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateVerificationOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def create_verification_batch(
         self, inputs: Sequence[CreateVerificationInput], options: CommandBatchOptions,
@@ -1836,7 +2680,10 @@ class RiffDBBetterAuthCoreClient:
             "AccountDeleted": DeleteAccountAccountDeleted,
             "AccountMissing": DeleteAccountAccountMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[DeleteAccountOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def delete_account_batch(
         self, inputs: Sequence[DeleteAccountInput], options: CommandBatchOptions,
@@ -1859,7 +2706,10 @@ class RiffDBBetterAuthCoreClient:
             "SessionDeleted": DeleteSessionSessionDeleted,
             "SessionMissing": DeleteSessionSessionMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[DeleteSessionOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def delete_session_batch(
         self, inputs: Sequence[DeleteSessionInput], options: CommandBatchOptions,
@@ -1883,7 +2733,10 @@ class RiffDBBetterAuthCoreClient:
             "DeleteUserMissing": DeleteUserDeleteUserMissing,
             "DeleteUserCascadeLimitExceeded": DeleteUserDeleteUserCascadeLimitExceeded,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[DeleteUserOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def delete_user_batch(
         self, inputs: Sequence[DeleteUserInput], options: CommandBatchOptions,
@@ -1906,7 +2759,10 @@ class RiffDBBetterAuthCoreClient:
             "VerificationDeleted": DeleteVerificationVerificationDeleted,
             "VerificationMissing": DeleteVerificationVerificationMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[DeleteVerificationOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def delete_verification_batch(
         self, inputs: Sequence[DeleteVerificationInput], options: CommandBatchOptions,
@@ -1928,7 +2784,10 @@ class RiffDBBetterAuthCoreClient:
             "AccountUpdateStale": UpdateAccountAccountUpdateStale,
             "AccountUpdateMissing": UpdateAccountAccountUpdateMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateAccountOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def update_account_batch(
         self, inputs: Sequence[UpdateAccountInput], options: CommandBatchOptions,
@@ -1950,7 +2809,10 @@ class RiffDBBetterAuthCoreClient:
             "AccountPasswordsUpdated": UpdateAccountPasswordsAccountPasswordsUpdated,
             "PasswordProviderMismatch": UpdateAccountPasswordsPasswordProviderMismatch,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateAccountPasswordsOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def update_account_passwords_batch(
         self, inputs: Sequence[UpdateAccountPasswordsInput], options: CommandBatchOptions,
@@ -1972,7 +2834,10 @@ class RiffDBBetterAuthCoreClient:
             "SessionUpdateStale": UpdateSessionSessionUpdateStale,
             "SessionUpdateMissing": UpdateSessionSessionUpdateMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateSessionOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def update_session_batch(
         self, inputs: Sequence[UpdateSessionInput], options: CommandBatchOptions,
@@ -1991,7 +2856,10 @@ class RiffDBBetterAuthCoreClient:
             "UserUpdateStale": UpdateUserUserUpdateStale,
             "UserUpdateMissing": UpdateUserUserUpdateMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateUserOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def update_user_batch(
         self, inputs: Sequence[UpdateUserInput], options: CommandBatchOptions,
@@ -2010,7 +2878,10 @@ class RiffDBBetterAuthCoreClient:
             "VerificationUpdateStale": UpdateVerificationVerificationUpdateStale,
             "VerificationUpdateMissing": UpdateVerificationVerificationUpdateMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateVerificationOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     def update_verification_batch(
         self, inputs: Sequence[UpdateVerificationInput], options: CommandBatchOptions,
@@ -2019,13 +2890,31 @@ class RiffDBBetterAuthCoreClient:
         return self._transport._command_batch(inputs, options, self.update_verification, progress)
 
 class AsyncRiffDBBetterAuthCoreClient:
-    def __init__(self, transport: AsyncApplicationTransport, command_attempts: AttemptBudget) -> None:
+    def __init__(self, transport: AsyncApplicationTransport, command_attempts: AttemptBudget = AttemptBudget(3), *, read_after_commit: int | None = None, track_causal_writes: bool = True) -> None:
         self._transport = transport
         self._command_attempts = command_attempts
+        self._read_after_commit = read_after_commit
+        self._track_causal_writes = track_causal_writes
+
+    @classmethod
+    def from_transport(cls, transport: AsyncApplicationTransport, command_attempts: AttemptBudget = AttemptBudget(3)) -> AsyncRiffDBBetterAuthCoreClient:
+        return cls(transport, command_attempts)
+
+    def with_read_after_commit(self, commit_sequence: int | None) -> AsyncRiffDBBetterAuthCoreClient:
+        return AsyncRiffDBBetterAuthCoreClient(self._transport, self._command_attempts, read_after_commit=commit_sequence, track_causal_writes=self._track_causal_writes)
+
+    def causal_session(self, initial_commit_sequence: int | None = None) -> AsyncRiffDBBetterAuthCoreClient:
+        return AsyncRiffDBBetterAuthCoreClient(self._transport, self._command_attempts, read_after_commit=initial_commit_sequence if initial_commit_sequence is not None else self._read_after_commit, track_causal_writes=True)
+
+    @property
+    def last_commit_sequence(self) -> int | None:
+        return self._read_after_commit
 
     async def admin_users_all_email_asc(self, parameters: AdminUsersAllEmailAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersAllEmailAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2037,9 +2926,14 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_all_email_asc_after_commit(self, parameters: AdminUsersAllEmailAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersAllEmailAscResult]:
+        return await self.admin_users_all_email_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def admin_users_contains_asc(self, parameters: AdminUsersContainsAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2051,9 +2945,14 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_contains_asc_after_commit(self, parameters: AdminUsersContainsAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsAscResult]:
+        return await self.admin_users_contains_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def admin_users_contains_desc(self, parameters: AdminUsersContainsDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsDescResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2065,9 +2964,14 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_contains_desc_after_commit(self, parameters: AdminUsersContainsDescParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersContainsDescResult]:
+        return await self.admin_users_contains_desc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def admin_users_email_contains_created_desc(self, parameters: AdminUsersEmailContainsCreatedDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsCreatedDescResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2079,9 +2983,14 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_email_contains_created_desc_after_commit(self, parameters: AdminUsersEmailContainsCreatedDescParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsCreatedDescResult]:
+        return await self.admin_users_email_contains_created_desc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def admin_users_email_contains_image_asc(self, parameters: AdminUsersEmailContainsImageAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsImageAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2093,9 +3002,14 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_email_contains_image_asc_after_commit(self, parameters: AdminUsersEmailContainsImageAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEmailContainsImageAscResult]:
+        return await self.admin_users_email_contains_image_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def admin_users_ends_with_asc(self, parameters: AdminUsersEndsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2107,9 +3021,14 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_ends_with_asc_after_commit(self, parameters: AdminUsersEndsWithAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithAscResult]:
+        return await self.admin_users_ends_with_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def admin_users_ends_with_desc(self, parameters: AdminUsersEndsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithDescResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2121,9 +3040,14 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_ends_with_desc_after_commit(self, parameters: AdminUsersEndsWithDescParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersEndsWithDescResult]:
+        return await self.admin_users_ends_with_desc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def admin_users_starts_with_asc(self, parameters: AdminUsersStartsWithAscParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithAscResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2135,9 +3059,14 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_starts_with_asc_after_commit(self, parameters: AdminUsersStartsWithAscParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithAscResult]:
+        return await self.admin_users_starts_with_asc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def admin_users_starts_with_desc(self, parameters: AdminUsersStartsWithDescParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithDescResult]:
         if parameters.limit is not None and (isinstance(parameters.limit, bool) or not isinstance(parameters.limit, int) or parameters.limit < 1 or parameters.limit > 100):
             raise ValueError("limit must be an integer from 1 through 100")
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2149,7 +3078,12 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def admin_users_starts_with_desc_after_commit(self, parameters: AdminUsersStartsWithDescParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[AdminUsersStartsWithDescResult]:
+        return await self.admin_users_starts_with_desc(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_account_by_id(self, parameters: FindAccountByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByIdResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2161,7 +3095,12 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_account_by_id_after_commit(self, parameters: FindAccountByIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByIdResult]:
+        return await self.find_account_by_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_account_by_provider(self, parameters: FindAccountByProviderParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByProviderResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2173,6 +3112,9 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_account_by_provider_after_commit(self, parameters: FindAccountByProviderParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountByProviderResult]:
+        return await self.find_account_by_provider(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_accounts_by_user_id(self, parameters: FindAccountsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserIdResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -2181,6 +3123,8 @@ class AsyncRiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2192,6 +3136,25 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_accounts_by_user_id_after_commit(self, parameters: FindAccountsByUserIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserIdResult]:
+        return await self.find_accounts_by_user_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    async def find_accounts_by_user_id_pages(self, parameters: FindAccountsByUserIdParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindAccountsByUserIdResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindAccountsByUserIdResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindAccountsByUserIdParams(organization_id=parameters.organization_id, user_id=parameters.user_id, after=None)
+            page = await self.find_accounts_by_user_id(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     async def find_accounts_by_user_provider(self, parameters: FindAccountsByUserProviderParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserProviderResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -2200,6 +3163,8 @@ class AsyncRiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2211,6 +3176,25 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_accounts_by_user_provider_after_commit(self, parameters: FindAccountsByUserProviderParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindAccountsByUserProviderResult]:
+        return await self.find_accounts_by_user_provider(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    async def find_accounts_by_user_provider_pages(self, parameters: FindAccountsByUserProviderParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindAccountsByUserProviderResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindAccountsByUserProviderResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindAccountsByUserProviderParams(organization_id=parameters.organization_id, user_id=parameters.user_id, provider_id=parameters.provider_id, after=None)
+            page = await self.find_accounts_by_user_provider(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     async def find_active_sessions_by_user_id(self, parameters: FindActiveSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindActiveSessionsByUserIdResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -2219,6 +3203,8 @@ class AsyncRiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2230,6 +3216,25 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_active_sessions_by_user_id_after_commit(self, parameters: FindActiveSessionsByUserIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindActiveSessionsByUserIdResult]:
+        return await self.find_active_sessions_by_user_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    async def find_active_sessions_by_user_id_pages(self, parameters: FindActiveSessionsByUserIdParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindActiveSessionsByUserIdResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindActiveSessionsByUserIdResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindActiveSessionsByUserIdParams(organization_id=parameters.organization_id, user_id=parameters.user_id, expires_after=parameters.expires_after, after=None)
+            page = await self.find_active_sessions_by_user_id(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     async def find_expired_verification_ids(self, parameters: FindExpiredVerificationIdsParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindExpiredVerificationIdsResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -2238,6 +3243,8 @@ class AsyncRiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2249,7 +3256,28 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_expired_verification_ids_after_commit(self, parameters: FindExpiredVerificationIdsParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindExpiredVerificationIdsResult]:
+        return await self.find_expired_verification_ids(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    async def find_expired_verification_ids_pages(self, parameters: FindExpiredVerificationIdsParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindExpiredVerificationIdsResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindExpiredVerificationIdsResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindExpiredVerificationIdsParams(organization_id=parameters.organization_id, expires_before=parameters.expires_before, after=None)
+            page = await self.find_expired_verification_ids(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     async def find_latest_verification(self, parameters: FindLatestVerificationParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindLatestVerificationResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2261,7 +3289,12 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_latest_verification_after_commit(self, parameters: FindLatestVerificationParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindLatestVerificationResult]:
+        return await self.find_latest_verification(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_session_by_id(self, parameters: FindSessionByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionByIdResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2273,7 +3306,12 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_session_by_id_after_commit(self, parameters: FindSessionByIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionByIdResult]:
+        return await self.find_session_by_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_session_by_token(self, parameters: FindSessionByTokenParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionByTokenResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2285,7 +3323,12 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_session_by_token_after_commit(self, parameters: FindSessionByTokenParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionByTokenResult]:
+        return await self.find_session_by_token(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_sessions_by_token_set(self, parameters: FindSessionsByTokenSetParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2297,6 +3340,9 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_sessions_by_token_set_after_commit(self, parameters: FindSessionsByTokenSetParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetResult]:
+        return await self.find_sessions_by_token_set(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_sessions_by_user_id(self, parameters: FindSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByUserIdResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -2305,6 +3351,8 @@ class AsyncRiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2316,19 +3364,46 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_sessions_by_user_id_after_commit(self, parameters: FindSessionsByUserIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByUserIdResult]:
+        return await self.find_sessions_by_user_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    async def find_sessions_by_user_id_pages(self, parameters: FindSessionsByUserIdParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindSessionsByUserIdResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindSessionsByUserIdResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindSessionsByUserIdParams(organization_id=parameters.organization_id, user_id=parameters.user_id, after=None)
+            page = await self.find_sessions_by_user_id(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     async def find_user_by_email(self, parameters: FindUserByEmailParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindUserByEmailResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
             query_name="FindUserByEmail", plan_hash=FIND_USER_BY_EMAIL_QUERY_PLAN_HASH,
             parameters=encode_record(parameters), options=options,
+            accept_compact_result=True,
         )
         outcomes = {
             "Found": FindUserByEmailFound,
         }
-        return raw._map_value(lambda value: decode_variant(outcomes, value))
+        return raw._map_value(lambda value: _decode_find_user_by_email_compact(value) if isinstance(value, dict) and "$riffdb_compact" in value else decode_variant(outcomes, value))
+
+    async def find_user_by_email_after_commit(self, parameters: FindUserByEmailParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindUserByEmailResult]:
+        return await self.find_user_by_email(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
 
     async def find_user_by_id(self, parameters: FindUserByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindUserByIdResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2341,7 +3416,12 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_user_by_id_after_commit(self, parameters: FindUserByIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindUserByIdResult]:
+        return await self.find_user_by_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_verification_by_id(self, parameters: FindVerificationByIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationByIdResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2354,6 +3434,9 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_verification_by_id_after_commit(self, parameters: FindVerificationByIdParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationByIdResult]:
+        return await self.find_verification_by_id(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_verifications_by_identifier(self, parameters: FindVerificationsByIdentifierParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationsByIdentifierResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -2362,6 +3445,8 @@ class AsyncRiffDBBetterAuthCoreClient:
                 raise ValueError("generated cursor conflicts with query options")
             options = QueryOptions(cursor=generated_cursor, read_after_commit=options.read_after_commit, consistency=options.consistency)
         encoded_parameters.pop("after", None)
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
         raw = await self._transport._execute_named_query(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
             contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
@@ -2373,6 +3458,25 @@ class AsyncRiffDBBetterAuthCoreClient:
         }
         return raw._map_value(lambda value: decode_variant(outcomes, value))
 
+    async def find_verifications_by_identifier_after_commit(self, parameters: FindVerificationsByIdentifierParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindVerificationsByIdentifierResult]:
+        return await self.find_verifications_by_identifier(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    async def find_verifications_by_identifier_pages(self, parameters: FindVerificationsByIdentifierParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> list[TypedQueryResult[FindVerificationsByIdentifierResult]]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if parameters.after is not None and options.cursor is not None:
+            raise ValueError("generated cursor conflicts with query options")
+        cursor = options.cursor if options.cursor is not None else parameters.after
+        pages: list[TypedQueryResult[FindVerificationsByIdentifierResult]] = []
+        for _ in range(max_pages):
+            page_parameters = FindVerificationsByIdentifierParams(organization_id=parameters.organization_id, identifier=parameters.identifier, after=None)
+            page = await self.find_verifications_by_identifier(page_parameters, QueryOptions(cursor=cursor, read_after_commit=options.read_after_commit, consistency=options.consistency))
+            pages.append(page)
+            if not page.next_cursor:
+                break
+            cursor = page.next_cursor
+        return pages
+
     async def consume_verification(self, input: ConsumeVerificationInput) -> TypedCommandResult[ConsumeVerificationOutcome]:
         raw = await self._transport._execute_command(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2383,7 +3487,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "VerificationConsumed": ConsumeVerificationVerificationConsumed,
             "VerificationConsumeMissing": ConsumeVerificationVerificationConsumeMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[ConsumeVerificationOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def consume_verification_batch(
         self, inputs: Sequence[ConsumeVerificationInput], options: CommandBatchOptions,
@@ -2403,7 +3510,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "VerificationSetConsumed": ConsumeVerificationSetVerificationSetConsumed,
             "VerificationConsumeMissing": ConsumeVerificationSetVerificationConsumeMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[ConsumeVerificationSetOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def consume_verification_set_batch(
         self, inputs: Sequence[ConsumeVerificationSetInput], options: CommandBatchOptions,
@@ -2425,7 +3535,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "AccountUserMissing": CreateAccountAccountUserMissing,
             "AccountAlreadyExists": CreateAccountAccountAlreadyExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateAccountOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def create_account_batch(
         self, inputs: Sequence[CreateAccountInput], options: CommandBatchOptions,
@@ -2444,7 +3557,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "OAuthAccountExists": CreateOAuthUserGraphOAuthAccountExists,
             "OAuthUserGraphCreated": CreateOAuthUserGraphOAuthUserGraphCreated,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateOAuthUserGraphOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def create_oauth_user_graph_batch(
         self, inputs: Sequence[CreateOAuthUserGraphInput], options: CommandBatchOptions,
@@ -2463,7 +3579,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "SessionUserMissing": CreateSessionSessionUserMissing,
             "SessionAlreadyExists": CreateSessionSessionAlreadyExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateSessionOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def create_session_batch(
         self, inputs: Sequence[CreateSessionInput], options: CommandBatchOptions,
@@ -2483,7 +3602,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "SignupAccountExists": CreateSignupGraphSignupAccountExists,
             "SignupSessionExists": CreateSignupGraphSignupSessionExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateSignupGraphOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def create_signup_graph_batch(
         self, inputs: Sequence[CreateSignupGraphInput], options: CommandBatchOptions,
@@ -2501,7 +3623,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "UserCreated": CreateUserUserCreated,
             "UserAlreadyExists": CreateUserUserAlreadyExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateUserOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def create_user_batch(
         self, inputs: Sequence[CreateUserInput], options: CommandBatchOptions,
@@ -2519,7 +3644,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "VerificationCreated": CreateVerificationVerificationCreated,
             "VerificationAlreadyExists": CreateVerificationVerificationAlreadyExists,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[CreateVerificationOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def create_verification_batch(
         self, inputs: Sequence[CreateVerificationInput], options: CommandBatchOptions,
@@ -2539,7 +3667,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "AccountDeleted": DeleteAccountAccountDeleted,
             "AccountMissing": DeleteAccountAccountMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[DeleteAccountOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def delete_account_batch(
         self, inputs: Sequence[DeleteAccountInput], options: CommandBatchOptions,
@@ -2562,7 +3693,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "SessionDeleted": DeleteSessionSessionDeleted,
             "SessionMissing": DeleteSessionSessionMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[DeleteSessionOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def delete_session_batch(
         self, inputs: Sequence[DeleteSessionInput], options: CommandBatchOptions,
@@ -2586,7 +3720,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "DeleteUserMissing": DeleteUserDeleteUserMissing,
             "DeleteUserCascadeLimitExceeded": DeleteUserDeleteUserCascadeLimitExceeded,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[DeleteUserOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def delete_user_batch(
         self, inputs: Sequence[DeleteUserInput], options: CommandBatchOptions,
@@ -2609,7 +3746,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "VerificationDeleted": DeleteVerificationVerificationDeleted,
             "VerificationMissing": DeleteVerificationVerificationMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[DeleteVerificationOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def delete_verification_batch(
         self, inputs: Sequence[DeleteVerificationInput], options: CommandBatchOptions,
@@ -2631,7 +3771,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "AccountUpdateStale": UpdateAccountAccountUpdateStale,
             "AccountUpdateMissing": UpdateAccountAccountUpdateMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateAccountOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def update_account_batch(
         self, inputs: Sequence[UpdateAccountInput], options: CommandBatchOptions,
@@ -2653,7 +3796,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "AccountPasswordsUpdated": UpdateAccountPasswordsAccountPasswordsUpdated,
             "PasswordProviderMismatch": UpdateAccountPasswordsPasswordProviderMismatch,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateAccountPasswordsOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def update_account_passwords_batch(
         self, inputs: Sequence[UpdateAccountPasswordsInput], options: CommandBatchOptions,
@@ -2675,7 +3821,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "SessionUpdateStale": UpdateSessionSessionUpdateStale,
             "SessionUpdateMissing": UpdateSessionSessionUpdateMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateSessionOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def update_session_batch(
         self, inputs: Sequence[UpdateSessionInput], options: CommandBatchOptions,
@@ -2694,7 +3843,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "UserUpdateStale": UpdateUserUserUpdateStale,
             "UserUpdateMissing": UpdateUserUserUpdateMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateUserOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def update_user_batch(
         self, inputs: Sequence[UpdateUserInput], options: CommandBatchOptions,
@@ -2713,7 +3865,10 @@ class AsyncRiffDBBetterAuthCoreClient:
             "VerificationUpdateStale": UpdateVerificationVerificationUpdateStale,
             "VerificationUpdateMissing": UpdateVerificationVerificationUpdateMissing,
         }
-        return raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        result: TypedCommandResult[UpdateVerificationOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
 
     async def update_verification_batch(
         self, inputs: Sequence[UpdateVerificationInput], options: CommandBatchOptions,
