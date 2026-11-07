@@ -2,7 +2,7 @@
 
 An external Better Auth database adapter for RiffDB.
 
-Status: pre-alpha, unpublished. The core runtime profile is implemented and
+Status: v0.2.0. The core runtime profile is implemented and
 passes Better Auth's pinned authentication-flow suite plus a real RiffDB
 loopback suite. Profile planning is implemented for custom fields and plugins,
 and a reviewed plan now materializes into a RiffDB contract, named queries, and
@@ -149,20 +149,12 @@ npm run profiles:check
 
 ## Local development
 
-Start the four RiffDB development registries from the RiffDB repository using
-one immutable driver publication. This repository's `.npmrc` scopes only
-`@riffdb/*` packages to loopback Verdaccio; Better Auth and ordinary tooling
-still resolve from npm.
-
 ```bash
 npm install
 npm run check
 ```
 
-The lock is pinned to `@riffdb/client@0.1.0-dev.16` and
-`@riffdb/cli@0.1.0-dev.16`. Driver changes require a new immutable local build
-number and deliberate lock update. Nothing in this repository is published as
-part of the current development workflow.
+The lock is pinned to `@riffdb/client@0.2.0` and `@riffdb/cli@0.2.0`.
 
 `npm run check` performs strict type checking, semantic and upstream tests,
 profile-artifact freshness, a production build, and a package dry run.
