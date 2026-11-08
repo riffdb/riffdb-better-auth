@@ -55,6 +55,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riffdb/riffdb-better-auth.git"
+  },
   "license": "MIT OR Apache-2.0",
   "sideEffects": false
 }

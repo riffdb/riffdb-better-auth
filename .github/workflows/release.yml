@@ -131,7 +131,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          tarball="release-out/riffdb-better-auth-${{ needs.verify-and-pack.outputs.version }}.tgz"
+          tarball="./release-out/riffdb-better-auth-${{ needs.verify-and-pack.outputs.version }}.tgz"
           if [[ -n "${NPM_TOKEN:-}" ]]; then
             npmrc="$RUNNER_TEMP/.npmrc"
             printf '//registry.npmjs.org/:_authToken=%s\n' "$NPM_TOKEN" >"$npmrc"
