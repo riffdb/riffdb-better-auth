@@ -1,0 +1,3 @@
+[project]
+schema = "riffdb.application.json"
+generators = ["typescript"]

@@ -1,0 +1,8 @@
+query ProfileUsersByIdSet($organization_id: User.organization_id, $ids: Set<User.user_id>) {
+    many users from User
+        where organization_id == $organization_id && user_id in $ids
+        order by user_id asc
+        take 100
+    return Found { users: users {  user_id name email email_verified image created_at updated_at revision  date_field locale two_factor_enabled  } }
+    outcomes Found
+}

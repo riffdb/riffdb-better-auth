@@ -5,5 +5,6 @@ export default defineConfig({
     coverage: { enabled: false },
     include: ["test/**/*.test.ts"],
     testTimeout: 5_000,
+    server: { deps: { inline: [/better-auth/] } },
   },
 });

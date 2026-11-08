@@ -1,0 +1,33 @@
+name: Better Auth version review
+
+on:
+  schedule:
+    - cron: '17 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '26.7.0'
+      - name: Flag a new stable release for explicit compatibility review
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs';
+          import { execFileSync } from 'node:child_process';
+          const pinned = JSON.parse(readFileSync('package.json', 'utf8')).devDependencies['better-auth'];
+          const latest = execFileSync('npm', ['view', 'better-auth', 'dist-tags.latest'], { encoding: 'utf8', timeout: 30000 }).trim();
+          if (latest !== pinned) {
+            console.error(`Better Auth ${latest} needs review; tested version is ${pinned}. Update exact pins, audit call shapes and schema, regenerate profiles, and run npm run check plus npm run test:loopback.`);
+            process.exitCode = 1;
+          }
+          JS

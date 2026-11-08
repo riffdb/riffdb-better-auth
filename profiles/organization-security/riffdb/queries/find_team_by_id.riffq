@@ -11,7 +11,7 @@ query FindTeamById(
         take 1
 
     return Found {
-        teams: teams { organization_id team_id created_at name updated_at revision }
+        teams: teams { organization_id team_id created_at member_count reveals teams.member_count name updated_at revision }
     }
 
     outcomes Found

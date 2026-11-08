@@ -1,0 +1,17 @@
+query ProfileTwoFactorByUser(
+    $organization_id: TwoFactor.organization_id,
+    $user_id: TwoFactor.user_id,
+    $after: Cursor?,
+    $limit: Limit<100> = 100,
+    $offset: u64 = 0
+) {
+    many rows from TwoFactor
+        where organization_id == $organization_id && user_id == $user_id
+        order by two_factor_id asc
+        take $limit after $after
+
+    return Found {
+        rows: rows { two_factor_id backup_codes reveals rows.backup_codes failed_verification_count reveals rows.failed_verification_count locked_until reveals rows.locked_until secret reveals rows.secret user_id verified revision }
+    }
+    outcomes Found
+}

@@ -12,7 +12,7 @@ import {
 function coreInput(): RiffDBBetterAuthCoreProfileInput {
   return {
     schema: RIFFDB_BETTER_AUTH_PROFILE_SCHEMA,
-    betterAuthVersion: "1.6.29",
+    betterAuthVersion: "1.7.18",
     idGeneration: "uuid",
     plugins: [],
     models: BETTER_AUTH_CORE_MODELS.map((name) => ({
@@ -41,7 +41,7 @@ describe("defineRiffDBBetterAuthCoreProfile", () => {
   it("accepts and freezes the exact core-only profile", () => {
     const profile = defineRiffDBBetterAuthCoreProfile(coreInput());
 
-    expect(profile.betterAuthVersion).toBe("1.6.29");
+    expect(profile.betterAuthVersion).toBe("1.7.18");
     expect(Object.keys(profile.models)).toEqual(BETTER_AUTH_CORE_MODELS);
     expect(Object.isFrozen(profile)).toBe(true);
     expect(Object.isFrozen(profile.models.user.fields)).toBe(true);

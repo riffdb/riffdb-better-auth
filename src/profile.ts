@@ -1,4 +1,5 @@
-export const BETTER_AUTH_PINNED_VERSION = "1.6.29" as const;
+export const BETTER_AUTH_PINNED_VERSION = "1.7.18" as const;
+export const SUPPORTED_BETTER_AUTH_VERSIONS = Object.freeze([BETTER_AUTH_PINNED_VERSION] as const);
 export const RIFFDB_BETTER_AUTH_PROFILE_SCHEMA =
   "riffdb.better-auth-core-profile/v1" as const;
 

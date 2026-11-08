@@ -89,6 +89,8 @@ function reject(code: RiffDBBetterAuthMaterializationErrorCode, detail: string):
 }
 
 export interface RiffDBBetterAuthMaterializationOptions {
+  /** Explicit review: nullable unique fields must always be supplied non-null. */
+  readonly requireUniqueValues?: boolean;
   /** Compile-time maximum for every generated `string<N>` field. */
   readonly stringBound?: number;
   /** Compile-time maximum for every generated `bytes<N>` field. */
@@ -128,6 +130,7 @@ export interface RiffDBBetterAuthGeneratedQuery {
 export interface RiffDBBetterAuthMaterializationReport {
   readonly aggregates: readonly RiffDBBetterAuthAggregateReport[];
   readonly unenforcedReferences: readonly RiffDBBetterAuthUnenforcedReference[];
+  readonly requiredUniqueValues: readonly string[];
 }
 
 export interface RiffDBBetterAuthMaterialization {
@@ -166,6 +169,7 @@ function preferredKeyColumn(model: string): string {
 }
 
 interface ResolvedBounds {
+  readonly requireUniqueValues: boolean;
   readonly stringBound: number;
   readonly bytesBound: number;
   readonly listBound: number;
@@ -183,6 +187,7 @@ function resolveBounds(
     return value;
   };
   return Object.freeze({
+    requireUniqueValues: options?.requireUniqueValues === true,
     stringBound: bounded(options?.stringBound, DEFAULT_STRING_BOUND, 1_048_576),
     bytesBound: bounded(options?.bytesBound, DEFAULT_BYTES_BOUND, 1_048_576),
     listBound: bounded(options?.listBound, DEFAULT_LIST_BOUND, 1_024),
@@ -218,6 +223,10 @@ function fieldType(field: RiffDBBetterAuthProfileFieldPlan, bounds: ResolvedBoun
         return reject("unsupported_field_type", `${field.name}: ${String(field.type)}`);
     }
   })();
+  if (field.unique && !field.required) {
+    if (!bounds.requireUniqueValues) reject("unsupported_field_type", `nullable unique ${field.name} requires an explicit non-null storage review`);
+    return base;
+  }
   return field.required ? base : `optional<${base}>`;
 }
 
@@ -742,6 +751,8 @@ export function materializeRiffDBBetterAuthProfile(
         ),
       ),
       unenforcedReferences: Object.freeze(unenforced),
+      requiredUniqueValues: Object.freeze(plan.models.flatMap((model) => model.fields
+        .filter((field) => field.unique && !field.required).map((field) => `${model.name}.${field.name}`))),
     }),
   });
 }

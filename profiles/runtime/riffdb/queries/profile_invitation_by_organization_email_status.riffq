@@ -1,0 +1,19 @@
+query ProfileInvitationByOrganizationEmailStatus(
+    $organization_id: Invitation.organization_id,
+    $org_id: Invitation.org_id,
+    $email: Invitation.email,
+    $status: Invitation.status,
+    $after: Cursor?,
+    $limit: Limit<100> = 100,
+    $offset: u64 = 0
+) {
+    many rows from Invitation
+        where organization_id == $organization_id && org_id == $org_id && email == $email && status == $status
+        order by invitation_id asc
+        take $limit after $after
+
+    return Found {
+        rows: rows { invitation_id created_at email expires_at inviter_id org_id role status revision }
+    }
+    outcomes Found
+}

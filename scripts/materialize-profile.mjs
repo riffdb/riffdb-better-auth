@@ -17,7 +17,9 @@ const planUrl = new URL("../profiles/organization-security.profile.json", import
 const outputUrl = new URL("../profiles/organization-security/", import.meta.url);
 
 const plan = JSON.parse(await readFile(planUrl, "utf8"));
-const materialization = materializeRiffDBBetterAuthProfile(plan);
+// Better Auth 1.7 writes a membership key on every new team membership. This
+// planning fixture requires that value; it does not admit legacy nullable rows.
+const materialization = materializeRiffDBBetterAuthProfile(plan, { requireUniqueValues: true });
 
 // The fixture ships its own project config so a reviewer can verify the claim
 // the generator makes about it: `riffdb application check` in this directory.

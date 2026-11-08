@@ -2,13 +2,16 @@
 
 An external Better Auth database adapter for RiffDB.
 
-Status: v0.2.0. The core runtime profile is implemented and
-passes Better Auth's pinned authentication-flow suite plus a real RiffDB
-loopback suite. Profile planning is implemented for custom fields and plugins,
-and a reviewed plan now materializes into a RiffDB contract, named queries, and
-application source that compile. Binding a materialized profile to a running
-adapter instance is not implemented: the adapter still dispatches only to the
-core profile's generated client.
+Status: core and compiled runtime profiles are implemented for Better Auth
+`1.7.18`. The default core profile, a custom-field profile, and an organization
+plus 2FA profile run through Better Auth's official authentication-flow suite
+against a real TLS loopback RiffDB service. The custom-field profile also runs
+the official additional-fields test.
+
+`nextCookies()` is supported with each profile. Organizations and 2FA require
+an explicitly selected, deployed compiled profile. Teams and dynamic access
+control remain unsupported. The organization profile also rejects user deletion;
+its stored member and invitation references remain enforced.
 
 ## Architecture boundary
 
@@ -18,19 +21,20 @@ reviewed compiled profile. It does not expose generic CRUD, accept arbitrary
 transaction callbacks, perform client-side authorization filtering, or
 silently fall back for unknown models, fields, joins, predicates, or plugins.
 
-The shipped runtime profile is deliberately exact:
+The default core runtime profile is deliberately exact:
 
-- Better Auth `1.6.29`;
+- Better Auth `1.7.18`;
 - the four default core models and their default field names;
 - UUID identifiers for every model;
-- no runtime plugins or additional fields; and
+- the reviewed `nextCookies()` integration, with no storage plugins or additional fields; and
 - the bundled `RiffDBBetterAuthCore` contract and `BetterAuthServer` role.
 
 Unsupported configuration fails before any RiffDB request. A custom or plugin
 profile requires its own generated contract, named operations, client facade,
-and conformance tests; `npm run profiles:materialize` generates the first two
-from a reviewed plan. Adapter construction also verifies that the resolved
-`better-auth` installation is exactly `1.6.29`; package-manager overrides do
+and conformance tests. `materializeRiffDBBetterAuthRuntimeProfile` emits the
+reviewable runtime sources and binding; RiffDB compiles and locks their client.
+Adapter construction also verifies that the resolved
+`better-auth` installation is exactly `1.7.18`; package-manager overrides do
 not bypass that runtime check. Secret-bearing Better Auth debug logging is
 rejected rather than forwarded to the factory logger.
 
@@ -60,7 +64,80 @@ The caller owns the RiffDB driver connection and application-defined
 organization ID. Better Auth continues to own users, sessions, passwords,
 sign-in, OAuth, and reset flows. The package contains the exact RiffDB
 application source, lock, contract bundle, and generated artifacts required to
-deploy the core profile.
+deploy the core profile. Better Auth development dependencies stay exactly
+pinned. Supported versions are explicit; a scheduled registry check flags new
+stable releases for schema, call-shape, and conformance review.
+
+For Next.js Server Actions, import `nextCookies` from `better-auth/next-js`
+and add `nextCookies()` as the last plugin in the Better Auth configuration.
+It can accompany the default core profile or the compiled profiles below.
+Cookie propagation, RSC refresh suppression, and Server Action refresh behavior
+are covered by integration tests using the official plugin and mocked Next.js
+request helpers.
+
+## Organization and 2FA runtime profile
+
+Deploy `profiles/runtime/riffdb.application.json` and its exact lock before
+connecting the driver. Select its binding explicitly:
+
+```ts
+import profile from "@riffdb/better-auth/profiles/organization-security";
+import { organization, twoFactor } from "better-auth/plugins";
+
+const auth = betterAuth({
+  database: riffdbAdapter({ driver, organizationId: tenantId, profile }),
+  advanced: { database: { generateId: "uuid" } },
+  emailAndPassword: { enabled: true },
+  user: {
+    additionalFields: {
+      locale: { type: "string", required: false },
+      dateField: { type: "date", required: false },
+    },
+  },
+  plugins: [
+    organization({ membershipLimit: 100, invitationLimit: 100 }),
+    twoFactor(),
+  ],
+});
+```
+
+These are example profile fields; `dateField` also serves the upstream
+conformance test. Generate a separate reviewed profile to use a different field
+inventory. The standalone custom-field example is available at
+`@riffdb/better-auth/profiles/custom-fields` and deploys from
+`profiles/custom-fields/` without storage plugins.
+
+The adapter's `organizationId` is the application's RiffDB tenant partition.
+The organization plugin's `organizationId` identifies an auth organization
+inside that partition. They are separate identifiers.
+
+The organization profile supports organization creation/update/listing, active
+organization sessions, membership listing/counts/roles/removal, invitations and
+guarded status transitions, and atomic organization/dependent deletion.
+Membership creation and session activation during invitation acceptance share
+one compiled command. Native capacity guards admit at most 100 live memberships
+and 100 retained invitations per organization; deleting an individual record
+releases its capacity. Lists are bounded at 100, membership offsets at 4096,
+and user hydration sets at 32. Member pages support the compiled default role
+order, role ascending/descending, and creation-time ascending/descending.
+Other member filters and sorts are rejected.
+
+2FA supports TOTP enrollment/verification, OTP challenges, backup codes,
+challenge consumption, and account lockout. Failure increments, expired-lock
+reset, backup-code replacement, and invitation status transitions use native
+compiled commands. Tests cover TOTP enrollment, backup-code and invitation
+races, challenge replay, lockout counters, capacity contention, and reset rollback.
+
+Teams, dynamic access control, organization mutation hooks, renamed storage,
+plugin-model custom fields, user deletion in organization profiles, and
+`revokeSessionsOnPasswordReset` are rejected. Password changes that request
+`revokeOtherSessions` also require a separately compiled transaction graph.
+Organization limits must be integers from 1 through 100. Custom runtime fields
+currently support scalar strings, booleans, safe integers, and dates on `user`;
+custom indexes, uniqueness,
+and references require a separately implemented profile. Credential password
+reset supports an existing credential account and one verification row per
+identifier. Additional transaction graphs fail closed.
 
 ## Implemented core surface
 
@@ -128,7 +205,7 @@ With that generation-only config, run the Better Auth CLI version matching the
 pinned runtime:
 
 ```bash
-npx auth@1.6.29 generate --config ./auth.profile.ts --yes
+npx auth@1.7.18 generate --config ./auth.profile.ts --yes
 ```
 
 The output records resolved storage names, field types, required/unique/index
@@ -147,10 +224,44 @@ npm run profiles:write
 npm run profiles:check
 ```
 
+## Materializing an executable profile
+
+Pass the reviewed plan to `materializeRiffDBBetterAuthRuntimeProfile(plan)`.
+Write the returned `files` under a new application directory, review the
+contract, queries, and `profile.ts`, then run `riffdb application lock --write`
+in that directory. Compile `profile.ts` and the generated TypeScript client
+with your application and pass its default export as `riffdbAdapter({ profile,
+driver, organizationId })`. A JSON plan alone cannot be passed to the adapter.
+Runtime construction compares the resolved schema and reviewed plugins with
+the bound plan before requests. Binding also checks compiler-owned command and
+result schemas, so a stale client cannot silently omit a new optional field.
+The generated client and driver enforce the exact compiled application and
+operation identities.
+
+The planning fixture also reports its explicit non-null requirement for the
+optional unique team membership key; it cannot accept legacy null-key rows.
+
+The executable generator accepts the core schema plus the reviewed organization
+and 2FA schemas. The broader `materializeRiffDBBetterAuthProfile` remains a
+planning tool: its teams example reports unenforced references and is not an
+executable runtime profile.
+
+Regenerate the executable examples with `npm run profiles:runtime`, review
+the source diff, and write each application's lock explicitly. `npm run
+profiles:check` verifies source freshness, compiler locks, and generated clients.
+
+A different profile is a different compiled application identity. There is no
+automatic switch or reinterpretation of existing core data. For existing
+installations, plan and review an explicit data migration, including identifier
+mapping, required/default fields, references, secrets, and capacity counts.
+Deploy the matching contract, operations, role, and client together. Never point
+a new binding at an old lock. Runtime profile examples are intended for fresh
+installations until an application-specific migration has been reviewed.
+
 ## Local development
 
 ```bash
-npm install
+npm ci --ignore-scripts
 npm run check
 ```
 
@@ -161,17 +272,36 @@ profile-artifact freshness, a production build, and a package dry run.
 
 ## Real loopback conformance
 
-Run the real service/driver flow with:
+Run the official suite against isolated TLS services and Rust driver hosts:
 
 ```bash
-riffdb dev --run
+npm run test:loopback
 ```
 
-The included runner exercises signup, sign-in, password reset and replay
-rejection, user/session/account/verification mutation paths, atomic OAuth
-creation, exact counts, bounded search/offset windows, nullable ordering,
-dependent cleanup, and read-after-commit fencing against the Rust service and
-driver host.
+This runs the core, custom-field, and organization/2FA profiles. It requires
+`riffdbd` and `riffdb-driverd` from the immutable RiffDB build in
+`.github/riffdb-revision` on PATH. `RIFFDB_CLI`, `RIFFDB_SERVER_BIN`, and
+`RIFFDB_DRIVERD` can select exact local binaries. The published RiffDB `0.2.0`
+release bundle includes the CLI and service, but omits the driver host. Build
+that host from a separate RiffDB checkout at the full revision recorded in
+`.github/riffdb-revision`:
+
+```bash
+# In that separate, pinned RiffDB checkout:
+RUSTC_WRAPPER= cargo build --locked --release -p riffdb-driver-host --bin riffdb-driverd
+
+# Back in this adapter checkout, with riffdbd on PATH:
+RIFFDB_DRIVERD=/path/to/riffdb/target/release/riffdb-driverd npm run test:loopback
+```
+
+Release CI verifies the bundle checksum and revision, then builds the driver
+from that same revision. Certificates, capabilities, sockets, and databases
+are disposable and removed at the end. The official
+harness's cleanup hook is scoped to that disposable service; it is never a
+public delete-all operation.
+
+The original `scripts/real-riffdb-runner.mjs` also remains available to an
+external harness supplying its ten exact driver-identity arguments.
 
 See [DESIGN.md](./DESIGN.md) for the method and safety inventory. The adapter
 follows Better Auth's
@@ -185,7 +315,9 @@ This adapter owns its RiffDB compatibility checks. Pull requests compile the
 application sources and verify existing locks and generated artifacts against
 the full commit in `.github/riffdb-revision`. Scheduled checks use RiffDB
 `main`; manual dispatch accepts a full commit or `main`. Failures are reported
-here and do not block RiffDB itself. Framework conformance remains separate.
+here and do not block RiffDB itself. The job also runs `npm run check` and
+`npm run test:loopback`, including the official Better Auth suite for every
+advertised runtime profile.
 
 To upgrade, update the pin, migrate sources as needed, review the result of
 `riffdb application lock --write`, and verify with `riffdb application check`.

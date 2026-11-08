@@ -22,7 +22,7 @@ jobs:
   verify-and-pack:
     name: Verify adapter and build release package
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     outputs:
       release_tag: ${{ steps.meta.outputs.release_tag }}
       version: ${{ steps.meta.outputs.version }}
@@ -60,18 +60,40 @@ jobs:
           [[ "$(tr -d '\n' < "$bundle_dir/REVISION")" == "$riffdb_rev" ]]
           "$bundle_dir/bin/riffdb" application check
           (cd profiles/organization-security && "$bundle_dir/bin/riffdb" application check)
+          (cd profiles/custom-fields && "$bundle_dir/bin/riffdb" application check)
+          (cd profiles/runtime && "$bundle_dir/bin/riffdb" application check)
 
           printf 'release_tag=%s\n' "$release_tag" >>"$GITHUB_OUTPUT"
           printf 'version=%s\n' "$version" >>"$GITHUB_OUTPUT"
           printf 'revision=%s\n' "$riffdb_rev" >>"$GITHUB_OUTPUT"
+          printf 'binary_dir=%s\n' "$bundle_dir/bin" >>"$GITHUB_OUTPUT"
+      - name: Check out exact driver-host sources
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: riffdb/riffdb
+          ref: ${{ steps.meta.outputs.revision }}
+          path: riffdb-driver-source
+          persist-credentials: false
+      - name: Build driver host omitted from the release bundle
+        working-directory: riffdb-driver-source
+        env:
+          RUSTC_WRAPPER: ''
+        run: |
+          rustup toolchain install 1.98.1 --profile minimal
+          cargo build --locked --release -p riffdb-driver-host --bin riffdb-driverd
       - name: Install Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '26.7.0'
       - name: Run adapter test suite and pack npm tarball
+        env:
+          RIFFDB_CLI: ${{ steps.meta.outputs.binary_dir }}/riffdb
+          RIFFDB_SERVER_BIN: ${{ steps.meta.outputs.binary_dir }}/riffdbd
+          RIFFDB_DRIVERD: ${{ github.workspace }}/riffdb-driver-source/target/release/riffdb-driverd
         run: |
           npm ci --ignore-scripts
           npm run check
+          npm run test:loopback
           mkdir -p "$RUNNER_TEMP/release-out"
           npm pack --pack-destination "$RUNNER_TEMP/release-out"
           (

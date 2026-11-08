@@ -19,30 +19,106 @@
       "name": "riffdb_better_auth_core",
       "version": 1,
       "queries": [
-        { "name": "AdminUsersAllEmailAsc", "source": "riffdb/queries/admin_users_all_email_asc.riffq" },
-        { "name": "AdminUsersContainsAsc", "source": "riffdb/queries/admin_users_contains_asc.riffq" },
-        { "name": "AdminUsersContainsDesc", "source": "riffdb/queries/admin_users_contains_desc.riffq" },
-        { "name": "AdminUsersEmailContainsCreatedDesc", "source": "riffdb/queries/admin_users_email_contains_created_desc.riffq" },
-        { "name": "AdminUsersEmailContainsImageAsc", "source": "riffdb/queries/admin_users_email_contains_image_asc.riffq" },
-        { "name": "AdminUsersStartsWithAsc", "source": "riffdb/queries/admin_users_starts_with_asc.riffq" },
-        { "name": "AdminUsersStartsWithDesc", "source": "riffdb/queries/admin_users_starts_with_desc.riffq" },
-        { "name": "AdminUsersEndsWithAsc", "source": "riffdb/queries/admin_users_ends_with_asc.riffq" },
-        { "name": "AdminUsersEndsWithDesc", "source": "riffdb/queries/admin_users_ends_with_desc.riffq" },
-        { "name": "FindUserByEmail", "source": "riffdb/queries/find_user_by_email.riffq" },
-        { "name": "FindUserById", "source": "riffdb/queries/find_user_by_id.riffq" },
-        { "name": "FindSessionByToken", "source": "riffdb/queries/find_session_by_token.riffq" },
-        { "name": "FindSessionById", "source": "riffdb/queries/find_session_by_id.riffq" },
-        { "name": "FindSessionsByUserId", "source": "riffdb/queries/find_sessions_by_user_id.riffq" },
-        { "name": "FindActiveSessionsByUserId", "source": "riffdb/queries/find_active_sessions_by_user_id.riffq" },
-        { "name": "FindSessionsByTokenSet", "source": "riffdb/queries/find_sessions_by_token_set.riffq" },
-        { "name": "FindAccountsByUserId", "source": "riffdb/queries/find_accounts_by_user_id.riffq" },
-        { "name": "FindAccountsByUserProvider", "source": "riffdb/queries/find_accounts_by_user_provider.riffq" },
-        { "name": "FindAccountById", "source": "riffdb/queries/find_account_by_id.riffq" },
-        { "name": "FindAccountByProvider", "source": "riffdb/queries/find_account_by_provider.riffq" },
-        { "name": "FindLatestVerification", "source": "riffdb/queries/find_latest_verification.riffq" },
-        { "name": "FindVerificationById", "source": "riffdb/queries/find_verification_by_id.riffq" },
-        { "name": "FindVerificationsByIdentifier", "source": "riffdb/queries/find_verifications_by_identifier.riffq" },
-        { "name": "FindExpiredVerificationIds", "source": "riffdb/queries/find_expired_verification_ids.riffq" }
+        {
+          "name": "AdminUsersAllEmailAsc",
+          "source": "riffdb/queries/admin_users_all_email_asc.riffq"
+        },
+        {
+          "name": "AdminUsersContainsAsc",
+          "source": "riffdb/queries/admin_users_contains_asc.riffq"
+        },
+        {
+          "name": "AdminUsersContainsDesc",
+          "source": "riffdb/queries/admin_users_contains_desc.riffq"
+        },
+        {
+          "name": "AdminUsersEmailContainsCreatedDesc",
+          "source": "riffdb/queries/admin_users_email_contains_created_desc.riffq"
+        },
+        {
+          "name": "AdminUsersEmailContainsImageAsc",
+          "source": "riffdb/queries/admin_users_email_contains_image_asc.riffq"
+        },
+        {
+          "name": "AdminUsersStartsWithAsc",
+          "source": "riffdb/queries/admin_users_starts_with_asc.riffq"
+        },
+        {
+          "name": "AdminUsersStartsWithDesc",
+          "source": "riffdb/queries/admin_users_starts_with_desc.riffq"
+        },
+        {
+          "name": "AdminUsersEndsWithAsc",
+          "source": "riffdb/queries/admin_users_ends_with_asc.riffq"
+        },
+        {
+          "name": "AdminUsersEndsWithDesc",
+          "source": "riffdb/queries/admin_users_ends_with_desc.riffq"
+        },
+        {
+          "name": "FindUserByEmail",
+          "source": "riffdb/queries/find_user_by_email.riffq"
+        },
+        {
+          "name": "FindUserById",
+          "source": "riffdb/queries/find_user_by_id.riffq"
+        },
+        {
+          "name": "FindSessionByToken",
+          "source": "riffdb/queries/find_session_by_token.riffq"
+        },
+        {
+          "name": "FindSessionById",
+          "source": "riffdb/queries/find_session_by_id.riffq"
+        },
+        {
+          "name": "FindSessionsByUserId",
+          "source": "riffdb/queries/find_sessions_by_user_id.riffq"
+        },
+        {
+          "name": "FindActiveSessionsByUserId",
+          "source": "riffdb/queries/find_active_sessions_by_user_id.riffq"
+        },
+        {
+          "name": "FindSessionsByTokenSet",
+          "source": "riffdb/queries/find_sessions_by_token_set.riffq"
+        },
+        {
+          "name": "FindAccountsByUserId",
+          "source": "riffdb/queries/find_accounts_by_user_id.riffq"
+        },
+        {
+          "name": "FindAccountsByUserProvider",
+          "source": "riffdb/queries/find_accounts_by_user_provider.riffq"
+        },
+        {
+          "name": "FindAccountById",
+          "source": "riffdb/queries/find_account_by_id.riffq"
+        },
+        {
+          "name": "FindAccountByProvider",
+          "source": "riffdb/queries/find_account_by_provider.riffq"
+        },
+        {
+          "name": "FindLatestVerification",
+          "source": "riffdb/queries/find_latest_verification.riffq"
+        },
+        {
+          "name": "FindVerificationById",
+          "source": "riffdb/queries/find_verification_by_id.riffq"
+        },
+        {
+          "name": "FindVerificationsByIdentifier",
+          "source": "riffdb/queries/find_verifications_by_identifier.riffq"
+        },
+        {
+          "name": "FindExpiredVerificationIds",
+          "source": "riffdb/queries/find_expired_verification_ids.riffq"
+        },
+        {
+          "name": "FindCredentialAccount",
+          "source": "riffdb/queries/find_credential_account.riffq"
+        }
       ]
     }
   ],
@@ -76,7 +152,8 @@
         "FindLatestVerification",
         "FindVerificationById",
         "FindVerificationsByIdentifier",
-        "FindExpiredVerificationIds"
+        "FindExpiredVerificationIds",
+        "FindCredentialAccount"
       ],
       "commands": [
         "CreateUser",
@@ -95,7 +172,10 @@
         "DeleteUser",
         "ConsumeVerificationSet",
         "ConsumeVerification",
-        "UpdateAccountPasswords"
+        "UpdateAccountPasswords",
+        "ConsumeVerificationSnapshot",
+        "ResetCredentialPassword",
+        "UpdateCredentialPassword"
       ],
       "event_streams": [],
       "watch_queries": [],

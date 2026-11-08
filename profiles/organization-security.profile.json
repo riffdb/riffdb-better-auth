@@ -1,6 +1,6 @@
 {
   "schema": "riffdb.better-auth-profile-plan/v1",
-  "betterAuthVersion": "1.6.29",
+  "betterAuthVersion": "1.7.18",
   "idGeneration": "uuid",
   "name": "BetterAuthOrganizationSecurity",
   "contract": {
@@ -580,6 +580,19 @@
           "hasOnUpdate": false
         },
         {
+          "name": "memberCount",
+          "storageName": "memberCount",
+          "type": "number",
+          "required": true,
+          "unique": false,
+          "indexed": false,
+          "secret": true,
+          "input": false,
+          "returned": false,
+          "hasDefault": true,
+          "hasOnUpdate": false
+        },
+        {
           "name": "name",
           "storageName": "name",
           "type": "string",
@@ -638,6 +651,19 @@
           "secret": false,
           "input": true,
           "returned": true,
+          "hasDefault": false,
+          "hasOnUpdate": false
+        },
+        {
+          "name": "membershipKey",
+          "storageName": "membershipKey",
+          "type": "string",
+          "required": false,
+          "unique": true,
+          "indexed": false,
+          "secret": true,
+          "input": false,
+          "returned": false,
           "hasDefault": false,
           "hasOnUpdate": false
         },

@@ -7,13 +7,20 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./profiles/custom-fields": {
+      "types": "./dist/profiles/custom-fields/profile.d.ts",
+      "import": "./dist/profiles/custom-fields/profile.js"
+    },
+    "./profiles/organization-security": {
+      "types": "./dist/profiles/runtime/profile.d.ts",
+      "import": "./dist/profiles/runtime/profile.js"
     }
   },
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "generated",
-    "profiles",
     "riffdb",
     "riffdb.application.json",
     "riffdb.application.lock.json",
@@ -21,34 +28,48 @@
     "README.md",
     "DESIGN.md",
     "LICENSE-APACHE",
-    "LICENSE-MIT"
+    "LICENSE-MIT",
+    "profiles/*.profile.json",
+    "profiles/*/riffdb/**",
+    "profiles/*/generated/**",
+    "profiles/*/src/generated/**",
+    "profiles/*/riffdb.application.json",
+    "profiles/*/riffdb.application.lock.json",
+    "profiles/*/riffdb.toml",
+    "profiles/*/profile.ts",
+    "profiles/*/materialization.json",
+    "src/generated/client.ts"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "check": "npm run typecheck && npm test && npm run profiles:check && npm pack --dry-run --cache ./node_modules/.cache/npm",
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.profiles.json",
+    "check": "npm run typecheck && npm test && npm run profiles:check && node scripts/check-package.mjs",
     "prepack": "npm run build",
     "start": "node scripts/real-riffdb-runner.mjs",
-    "profiles:check": "npm run build && node scripts/profile-example.mjs --check && node scripts/materialize-profile.mjs --check",
+    "profiles:check": "npm run build && node scripts/profile-example.mjs --check && node scripts/materialize-profile.mjs --check && node scripts/runtime-profiles.mjs --check && riffdb application check && riffdb application check profiles/custom-fields/riffdb.application.json && riffdb application check profiles/runtime/riffdb.application.json && riffdb application check profiles/organization-security/riffdb.application.json",
     "profiles:write": "npm run build && node scripts/profile-example.mjs --write",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "profiles:materialize": "npm run build && node scripts/materialize-profile.mjs --write"
+    "profiles:materialize": "npm run build && node scripts/materialize-profile.mjs --write",
+    "test:loopback": "npm run build && node scripts/loopback.mjs && node scripts/loopback.mjs profiles/custom-fields && node scripts/loopback.mjs profiles/runtime plugins",
+    "profiles:runtime": "npm run build && node scripts/runtime-profiles.mjs --write"
   },
   "engines": {
     "node": ">=22"
   },
   "peerDependencies": {
     "@riffdb/client": "0.2.0",
-    "better-auth": "1.6.29"
+    "better-auth": "1.7.18"
   },
   "dependencies": {
     "@riffdb/client": "0.2.0"
   },
   "devDependencies": {
-    "@better-auth/test-utils": "1.6.29",
+    "@better-auth/test-utils": "1.7.18",
+    "@better-auth/utils": "0.5.1",
     "@riffdb/cli": "0.2.0",
     "@types/node": "26.2.0",
-    "better-auth": "1.6.29",
+    "better-auth": "1.7.18",
+    "next": "16.4.5",
     "typescript": "7.0.2",
     "vitest": "4.1.10"
   },

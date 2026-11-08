@@ -1,0 +1,27 @@
+query ProfileOrganizationById(
+    $organization_id: Organization.organization_id,
+    $id: Organization.org_id,
+    $limit: Limit<100> = 100,
+    $offset: u64 = 0
+) {
+    one record from Organization
+        where organization_id == $organization_id && org_id == $id
+        else Missing
+
+    many members from Member
+        where organization_id == $organization_id && org_id == record.org_id
+        order by member_id asc
+        take 100
+
+    many invitations from Invitation
+        where organization_id == $organization_id && org_id == record.org_id
+        order by invitation_id asc
+        take 100
+
+    return Found {
+        record: record { org_id created_at logo metadata name slug revision }
+        members: members { member_id created_at org_id role user_id revision }
+        invitations: invitations { invitation_id created_at email expires_at inviter_id org_id role status revision }
+    }
+    outcomes Found | Missing
+}

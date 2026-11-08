@@ -486,4 +486,62 @@ contract RiffDBBetterAuthCore version 1 {
     }
     return AccountPasswordsUpdated {}
   }
+
+  command ConsumeVerificationSnapshot {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_id: uuid
+    input expected_revision: u64
+    idempotency_key request_id
+    delete Verification(organization_id, verification_id) as verification else VerificationConsumeMissing {}
+    require snapshot: verification.revision == expected_revision else VerificationConsumeStale {}
+    return VerificationConsumed {}
+  }
+
+  bulk command ResetCredentialPassword {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_ids: list<uuid, 1..1>
+    input verification_revision: u64
+    input user_id: uuid
+    input external_account_id: string<256>
+    input account_id: uuid
+    input account_revision: u64
+    input password: string<1024>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Account(organization_id, user_id, account_id) as account else PasswordAccountMissing {}
+    for verification_id in verification_ids {
+      delete Verification(organization_id, verification_id) as verification else VerificationConsumeMissing {}
+      require verification_snapshot: verification.revision == verification_revision else VerificationConsumeStale {}
+    }
+    require credential_provider: account.provider_id == "credential" else PasswordProviderMismatch {}
+    require credential_identity: account.account_id == external_account_id else PasswordProviderMismatch {}
+    require account_snapshot: account.revision == account_revision else PasswordAccountStale {}
+    set account.password = password checked_by account_snapshot
+    set account.updated_at = updated_at checked_by account_snapshot
+    set account.revision = account.revision + 1
+    return CredentialPasswordReset {}
+  }
+
+  command UpdateCredentialPassword {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input account_id: uuid
+    input external_account_id: string<256>
+    input expected_revision: u64
+    input password: string<1024>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Account(organization_id, user_id, account_id) as account else PasswordAccountMissing {}
+    require credential_provider: account.provider_id == "credential" else PasswordProviderMismatch {}
+    require credential_identity: account.account_id == external_account_id else PasswordProviderMismatch {}
+    require account_snapshot: account.revision == expected_revision else PasswordAccountStale {}
+    set account.password = password checked_by account_snapshot
+    set account.updated_at = updated_at checked_by account_snapshot
+    set account.revision = account.revision + 1
+    return CredentialPasswordUpdated {}
+  }
+
 }

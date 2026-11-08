@@ -22,8 +22,8 @@ def _compact_tag(value: object, tag: str, keys: frozenset[str]) -> dict[str, obj
 
 CONTRACT_LINEAGE: Final[str] = "RiffDBBetterAuthCore"
 CONTRACT_VERSION: Final[int] = 1
-CONTRACT_BUNDLE_HASH: Final[str] = "11c5a37724f40b92bf10b195e6a66ef30037f73f3df79a98e4c4ed1076883d2e"
-QUERY_MODULE_HASH: Final[str] = "18cfd99921406e15722f3ac45867d3fbe0cebd4f2ecdd86c0ba099547c58cd91"
+CONTRACT_BUNDLE_HASH: Final[str] = "74fd255eefcf04f0b054dbb6c4a0bed43a7312d82f7755687c9229ee3206ddfc"
+QUERY_MODULE_HASH: Final[str] = "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -89,7 +89,7 @@ class AccountPasswordUpdate:
     organization_id: UUID
     expected_revision: Annotated[int, "u64"]
 
-ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "ea5056df116418329d03bc536a195247148360378e11444c10e7ca37df54c547"
+ADMIN_USERS_ALL_EMAIL_ASC_QUERY_PLAN_HASH: Final[str] = "056edbaabe43e1dc95f1f6af9838747f54d927a90d5bc9f2be045ae266d107d3"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersAllEmailAscParams:
@@ -129,7 +129,7 @@ class AdminUsersAllEmailAscFound:
 
 AdminUsersAllEmailAscResult: TypeAlias = AdminUsersAllEmailAscFound
 
-ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "56132d4a48f43731e36b69e0fe922d67491bc0ad611375fbc3d372a840b739df"
+ADMIN_USERS_CONTAINS_ASC_QUERY_PLAN_HASH: Final[str] = "b64d213477dd2275d98422a6c3460b0cae932dd96255fe9d565005e8afa37fc4"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersContainsAscParams:
@@ -169,7 +169,7 @@ class AdminUsersContainsAscFound:
 
 AdminUsersContainsAscResult: TypeAlias = AdminUsersContainsAscFound
 
-ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "470b720e68aa2261d902378ebc7fb1ce5be51582761672da7ecb87bece977f0f"
+ADMIN_USERS_CONTAINS_DESC_QUERY_PLAN_HASH: Final[str] = "57aba8cf311c301e985adc324f97b4d963a38e6efa6058a82e248854d75f2f05"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersContainsDescParams:
@@ -209,7 +209,7 @@ class AdminUsersContainsDescFound:
 
 AdminUsersContainsDescResult: TypeAlias = AdminUsersContainsDescFound
 
-ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "51def4488ff2a35fee0c5d7f267daaca11e60a03521be0fdaf8923c5486c5485"
+ADMIN_USERS_EMAIL_CONTAINS_CREATED_DESC_QUERY_PLAN_HASH: Final[str] = "7aede9eda624f5b4eb4280ca7b8a1421466ce30091177c9abab4f125987eb4ff"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEmailContainsCreatedDescParams:
@@ -249,7 +249,7 @@ class AdminUsersEmailContainsCreatedDescFound:
 
 AdminUsersEmailContainsCreatedDescResult: TypeAlias = AdminUsersEmailContainsCreatedDescFound
 
-ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "fd5dc86099567113dcce8ef61c280b22f35a2c3b9e6fc592f0bcfaded4008f80"
+ADMIN_USERS_EMAIL_CONTAINS_IMAGE_ASC_QUERY_PLAN_HASH: Final[str] = "453cb6c81f506a1f0ac99bed3cc85da59176d2cb83597d5812d771683a60cb4c"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEmailContainsImageAscParams:
@@ -289,7 +289,7 @@ class AdminUsersEmailContainsImageAscFound:
 
 AdminUsersEmailContainsImageAscResult: TypeAlias = AdminUsersEmailContainsImageAscFound
 
-ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "a83229249df961abbc113e7b808af6beca7ca915835ddcd06cd5c28bb7d3c920"
+ADMIN_USERS_ENDS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "924c7acfdcf3f7970917ac611b6eafc9175ac69f735d9e1cc01414fcc6f0e696"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEndsWithAscParams:
@@ -329,7 +329,7 @@ class AdminUsersEndsWithAscFound:
 
 AdminUsersEndsWithAscResult: TypeAlias = AdminUsersEndsWithAscFound
 
-ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "ac6fdfacb6f36e2a68e36429171b5d8d502b2fd43f781d72541ece961f1da93c"
+ADMIN_USERS_ENDS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "cab8ad8456533e4ce97388948e4f703cac6f2eebb641b83a91c3b005ece7fffb"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersEndsWithDescParams:
@@ -369,7 +369,7 @@ class AdminUsersEndsWithDescFound:
 
 AdminUsersEndsWithDescResult: TypeAlias = AdminUsersEndsWithDescFound
 
-ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "e9594b9b9631b78e8cbd9a89c4a2f1b43cb40b62ef55bb18b704f790044b2332"
+ADMIN_USERS_STARTS_WITH_ASC_QUERY_PLAN_HASH: Final[str] = "add0aed3dbd0caea0de2857133a857d49eb7bfc0e031d117270cc873137da5ec"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersStartsWithAscParams:
@@ -409,7 +409,7 @@ class AdminUsersStartsWithAscFound:
 
 AdminUsersStartsWithAscResult: TypeAlias = AdminUsersStartsWithAscFound
 
-ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "1f52bcc4f1f3e778f33e3e47299009ce70d3f4c541d1bed35e6f953d0e79ffea"
+ADMIN_USERS_STARTS_WITH_DESC_QUERY_PLAN_HASH: Final[str] = "23c1561fb3956217e79d1b358be468e55c4021b887e927a4fb3c0484c92be872"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AdminUsersStartsWithDescParams:
@@ -449,7 +449,7 @@ class AdminUsersStartsWithDescFound:
 
 AdminUsersStartsWithDescResult: TypeAlias = AdminUsersStartsWithDescFound
 
-FIND_ACCOUNT_BY_ID_QUERY_PLAN_HASH: Final[str] = "51ece0c8e7396f3f9efea7595a4224f856ae7984ff9bf15bcf9049427ad1f110"
+FIND_ACCOUNT_BY_ID_QUERY_PLAN_HASH: Final[str] = "14a08df3dd8a74ea0a5622804bf0c2424086ee73eb10ce57d7df336a7d25f5ba"
 FIND_ACCOUNT_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountById", "Account", "access_token"),
     ("FindAccountById", "Account", "refresh_token"),
@@ -493,7 +493,7 @@ class FindAccountByIdFound:
 
 FindAccountByIdResult: TypeAlias = FindAccountByIdFound
 
-FIND_ACCOUNT_BY_PROVIDER_QUERY_PLAN_HASH: Final[str] = "b104b38050396d747e59735cea4b562c305dccb7614a973f5177501825c91089"
+FIND_ACCOUNT_BY_PROVIDER_QUERY_PLAN_HASH: Final[str] = "e6c4517a46d725780e79725ca3fdaba2208ef4b282d49f484121eee76c043831"
 FIND_ACCOUNT_BY_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountByProvider", "Account", "access_token"),
     ("FindAccountByProvider", "Account", "refresh_token"),
@@ -538,7 +538,7 @@ class FindAccountByProviderFound:
 
 FindAccountByProviderResult: TypeAlias = FindAccountByProviderFound
 
-FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "0e517c2b2a10d95c12812d6374107379c80ce4638b962fad6f9092cc6b8b6c2e"
+FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "ccdc524ca64ad667c209de25b4ce977f43b53ffdd8eb1b70fedf29fc99f27da6"
 FIND_ACCOUNTS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserId", "Account", "access_token"),
     ("FindAccountsByUserId", "Account", "refresh_token"),
@@ -583,7 +583,7 @@ class FindAccountsByUserIdFound:
 
 FindAccountsByUserIdResult: TypeAlias = FindAccountsByUserIdFound
 
-FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "44124fb19b8f7fe35bb15824b87a0ed593c86b5821e81ad7fae1ab8636725183"
+FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "21d13b3c30b4a4059f3c436e290d11c20f0f1d1154e05fb48ae3dd0da882526d"
 FIND_ACCOUNTS_BY_USER_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserProvider", "Account", "access_token"),
     ("FindAccountsByUserProvider", "Account", "refresh_token"),
@@ -629,7 +629,7 @@ class FindAccountsByUserProviderFound:
 
 FindAccountsByUserProviderResult: TypeAlias = FindAccountsByUserProviderFound
 
-FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "218dbdff73dce68ba48b7f8a179791e6b46139ee84da3edbd96438045f60f8dc"
+FIND_ACTIVE_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "de1e5232a64a32057699b5ac21f1b43e69d755a3c143595f906fe63e16147264"
 FIND_ACTIVE_SESSIONS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindActiveSessionsByUserId", "Session", "token"),
 )
@@ -667,7 +667,54 @@ class FindActiveSessionsByUserIdFound:
 
 FindActiveSessionsByUserIdResult: TypeAlias = FindActiveSessionsByUserIdFound
 
-FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH: Final[str] = "e24fe82a3a724a9d45044dc668d450e61b1177f5866423c07bd33100d49428c1"
+FIND_CREDENTIAL_ACCOUNT_QUERY_PLAN_HASH: Final[str] = "f968271d103a76cc6b2a5496f5cceffe4cff5aa39d2a370379b518d8e7d90771"
+FIND_CREDENTIAL_ACCOUNT_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
+    ("FindCredentialAccount", "Account", "access_token"),
+    ("FindCredentialAccount", "Account", "refresh_token"),
+    ("FindCredentialAccount", "Account", "id_token"),
+    ("FindCredentialAccount", "Account", "password"),
+)
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindCredentialAccountParams:
+    organization_id: UUID
+    user_id: UUID
+    account_id: str
+    provider_id: str
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindCredentialAccountFoundAccounts:
+    organization_id: UUID = field(repr=False)
+    user_id: UUID = field(repr=False)
+    id: UUID = field(repr=False)
+    account_id: str = field(repr=False)
+    provider_id: str = field(repr=False)
+    access_token: str | None = field(repr=False)
+    refresh_token: str | None = field(repr=False)
+    id_token: str | None = field(repr=False)
+    password: str | None = field(repr=False)
+    access_token_expires_at: Timestamp | None = field(repr=False)
+    refresh_token_expires_at: Timestamp | None = field(repr=False)
+    scope: str | None = field(repr=False)
+    created_at: Timestamp = field(repr=False)
+    updated_at: Timestamp = field(repr=False)
+    revision: Annotated[int, "u64"] = field(repr=False)
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class FindCredentialAccountFound:
+    accounts: tuple[FindCredentialAccountFoundAccounts, ...] = field(repr=False)
+    outcome: Literal["Found"] = field(default="Found", init=False)
+
+    def is_found(self) -> bool:
+        return True
+
+    def unwrap_found(self) -> FindCredentialAccountFound:
+        return self
+
+FindCredentialAccountResult: TypeAlias = FindCredentialAccountFound
+
+FIND_EXPIRED_VERIFICATION_IDS_QUERY_PLAN_HASH: Final[str] = "6c799850ba3b2eb3222aac85a76f40492c46de76870075b029f3b4ac897ed8b9"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindExpiredVerificationIdsParams:
@@ -692,7 +739,7 @@ class FindExpiredVerificationIdsFound:
 
 FindExpiredVerificationIdsResult: TypeAlias = FindExpiredVerificationIdsFound
 
-FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "54336205fa315da75d390d062055723e36d07ef6596e19f756d319a8bc875023"
+FIND_LATEST_VERIFICATION_QUERY_PLAN_HASH: Final[str] = "b3832c0a8a316d3fcbc62b388fbe09ceb6624b55482195f7642553467cba6fcb"
 FIND_LATEST_VERIFICATION_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindLatestVerification", "Verification", "value"),
 )
@@ -726,7 +773,7 @@ class FindLatestVerificationFound:
 
 FindLatestVerificationResult: TypeAlias = FindLatestVerificationFound
 
-FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "653cfab6a75b5e2624620b0b5504b19d36f778c8775606fa0f3bb0c1d51e6bc0"
+FIND_SESSION_BY_ID_QUERY_PLAN_HASH: Final[str] = "c92eb2035c0e3ca7dedbaa42a4e2efe7bc4786a65213394da7f5d3beb579a2a1"
 FIND_SESSION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionById", "Session", "token"),
 )
@@ -762,7 +809,7 @@ class FindSessionByIdFound:
 
 FindSessionByIdResult: TypeAlias = FindSessionByIdFound
 
-FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "b5e701701b0ac99b4328200089b2507f31c0be55df78a275d83f7be99f8b7061"
+FIND_SESSION_BY_TOKEN_QUERY_PLAN_HASH: Final[str] = "a8a12334a3d34c30d54be828bdcc9b9b77223303c3f9681e4a602c92341876ec"
 FIND_SESSION_BY_TOKEN_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionByToken", "Session", "token"),
 )
@@ -798,7 +845,7 @@ class FindSessionByTokenFound:
 
 FindSessionByTokenResult: TypeAlias = FindSessionByTokenFound
 
-FIND_SESSIONS_BY_TOKEN_SET_QUERY_PLAN_HASH: Final[str] = "56c683d1815bf0c3e14c0585f314de378b43f9f4e401312c645efc70bd42969b"
+FIND_SESSIONS_BY_TOKEN_SET_QUERY_PLAN_HASH: Final[str] = "7e23187b537599c4c2361d34ea866b5b719f63feda0135587b5ec6afd5ce62f6"
 FIND_SESSIONS_BY_TOKEN_SET_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionsByTokenSet", "Session", "token"),
 )
@@ -834,7 +881,7 @@ class FindSessionsByTokenSetFound:
 
 FindSessionsByTokenSetResult: TypeAlias = FindSessionsByTokenSetFound
 
-FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "84de4cd840d30dc9cd575e1f1daea8de94f0efa63187b646e273ba633a5d693f"
+FIND_SESSIONS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "a3277546d8b0c0059b850c368ae4925000c255e69b7ff005f4b3d2ef61b504af"
 FIND_SESSIONS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionsByUserId", "Session", "token"),
 )
@@ -871,7 +918,7 @@ class FindSessionsByUserIdFound:
 
 FindSessionsByUserIdResult: TypeAlias = FindSessionsByUserIdFound
 
-FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "ef647a48d55b825dbe566c29b03dd3fb97444df49f991bd0441d60cbb4115078"
+FIND_USER_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "b167b8cb2fb5ce19685491b47da4e816665b840e0f0e463666f6302134472b9a"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByEmailParams:
@@ -925,7 +972,7 @@ def _decode_find_user_by_email_compact(value: object) -> FindUserByEmailResult:
         ))
     return FindUserByEmailFound(users=tuple(decoded))
 
-FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "45fe0e1bda91ecd52e3a5c64c656c168c1200b1869b0f68665fd9e578439b9fd"
+FIND_USER_BY_ID_QUERY_PLAN_HASH: Final[str] = "25d4a0a77d5df64ab6187528f9fac6b205a03c33e01c9ea6b573e8316b78b924"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class FindUserByIdParams:
@@ -972,7 +1019,7 @@ class FindUserByIdMissing:
 
 FindUserByIdResult: TypeAlias = FindUserByIdFound | FindUserByIdMissing
 
-FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "3755eceb567801c6795c13a9e8868955cfe1bf185d204196f4c614d29f78c6aa"
+FIND_VERIFICATION_BY_ID_QUERY_PLAN_HASH: Final[str] = "54f07c7eba7d51857dd6473e39304dc798bf7084ca946dfa7f0203633a5133ac"
 FIND_VERIFICATION_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationById", "Verification", "value"),
 )
@@ -1022,7 +1069,7 @@ class FindVerificationByIdMissing:
 
 FindVerificationByIdResult: TypeAlias = FindVerificationByIdFound | FindVerificationByIdMissing
 
-FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "d98f43e146032b3cd1d0dfb2eacd432795f1545fcfa00e0e45b0fbd891d8b3ed"
+FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "4c768ae1d966454e9b791cd57a6311476947b5c457020943a50bc3cfee90765b"
 FIND_VERIFICATIONS_BY_IDENTIFIER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationsByIdentifier", "Verification", "value"),
 )
@@ -1128,6 +1175,55 @@ class ConsumeVerificationSetVerificationConsumeMissing:
         return True
 
 ConsumeVerificationSetOutcome: TypeAlias = ConsumeVerificationSetVerificationSetConsumed | ConsumeVerificationSetVerificationConsumeMissing
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ConsumeVerificationSnapshotInput:
+    request_id: UUID
+    organization_id: UUID
+    verification_id: UUID
+    expected_revision: Annotated[int, "u64"]
+
+CONSUME_VERIFICATION_SNAPSHOT_PLAN_HASH: Final[str] = "1a80a36f34b4699c972fc1e6f48cad3f85da54e202831a6986aea084db09788b"
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ConsumeVerificationSnapshotVerificationConsumed:
+    outcome: Literal["VerificationConsumed"] = field(default="VerificationConsumed", init=False)
+
+    def is_verification_consumed(self) -> bool:
+        return True
+
+    def is_verification_consume_stale(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ConsumeVerificationSnapshotVerificationConsumeStale:
+    outcome: Literal["VerificationConsumeStale"] = field(default="VerificationConsumeStale", init=False)
+
+    def is_verification_consumed(self) -> bool:
+        return False
+
+    def is_verification_consume_stale(self) -> bool:
+        return True
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ConsumeVerificationSnapshotVerificationConsumeMissing:
+    outcome: Literal["VerificationConsumeMissing"] = field(default="VerificationConsumeMissing", init=False)
+
+    def is_verification_consumed(self) -> bool:
+        return False
+
+    def is_verification_consume_stale(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return True
+
+ConsumeVerificationSnapshotOutcome: TypeAlias = ConsumeVerificationSnapshotVerificationConsumed | ConsumeVerificationSnapshotVerificationConsumeStale | ConsumeVerificationSnapshotVerificationConsumeMissing
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class CreateAccountInput:
@@ -1609,6 +1705,154 @@ class DeleteVerificationVerificationMissing:
 DeleteVerificationOutcome: TypeAlias = DeleteVerificationVerificationDeleted | DeleteVerificationVerificationMissing
 
 @dataclass(frozen=True, slots=True, kw_only=True)
+class ResetCredentialPasswordInput:
+    user_id: UUID
+    password: str
+    account_id: UUID
+    request_id: UUID
+    updated_at: Timestamp
+    organization_id: UUID
+    account_revision: Annotated[int, "u64"]
+    verification_ids: tuple[UUID, ...]
+    external_account_id: str
+    verification_revision: Annotated[int, "u64"]
+
+RESET_CREDENTIAL_PASSWORD_PLAN_HASH: Final[str] = "ed87f267831fb0823b0e9bbf51d7b302a715a95c0cea69faf7922c0e4e7f375e"
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ResetCredentialPasswordPasswordAccountStale:
+    outcome: Literal["PasswordAccountStale"] = field(default="PasswordAccountStale", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return True
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_credential_password_reset(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
+    def is_verification_consume_stale(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ResetCredentialPasswordPasswordAccountMissing:
+    outcome: Literal["PasswordAccountMissing"] = field(default="PasswordAccountMissing", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return True
+
+    def is_credential_password_reset(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
+    def is_verification_consume_stale(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ResetCredentialPasswordCredentialPasswordReset:
+    outcome: Literal["CredentialPasswordReset"] = field(default="CredentialPasswordReset", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_credential_password_reset(self) -> bool:
+        return True
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
+    def is_verification_consume_stale(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ResetCredentialPasswordPasswordProviderMismatch:
+    outcome: Literal["PasswordProviderMismatch"] = field(default="PasswordProviderMismatch", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_credential_password_reset(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return True
+
+    def is_verification_consume_stale(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ResetCredentialPasswordVerificationConsumeStale:
+    outcome: Literal["VerificationConsumeStale"] = field(default="VerificationConsumeStale", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_credential_password_reset(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
+    def is_verification_consume_stale(self) -> bool:
+        return True
+
+    def is_verification_consume_missing(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class ResetCredentialPasswordVerificationConsumeMissing:
+    outcome: Literal["VerificationConsumeMissing"] = field(default="VerificationConsumeMissing", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_credential_password_reset(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
+    def is_verification_consume_stale(self) -> bool:
+        return False
+
+    def is_verification_consume_missing(self) -> bool:
+        return True
+
+ResetCredentialPasswordOutcome: TypeAlias = ResetCredentialPasswordPasswordAccountStale | ResetCredentialPasswordPasswordAccountMissing | ResetCredentialPasswordCredentialPasswordReset | ResetCredentialPasswordPasswordProviderMismatch | ResetCredentialPasswordVerificationConsumeStale | ResetCredentialPasswordVerificationConsumeMissing
+
+@dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateAccountInput:
     scope: str | None
     user_id: UUID
@@ -1741,6 +1985,84 @@ class UpdateAccountPasswordsPasswordProviderMismatch:
         return True
 
 UpdateAccountPasswordsOutcome: TypeAlias = UpdateAccountPasswordsPasswordAccountStale | UpdateAccountPasswordsPasswordAccountMissing | UpdateAccountPasswordsAccountPasswordsUpdated | UpdateAccountPasswordsPasswordProviderMismatch
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class UpdateCredentialPasswordInput:
+    user_id: UUID
+    password: str
+    account_id: UUID
+    request_id: UUID
+    updated_at: Timestamp
+    organization_id: UUID
+    expected_revision: Annotated[int, "u64"]
+    external_account_id: str
+
+UPDATE_CREDENTIAL_PASSWORD_PLAN_HASH: Final[str] = "08781a68739c705ab6ffe51a0de547605e1a7dd2fd2b8075445d40db923d1f15"
+@dataclass(frozen=True, slots=True, kw_only=True)
+class UpdateCredentialPasswordPasswordAccountStale:
+    outcome: Literal["PasswordAccountStale"] = field(default="PasswordAccountStale", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return True
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
+    def is_credential_password_updated(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class UpdateCredentialPasswordPasswordAccountMissing:
+    outcome: Literal["PasswordAccountMissing"] = field(default="PasswordAccountMissing", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return True
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
+    def is_credential_password_updated(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class UpdateCredentialPasswordPasswordProviderMismatch:
+    outcome: Literal["PasswordProviderMismatch"] = field(default="PasswordProviderMismatch", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return True
+
+    def is_credential_password_updated(self) -> bool:
+        return False
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class UpdateCredentialPasswordCredentialPasswordUpdated:
+    outcome: Literal["CredentialPasswordUpdated"] = field(default="CredentialPasswordUpdated", init=False)
+
+    def is_password_account_stale(self) -> bool:
+        return False
+
+    def is_password_account_missing(self) -> bool:
+        return False
+
+    def is_password_provider_mismatch(self) -> bool:
+        return False
+
+    def is_credential_password_updated(self) -> bool:
+        return True
+
+UpdateCredentialPasswordOutcome: TypeAlias = UpdateCredentialPasswordPasswordAccountStale | UpdateCredentialPasswordPasswordAccountMissing | UpdateCredentialPasswordPasswordProviderMismatch | UpdateCredentialPasswordCredentialPasswordUpdated
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class UpdateSessionInput:
@@ -2248,6 +2570,23 @@ class RiffDBBetterAuthCoreClient:
             cursor = page.next_cursor
         return pages
 
+    def find_credential_account(self, parameters: FindCredentialAccountParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindCredentialAccountResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
+        raw = self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="FindCredentialAccount", plan_hash=FIND_CREDENTIAL_ACCOUNT_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": FindCredentialAccountFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    def find_credential_account_after_commit(self, parameters: FindCredentialAccountParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindCredentialAccountResult]:
+        return self.find_credential_account(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     def find_expired_verification_ids(self, parameters: FindExpiredVerificationIdsParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindExpiredVerificationIdsResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -2537,6 +2876,28 @@ class RiffDBBetterAuthCoreClient:
                 raise ValueError("invalid bounded collection length for ConsumeVerificationSet.verification_ids")
         return self._transport._command_batch(inputs, options, self.consume_verification_set, progress)
 
+    def consume_verification_snapshot(self, input: ConsumeVerificationSnapshotInput) -> TypedCommandResult[ConsumeVerificationSnapshotOutcome]:
+        raw = self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="ConsumeVerificationSnapshot", plan_hash=CONSUME_VERIFICATION_SNAPSHOT_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "VerificationConsumed": ConsumeVerificationSnapshotVerificationConsumed,
+            "VerificationConsumeStale": ConsumeVerificationSnapshotVerificationConsumeStale,
+            "VerificationConsumeMissing": ConsumeVerificationSnapshotVerificationConsumeMissing,
+        }
+        result: TypedCommandResult[ConsumeVerificationSnapshotOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
+
+    def consume_verification_snapshot_batch(
+        self, inputs: Sequence[ConsumeVerificationSnapshotInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[ConsumeVerificationSnapshotOutcome]:
+        return self._transport._command_batch(inputs, options, self.consume_verification_snapshot, progress)
+
     def create_account(self, input: CreateAccountInput) -> TypedCommandResult[CreateAccountOutcome]:
         raw = self._transport._execute_command(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2773,6 +3134,36 @@ class RiffDBBetterAuthCoreClient:
                 raise ValueError("invalid bounded collection length for DeleteVerification.verification_ids")
         return self._transport._command_batch(inputs, options, self.delete_verification, progress)
 
+    def reset_credential_password(self, input: ResetCredentialPasswordInput) -> TypedCommandResult[ResetCredentialPasswordOutcome]:
+        if not 1 <= len(input.verification_ids) <= 1:
+            raise ValueError("invalid bounded collection length for ResetCredentialPassword.verification_ids")
+        raw = self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="ResetCredentialPassword", plan_hash=RESET_CREDENTIAL_PASSWORD_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "PasswordAccountStale": ResetCredentialPasswordPasswordAccountStale,
+            "PasswordAccountMissing": ResetCredentialPasswordPasswordAccountMissing,
+            "CredentialPasswordReset": ResetCredentialPasswordCredentialPasswordReset,
+            "PasswordProviderMismatch": ResetCredentialPasswordPasswordProviderMismatch,
+            "VerificationConsumeStale": ResetCredentialPasswordVerificationConsumeStale,
+            "VerificationConsumeMissing": ResetCredentialPasswordVerificationConsumeMissing,
+        }
+        result: TypedCommandResult[ResetCredentialPasswordOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
+
+    def reset_credential_password_batch(
+        self, inputs: Sequence[ResetCredentialPasswordInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[ResetCredentialPasswordOutcome]:
+        for input in inputs:
+            if not 1 <= len(input.verification_ids) <= 1:
+                raise ValueError("invalid bounded collection length for ResetCredentialPassword.verification_ids")
+        return self._transport._command_batch(inputs, options, self.reset_credential_password, progress)
+
     def update_account(self, input: UpdateAccountInput) -> TypedCommandResult[UpdateAccountOutcome]:
         raw = self._transport._execute_command(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -2822,6 +3213,29 @@ class RiffDBBetterAuthCoreClient:
             if not 1 <= len(input.updates) <= 8:
                 raise ValueError("invalid bounded collection length for UpdateAccountPasswords.updates")
         return self._transport._command_batch(inputs, options, self.update_account_passwords, progress)
+
+    def update_credential_password(self, input: UpdateCredentialPasswordInput) -> TypedCommandResult[UpdateCredentialPasswordOutcome]:
+        raw = self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="UpdateCredentialPassword", plan_hash=UPDATE_CREDENTIAL_PASSWORD_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "PasswordAccountStale": UpdateCredentialPasswordPasswordAccountStale,
+            "PasswordAccountMissing": UpdateCredentialPasswordPasswordAccountMissing,
+            "PasswordProviderMismatch": UpdateCredentialPasswordPasswordProviderMismatch,
+            "CredentialPasswordUpdated": UpdateCredentialPasswordCredentialPasswordUpdated,
+        }
+        result: TypedCommandResult[UpdateCredentialPasswordOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
+
+    def update_credential_password_batch(
+        self, inputs: Sequence[UpdateCredentialPasswordInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[UpdateCredentialPasswordOutcome]:
+        return self._transport._command_batch(inputs, options, self.update_credential_password, progress)
 
     def update_session(self, input: UpdateSessionInput) -> TypedCommandResult[UpdateSessionOutcome]:
         raw = self._transport._execute_command(
@@ -3235,6 +3649,23 @@ class AsyncRiffDBBetterAuthCoreClient:
             cursor = page.next_cursor
         return pages
 
+    async def find_credential_account(self, parameters: FindCredentialAccountParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindCredentialAccountResult]:
+        if options.read_after_commit is None and self._read_after_commit is not None:
+            options = QueryOptions(cursor=options.cursor, read_after_commit=self._read_after_commit, consistency=options.consistency)
+        raw = await self._transport._execute_named_query(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            contract_bundle_hash=CONTRACT_BUNDLE_HASH, module_hash=QUERY_MODULE_HASH,
+            query_name="FindCredentialAccount", plan_hash=FIND_CREDENTIAL_ACCOUNT_QUERY_PLAN_HASH,
+            parameters=encode_record(parameters), options=options,
+        )
+        outcomes = {
+            "Found": FindCredentialAccountFound,
+        }
+        return raw._map_value(lambda value: decode_variant(outcomes, value))
+
+    async def find_credential_account_after_commit(self, parameters: FindCredentialAccountParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindCredentialAccountResult]:
+        return await self.find_credential_account(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
     async def find_expired_verification_ids(self, parameters: FindExpiredVerificationIdsParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindExpiredVerificationIdsResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -3524,6 +3955,28 @@ class AsyncRiffDBBetterAuthCoreClient:
                 raise ValueError("invalid bounded collection length for ConsumeVerificationSet.verification_ids")
         return await self._transport._command_batch(inputs, options, self.consume_verification_set, progress)
 
+    async def consume_verification_snapshot(self, input: ConsumeVerificationSnapshotInput) -> TypedCommandResult[ConsumeVerificationSnapshotOutcome]:
+        raw = await self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="ConsumeVerificationSnapshot", plan_hash=CONSUME_VERIFICATION_SNAPSHOT_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "VerificationConsumed": ConsumeVerificationSnapshotVerificationConsumed,
+            "VerificationConsumeStale": ConsumeVerificationSnapshotVerificationConsumeStale,
+            "VerificationConsumeMissing": ConsumeVerificationSnapshotVerificationConsumeMissing,
+        }
+        result: TypedCommandResult[ConsumeVerificationSnapshotOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
+
+    async def consume_verification_snapshot_batch(
+        self, inputs: Sequence[ConsumeVerificationSnapshotInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[ConsumeVerificationSnapshotOutcome]:
+        return await self._transport._command_batch(inputs, options, self.consume_verification_snapshot, progress)
+
     async def create_account(self, input: CreateAccountInput) -> TypedCommandResult[CreateAccountOutcome]:
         raw = await self._transport._execute_command(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -3760,6 +4213,36 @@ class AsyncRiffDBBetterAuthCoreClient:
                 raise ValueError("invalid bounded collection length for DeleteVerification.verification_ids")
         return await self._transport._command_batch(inputs, options, self.delete_verification, progress)
 
+    async def reset_credential_password(self, input: ResetCredentialPasswordInput) -> TypedCommandResult[ResetCredentialPasswordOutcome]:
+        if not 1 <= len(input.verification_ids) <= 1:
+            raise ValueError("invalid bounded collection length for ResetCredentialPassword.verification_ids")
+        raw = await self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="ResetCredentialPassword", plan_hash=RESET_CREDENTIAL_PASSWORD_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "PasswordAccountStale": ResetCredentialPasswordPasswordAccountStale,
+            "PasswordAccountMissing": ResetCredentialPasswordPasswordAccountMissing,
+            "CredentialPasswordReset": ResetCredentialPasswordCredentialPasswordReset,
+            "PasswordProviderMismatch": ResetCredentialPasswordPasswordProviderMismatch,
+            "VerificationConsumeStale": ResetCredentialPasswordVerificationConsumeStale,
+            "VerificationConsumeMissing": ResetCredentialPasswordVerificationConsumeMissing,
+        }
+        result: TypedCommandResult[ResetCredentialPasswordOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
+
+    async def reset_credential_password_batch(
+        self, inputs: Sequence[ResetCredentialPasswordInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[ResetCredentialPasswordOutcome]:
+        for input in inputs:
+            if not 1 <= len(input.verification_ids) <= 1:
+                raise ValueError("invalid bounded collection length for ResetCredentialPassword.verification_ids")
+        return await self._transport._command_batch(inputs, options, self.reset_credential_password, progress)
+
     async def update_account(self, input: UpdateAccountInput) -> TypedCommandResult[UpdateAccountOutcome]:
         raw = await self._transport._execute_command(
             contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
@@ -3809,6 +4292,29 @@ class AsyncRiffDBBetterAuthCoreClient:
             if not 1 <= len(input.updates) <= 8:
                 raise ValueError("invalid bounded collection length for UpdateAccountPasswords.updates")
         return await self._transport._command_batch(inputs, options, self.update_account_passwords, progress)
+
+    async def update_credential_password(self, input: UpdateCredentialPasswordInput) -> TypedCommandResult[UpdateCredentialPasswordOutcome]:
+        raw = await self._transport._execute_command(
+            contract_lineage=CONTRACT_LINEAGE, contract_version=CONTRACT_VERSION,
+            command_name="UpdateCredentialPassword", plan_hash=UPDATE_CREDENTIAL_PASSWORD_PLAN_HASH,
+            input=encode_record(input), attempts=self._command_attempts,
+        )
+        outcomes = {
+            "PasswordAccountStale": UpdateCredentialPasswordPasswordAccountStale,
+            "PasswordAccountMissing": UpdateCredentialPasswordPasswordAccountMissing,
+            "PasswordProviderMismatch": UpdateCredentialPasswordPasswordProviderMismatch,
+            "CredentialPasswordUpdated": UpdateCredentialPasswordCredentialPasswordUpdated,
+        }
+        result: TypedCommandResult[UpdateCredentialPasswordOutcome] = raw._map_outcome(lambda value: decode_variant(outcomes, value))
+        if self._track_causal_writes and result.commit_sequence is not None and result.commit_sequence > 0:
+            self._read_after_commit = result.commit_sequence if self._read_after_commit is None or result.commit_sequence > self._read_after_commit else self._read_after_commit
+        return result
+
+    async def update_credential_password_batch(
+        self, inputs: Sequence[UpdateCredentialPasswordInput], options: CommandBatchOptions,
+        progress: Callable[[CommandBatchProgress], None] | None = None,
+    ) -> CommandBatchResult[UpdateCredentialPasswordOutcome]:
+        return await self._transport._command_batch(inputs, options, self.update_credential_password, progress)
 
     async def update_session(self, input: UpdateSessionInput) -> TypedCommandResult[UpdateSessionOutcome]:
         raw = await self._transport._execute_command(

@@ -27,6 +27,7 @@ jobs:
     env:
       CARGO_INCREMENTAL: '0'
       CARGO_TARGET_DIR: ${{ github.workspace }}/riffdb/target
+      RUSTC_WRAPPER: ''
     steps:
       - name: Check out adapter
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -61,12 +62,26 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
           key: cargo-compatibility-${{ runner.os }}-${{ hashFiles('riffdb/Cargo.lock') }}
-      - name: Build selected RiffDB CLI
+      - name: Build selected RiffDB CLI, service, and driver
         working-directory: riffdb
-        run: cargo build --locked --release -p riffdb-cli --bin riffdb
+        run: cargo build --locked --release -p riffdb-cli --bin riffdb -p riffdb-server --bin riffdbd -p riffdb-driver-host --bin riffdb-driverd
       - name: Check adapter application
         working-directory: adapter
         run: ../riffdb/target/release/riffdb application check
       - name: Check materialized organization profile
         working-directory: adapter/profiles/organization-security
         run: ../../../riffdb/target/release/riffdb application check
+      - name: Install Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '26.7.0'
+      - name: Check adapter and run official real-service conformance
+        working-directory: adapter
+        env:
+          RIFFDB_CLI: ${{ github.workspace }}/riffdb/target/release/riffdb
+          RIFFDB_SERVER_BIN: ${{ github.workspace }}/riffdb/target/release/riffdbd
+          RIFFDB_DRIVERD: ${{ github.workspace }}/riffdb/target/release/riffdb-driverd
+        run: |
+          npm ci --ignore-scripts
+          npm run check
+          npm run test:loopback

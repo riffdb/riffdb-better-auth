@@ -370,6 +370,7 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
         };
         break;
       }
+      case "FindCredentialAccount":
       case "FindAccountByProvider": {
         const accountId = stringField(parameters, "account_id");
         const providerId = stringField(parameters, "provider_id");
@@ -380,7 +381,8 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
               (row) =>
                 row.organization_id === organizationId &&
                 row.account_id === accountId &&
-                row.provider_id === providerId,
+                row.provider_id === providerId &&
+                (request.queryName !== "FindCredentialAccount" || row.user_id === parameters.user_id),
             )
             .map(({ organization_id: _organizationId, ...row }) => row),
         };
@@ -538,6 +540,45 @@ export class FakeRiffDBApplicationTransport implements ApplicationTransport {
       case "ConsumeVerification":
         outcome = this.consumeVerification(input);
         break;
+      case "ConsumeVerificationSnapshot": {
+        const row = this.verifications.find((row) => row.organization_id === input.organization_id &&
+          row.verification_id === input.verification_id);
+        outcome = { outcome: row === undefined ? "VerificationConsumeMissing" :
+          row.revision !== input.expected_revision ? "VerificationConsumeStale" :
+          this.consumeVerification(input).outcome };
+        break;
+      }
+      case "ResetCredentialPassword": {
+        const token = this.verifications.find((row) => row.organization_id === input.organization_id &&
+          row.verification_id === (input.verification_ids as string[])[0]);
+        const account = this.accounts.find((row) => row.organization_id === input.organization_id &&
+          row.user_id === input.user_id && row.id === input.account_id);
+        const status = token === undefined ? "VerificationConsumeMissing" :
+          token.revision !== input.verification_revision ? "VerificationConsumeStale" :
+          account === undefined ? "PasswordAccountMissing" :
+          account.provider_id !== "credential" || account.account_id !== input.external_account_id ? "PasswordProviderMismatch" :
+          account.revision !== input.account_revision ? "PasswordAccountStale" : "CredentialPasswordReset";
+        if (status === "CredentialPasswordReset") {
+          this.verifications.splice(this.verifications.indexOf(token!), 1);
+          this.accounts[this.accounts.indexOf(account!)] = { ...account!,
+            password: stringField(input, "password"), updated_at: timestampField(input, "updated_at"),
+            revision: account!.revision + 1n };
+        }
+        outcome = { outcome: status };
+        break;
+      }
+      case "UpdateCredentialPassword": {
+        const account = this.accounts.find((row) => row.organization_id === input.organization_id &&
+          row.user_id === input.user_id && row.id === input.account_id);
+        const status = account === undefined ? "PasswordAccountMissing" : account.provider_id !== "credential" ||
+          account.account_id !== input.external_account_id ? "PasswordProviderMismatch" :
+          account.revision !== input.expected_revision ? "PasswordAccountStale" : "CredentialPasswordUpdated";
+        if (status === "CredentialPasswordUpdated") this.accounts[this.accounts.indexOf(account!)] = {
+          ...account!, password: stringField(input, "password"), updated_at: timestampField(input, "updated_at"), revision: account!.revision + 1n,
+        };
+        outcome = { outcome: status };
+        break;
+      }
       case "UpdateAccountPasswords":
         outcome = { outcome: this.updateAccountPasswords(input) };
         break;

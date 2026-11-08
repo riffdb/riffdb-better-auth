@@ -25,7 +25,7 @@ function representativePlan() {
 }
 
 function materialize() {
-  return materializeRiffDBBetterAuthProfile(representativePlan());
+  return materializeRiffDBBetterAuthProfile(representativePlan(), { requireUniqueValues: true });
 }
 
 describe("profile materialization", () => {
@@ -47,7 +47,7 @@ describe("profile materialization", () => {
 
   it("assigns every model to exactly one aggregate", () => {
     const plan = representativePlan();
-    const { report } = materializeRiffDBBetterAuthProfile(plan);
+    const { report } = materializeRiffDBBetterAuthProfile(plan, { requireUniqueValues: true });
     const placed = report.aggregates.flatMap((entry) => [entry.root, ...entry.children]);
     expect(placed.slice().sort()).toStrictEqual(plan.models.map((model) => model.name).sort());
   });
@@ -73,6 +73,11 @@ describe("profile materialization", () => {
     for (const unenforced of report.unenforcedReferences) {
       expect(contract).not.toContain(`_${unenforced.field.toLowerCase()}_reference`);
     }
+  });
+
+  it("requires an explicit review for a nullable unique storage field", () => {
+    expect(() => materializeRiffDBBetterAuthProfile(representativePlan())).toThrow("nullable unique");
+    expect(materialize().report.requiredUniqueValues).toEqual(["teamMember.membershipKey"]);
   });
 
   it("keeps a synthesized key column clear of a schema field of the same name", () => {

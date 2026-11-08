@@ -1,0 +1,14 @@
+query ProfileSessionWithUserByToken($organization_id: Session.organization_id, $value: Session.token) {
+    one session from Session
+        where organization_id == $organization_id && token == $value
+        else Missing
+    one user from User
+        where organization_id == $organization_id && user_id == session.user_id
+        else IntegrityFailure
+    return Found { session: session {
+            id user_id
+            token reveals session.token
+            expires_at ip_address user_agent created_at updated_at revision
+           } user: user {  user_id name email email_verified image created_at updated_at revision  date_field locale  } }
+    outcomes Found | Missing | IntegrityFailure
+}

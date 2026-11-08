@@ -11,7 +11,7 @@ query FindTeamMemberById(
         take 1
 
     return Found {
-        team_members: team_members { user_id team_member_id created_at team_id revision }
+        team_members: team_members { user_id team_member_id created_at membership_key reveals team_members.membership_key team_id revision }
     }
 
     outcomes Found

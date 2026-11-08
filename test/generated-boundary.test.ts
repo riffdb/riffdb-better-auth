@@ -23,6 +23,7 @@ describe("generated secret-output boundary", () => {
       "FindAccountsByUserId",
       "FindAccountsByUserProvider",
       "FindActiveSessionsByUserId",
+      "FindCredentialAccount",
       "FindLatestVerification",
       "FindSessionById",
       "FindSessionByToken",

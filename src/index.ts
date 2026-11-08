@@ -2,6 +2,7 @@ export {
   BETTER_AUTH_CORE_FIELDS,
   BETTER_AUTH_CORE_MODELS,
   BETTER_AUTH_PINNED_VERSION,
+  SUPPORTED_BETTER_AUTH_VERSIONS,
   RIFFDB_BETTER_AUTH_PROFILE_SCHEMA,
   UnsupportedBetterAuthProfileError,
   defineRiffDBBetterAuthCoreProfile,
@@ -42,3 +43,5 @@ export {
   type RiffDBBetterAuthMaterializationReport,
   type RiffDBBetterAuthUnenforcedReference,
 } from "./profile-contract.js";
+export { defineRiffDBCompiledProfile, type RiffDBCompiledProfile, type RiffDBCompiledProfileInput } from "./runtime-profile.js";
+export { materializeRiffDBBetterAuthRuntimeProfile, type RiffDBRuntimeMaterialization } from "./runtime-materialize.js";

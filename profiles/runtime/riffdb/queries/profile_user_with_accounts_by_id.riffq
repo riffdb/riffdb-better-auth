@@ -1,0 +1,19 @@
+query ProfileUserWithAccountsById($organization_id: User.organization_id, $value: User.user_id) {
+    one user from User
+        where organization_id == $organization_id && user_id == $value
+        else Missing
+    many accounts from Account
+        where organization_id == $organization_id && user_id == user.user_id
+        order by id asc
+        take 33
+    return Found { user: user {  user_id name email email_verified image created_at updated_at revision  date_field locale two_factor_enabled  } accounts: accounts {
+            id user_id account_id provider_id
+            access_token reveals accounts.access_token
+            refresh_token reveals accounts.refresh_token
+            access_token_expires_at refresh_token_expires_at scope
+            id_token reveals accounts.id_token
+            password reveals accounts.password
+            created_at updated_at revision
+           } }
+    outcomes Found | Missing
+}

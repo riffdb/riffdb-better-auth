@@ -68,6 +68,10 @@
           "source": "riffdb/queries/find_team_member_by_id.riffq"
         },
         {
+          "name": "FindTeamMemberByMembershipKey",
+          "source": "riffdb/queries/find_team_member_by_membership_key.riffq"
+        },
+        {
           "name": "FindTeamMemberByTeamId",
           "source": "riffdb/queries/find_team_member_by_team_id.riffq"
         },
@@ -117,6 +121,7 @@
         "FindSessionByToken",
         "FindTeamById",
         "FindTeamMemberById",
+        "FindTeamMemberByMembershipKey",
         "FindTeamMemberByTeamId",
         "FindTwoFactorById",
         "FindTwoFactorBySecret",

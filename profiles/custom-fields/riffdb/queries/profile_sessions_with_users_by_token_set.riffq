@@ -1,0 +1,25 @@
+query ProfileSessionsWithUsersByTokenSet(
+    $organization_id: Session.organization_id,
+    $tokens: Set<Session.token>,
+) {
+    many sessions from Session
+        where organization_id == $organization_id
+          && token in $tokens
+        order by token asc, user_id asc, id asc
+        take 32
+
+    many users from User
+        where organization_id == $organization_id && user_id in distinct(sessions.user_id)
+        take 32
+
+    return Found {
+        users: users {  user_id name email email_verified image created_at updated_at revision  date_field locale  }
+        sessions: sessions {
+            id user_id
+            token reveals sessions.token
+            expires_at ip_address user_agent created_at updated_at revision
+          }
+    }
+
+    outcomes Found
+}

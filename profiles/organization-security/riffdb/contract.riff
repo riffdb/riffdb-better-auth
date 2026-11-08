@@ -84,6 +84,7 @@ contract BetterAuthOrganizationSecurity version 1 {
   entity Team {
     key (tenant_id: uuid, organization_id: uuid, team_id: uuid)
     field created_at: timestamp
+    field secret member_count: i64
     field name: string<2048>
     field updated_at: optional<timestamp>
     field revision: u64
@@ -95,8 +96,11 @@ contract BetterAuthOrganizationSecurity version 1 {
   entity TeamMember {
     key (tenant_id: uuid, user_id: uuid, team_member_id: uuid)
     field created_at: optional<timestamp>
+    field secret membership_key: string<2048>
     field team_id: uuid
     field revision: u64
+    unique team_member_membership_key (tenant_id, membership_key)
+    index by_membership_key (tenant_id, membership_key, user_id, team_member_id)
     index by_team_id (tenant_id, team_id, user_id, team_member_id)
     index by_parent (tenant_id, user_id, team_member_id)
     reference team_member_parent (tenant_id, user_id) -> User(tenant_id, user_id)
@@ -500,12 +504,14 @@ contract BetterAuthOrganizationSecurity version 1 {
     input organization_id: uuid
     input team_id: uuid
     input created_at: timestamp
+    input member_count: i64
     input name: string<2048>
     input updated_at: optional<timestamp>
     idempotency_key request_id
     read Organization(tenant_id, organization_id) as organization else TeamParentMissing {}
     create Team(tenant_id, organization_id, team_id) as team else TeamAlreadyExists {}
     set team.created_at = created_at
+    set team.member_count = member_count
     set team.name = name
     set team.updated_at = updated_at
     set team.revision = 1
@@ -519,12 +525,14 @@ contract BetterAuthOrganizationSecurity version 1 {
     input team_id: uuid
     input expected_revision: u64
     input created_at: timestamp
+    input member_count: i64
     input name: string<2048>
     input updated_at: optional<timestamp>
     idempotency_key request_id
     mutate Team(tenant_id, organization_id, team_id) as team else TeamUpdateMissing {}
     require current_revision: team.revision == expected_revision else TeamUpdateStale {}
     set team.created_at = created_at checked_by current_revision
+    set team.member_count = member_count checked_by current_revision
     set team.name = name checked_by current_revision
     set team.updated_at = updated_at checked_by current_revision
     set team.revision = team.revision + 1
@@ -549,11 +557,13 @@ contract BetterAuthOrganizationSecurity version 1 {
     input user_id: uuid
     input team_member_id: uuid
     input created_at: optional<timestamp>
+    input membership_key: string<2048>
     input team_id: uuid
     idempotency_key request_id
     read User(tenant_id, user_id) as user else TeamMemberParentMissing {}
     create TeamMember(tenant_id, user_id, team_member_id) as team_member else TeamMemberAlreadyExists {}
     set team_member.created_at = created_at
+    set team_member.membership_key = membership_key
     set team_member.team_id = team_id
     set team_member.revision = 1
     return TeamMemberCreated {}
@@ -566,11 +576,13 @@ contract BetterAuthOrganizationSecurity version 1 {
     input team_member_id: uuid
     input expected_revision: u64
     input created_at: optional<timestamp>
+    input membership_key: string<2048>
     input team_id: uuid
     idempotency_key request_id
     mutate TeamMember(tenant_id, user_id, team_member_id) as team_member else TeamMemberUpdateMissing {}
     require current_revision: team_member.revision == expected_revision else TeamMemberUpdateStale {}
     set team_member.created_at = created_at checked_by current_revision
+    set team_member.membership_key = membership_key checked_by current_revision
     set team_member.team_id = team_id checked_by current_revision
     set team_member.revision = team_member.revision + 1
     return TeamMemberUpdated {}

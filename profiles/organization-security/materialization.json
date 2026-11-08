@@ -44,5 +44,8 @@
       "targetModel": "team",
       "reason": "cross_aggregate_edge"
     }
+  ],
+  "requiredUniqueValues": [
+    "teamMember.membershipKey"
   ]
 }

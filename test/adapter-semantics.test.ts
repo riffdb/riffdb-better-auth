@@ -187,7 +187,7 @@ describe("compiled transaction dispatch", () => {
     });
 
     expect(transport.commandLog).toEqual([
-      "ConsumeVerification",
+      "ConsumeVerificationSnapshot",
       "ConsumeVerificationSet",
     ]);
     await expect(
@@ -260,7 +260,7 @@ describe("compiled transaction dispatch", () => {
 
     expect(results.filter((result) => result === null)).toHaveLength(1);
     expect(results.filter((result) => result !== null)).toHaveLength(1);
-    expect(transport.commandLog).toEqual(["ConsumeVerification", "ConsumeVerification"]);
+    expect(transport.commandLog).toEqual(["ConsumeVerificationSnapshot", "ConsumeVerificationSnapshot"]);
   });
 
   it("updates, expires, and deletes verification rows through compiled operations", async () => {

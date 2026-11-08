@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": { "rootDir": "profiles", "outDir": "dist/profiles" },
+  "include": ["profiles/runtime/profile.ts", "profiles/custom-fields/profile.ts"]
+}

@@ -1,0 +1,1053 @@
+contract BetterAuthRuntime version 1 {
+
+  entity User {
+    key (organization_id: uuid, user_id: uuid)
+    field name: string<256>
+    field email: string<320>
+    field email_verified: bool
+    field image: optional<string<2048>>
+    field created_at: timestamp
+    field updated_at: timestamp
+    field revision: u64
+    field date_field: optional<timestamp>
+    field locale: optional<string<2048>>
+    field two_factor_enabled: optional<bool>
+    index by_id (organization_id, user_id)
+    unique user_email (organization_id, email)
+    index by_email (organization_id, email, user_id) cover(name, email_verified, image, created_at, updated_at, revision, date_field, locale, two_factor_enabled)
+    index search_email (organization_id, email, user_id) text_key(email, binary_utf8_v1) cover(name, email_verified, image, created_at, updated_at, revision, date_field, locale, two_factor_enabled)
+    index by_created_at (organization_id, created_at, user_id) cover(name, email, email_verified, image, updated_at, revision, date_field, locale, two_factor_enabled)
+    index by_image (organization_id, image, user_id) presence(image) cover(name, email, email_verified, created_at, updated_at, revision, date_field, locale, two_factor_enabled)
+
+  }
+
+  entity Account {
+    key (organization_id: uuid, user_id: uuid, id: uuid)
+    field account_id: string<256>
+    field provider_id: string<64>
+    field secret access_token: optional<string<4096>>
+    field secret refresh_token: optional<string<4096>>
+    field access_token_expires_at: optional<timestamp>
+    field refresh_token_expires_at: optional<timestamp>
+    field scope: optional<string<2048>>
+    field secret id_token: optional<string<8192>>
+    field secret password: optional<string<1024>>
+    field created_at: timestamp
+    field updated_at: timestamp
+    field revision: u64
+    unique account_row_id (organization_id, id)
+    unique provider_identity (organization_id, provider_id, account_id)
+    index by_id (organization_id, id, user_id)
+    index by_provider (organization_id, provider_id, account_id, user_id, id)
+    index by_user (organization_id, user_id, id)
+    index by_user_provider (organization_id, user_id, provider_id, id)
+    reference account_user (organization_id, user_id) -> User(organization_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity Session {
+    key (organization_id: uuid, user_id: uuid, id: uuid)
+    field secret token: string<512>
+    field expires_at: timestamp
+    field ip_address: optional<string<128>>
+    field user_agent: optional<string<2048>>
+    field created_at: timestamp
+    field updated_at: timestamp
+    field revision: u64
+    field active_organization_id: optional<string<2048>>
+    unique session_token (organization_id, token)
+    unique session_id (organization_id, id)
+    index by_token (organization_id, token, user_id, id)
+    index by_id (organization_id, id, user_id)
+    index by_user (organization_id, user_id, id)
+    index by_user_expiry (organization_id, user_id, expires_at, id)
+    reference session_user (organization_id, user_id) -> User(organization_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity Verification {
+    key (organization_id: uuid, verification_id: uuid)
+    field identifier: string<1024>
+    field secret value: string<4096>
+    field expires_at: timestamp
+    field created_at: timestamp
+    field updated_at: timestamp
+    field revision: u64
+    index by_identifier_created (organization_id, identifier, created_at, verification_id)
+    index by_expiry (organization_id, expires_at, verification_id)
+    delete_policy no_inbound
+  }
+
+  entity AccountPasswordUpdate {
+    key (organization_id: uuid, user_id: uuid, account_id: uuid)
+    field provider_id: string<64>
+    field secret password: optional<string<1024>>
+    field updated_at: timestamp
+    field expected_revision: u64
+  }
+
+  entity Tenant {
+    key (organization_id: uuid)
+    delete_policy no_inbound
+  }
+
+  entity Invitation {
+    key (organization_id: uuid, invitation_id: uuid)
+    field created_at: timestamp
+    field email: string<320>
+    field expires_at: timestamp
+    field inviter_id: uuid
+    field org_id: uuid
+    field role: optional<string<256>>
+    field status: string<32>
+    field revision: u64
+    index by_email (organization_id, email, invitation_id) text_key(email, binary_utf8_v1)
+    index by_inviter_id (organization_id, inviter_id, invitation_id)
+    index by_org_id (organization_id, org_id, invitation_id)
+    index by_org_status (organization_id, org_id, status, invitation_id)
+    index by_org_email_status (organization_id, org_id, email, status, invitation_id)
+    reference invitation_inviter_id (organization_id, inviter_id) -> User(organization_id, user_id)
+    reference invitation_organization_id (organization_id, org_id) -> Organization(organization_id, org_id)
+    delete_policy no_inbound
+  }
+
+  entity Member {
+    key (organization_id: uuid, member_id: uuid)
+    field created_at: timestamp
+    field org_id: uuid
+    field role: string<256>
+    field user_id: uuid
+    field revision: u64
+    unique membership (organization_id, org_id, user_id)
+    index by_org_id (organization_id, org_id, member_id)
+    index by_user_id (organization_id, user_id, member_id)
+    index by_role (organization_id, role, member_id) text_key(role, binary_utf8_v1)
+    index by_created_at (organization_id, created_at, member_id)
+    index by_org_user (organization_id, org_id, user_id, member_id)
+    index by_org_role (organization_id, org_id, role, member_id) text_key(role, binary_utf8_v1)
+    index by_org_created_at (organization_id, org_id, created_at, member_id)
+    reference member_organization_id (organization_id, org_id) -> Organization(organization_id, org_id)
+    reference member_user (organization_id, user_id) -> User(organization_id, user_id)
+    delete_policy no_inbound
+  }
+
+  entity Organization {
+    key (organization_id: uuid, org_id: uuid)
+    field created_at: timestamp
+    field logo: optional<string<2048>>
+    field metadata: optional<string<2048>>
+    field name: string<256>
+    field slug: string<256>
+    field member_count: i64
+    field invitation_count: i64
+    field revision: u64
+    unique unique_slug (organization_id, slug)
+    index by_slug (organization_id, slug, org_id) text_key(slug, binary_utf8_v1)
+    delete_policy cascade {
+      relationship Member.member_organization_id using Member.by_org_id maximum 100
+      relationship Invitation.invitation_organization_id using Invitation.by_org_id maximum 100
+    }
+  }
+
+  entity TwoFactor {
+    key (organization_id: uuid, two_factor_id: uuid)
+    field secret backup_codes: string<2048>
+    field secret failed_verification_count: i64
+    field secret locked_until: optional<timestamp>
+    field secret secret: string<2048>
+    field user_id: uuid
+    field verified: bool
+    field locked_until_millis: i64
+    field revision: u64
+    unique two_factor_user (organization_id, user_id)
+    index by_user_id (organization_id, user_id, two_factor_id)
+    reference two_factor_user (organization_id, user_id) -> User(organization_id, user_id)
+    delete_policy no_inbound
+  }
+
+  aggregate TenantData {
+    root Tenant
+    child User
+    child Account
+    child Session
+    child Verification
+    child AccountPasswordUpdate
+    child Invitation
+    child Member
+    child Organization
+    child TwoFactor
+    partition_by organization_id
+    conflict_key (organization_id)
+  }
+
+  command CreateUser {
+    input request_id: uuid
+    input organization_id: uuid
+    input id: uuid
+    input name: string<256>
+    input email: string<320>
+    input email_verified: bool
+    input image: optional<string<2048>>
+    input created_at: timestamp
+    input updated_at: timestamp
+    input date_field: optional<timestamp>
+    input locale: optional<string<2048>>
+    input two_factor_enabled: optional<bool>
+    idempotency_key request_id
+    create User(organization_id, id) as user else UserAlreadyExists {}
+    set user.name = name
+    set user.email = email
+    set user.email_verified = email_verified
+    set user.image = image
+    set user.created_at = created_at
+    set user.updated_at = updated_at
+    set user.date_field = date_field
+    set user.locale = locale
+    set user.two_factor_enabled = two_factor_enabled
+    set user.revision = 1
+    return UserCreated {}
+  }
+
+  command CreateAccount {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input id: uuid
+    input account_id: string<256>
+    input provider_id: string<64>
+    input access_token: optional<string<4096>>
+    input refresh_token: optional<string<4096>>
+    input access_token_expires_at: optional<timestamp>
+    input refresh_token_expires_at: optional<timestamp>
+    input scope: optional<string<2048>>
+    input id_token: optional<string<8192>>
+    input password: optional<string<1024>>
+    input created_at: timestamp
+    input updated_at: timestamp
+    idempotency_key request_id
+    read User(organization_id, user_id) as owner else AccountUserMissing {}
+    create Account(organization_id, user_id, id) as account else AccountAlreadyExists {}
+    set account.account_id = account_id
+    set account.provider_id = provider_id
+    set account.access_token = access_token
+    set account.refresh_token = refresh_token
+    set account.access_token_expires_at = access_token_expires_at
+    set account.refresh_token_expires_at = refresh_token_expires_at
+    set account.scope = scope
+    set account.id_token = id_token
+    set account.password = password
+    set account.created_at = created_at
+    set account.updated_at = updated_at
+    set account.revision = 1
+    return AccountCreated {}
+  }
+
+  command CreateSession {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input id: uuid
+    input token: string<512>
+    input expires_at: timestamp
+    input ip_address: optional<string<128>>
+    input user_agent: optional<string<2048>>
+    input created_at: timestamp
+    input updated_at: timestamp
+    input active_organization_id: optional<string<2048>>
+    idempotency_key request_id
+    read User(organization_id, user_id) as owner else SessionUserMissing {}
+    create Session(organization_id, user_id, id) as session else SessionAlreadyExists {}
+    set session.token = token
+    set session.expires_at = expires_at
+    set session.ip_address = ip_address
+    set session.user_agent = user_agent
+    set session.created_at = created_at
+    set session.updated_at = updated_at
+    set session.active_organization_id = active_organization_id
+    set session.revision = 1
+    return SessionCreated {}
+  }
+
+  command CreateVerification {
+    input request_id: uuid
+    input organization_id: uuid
+    input id: uuid
+    input identifier: string<1024>
+    input value: string<4096>
+    input expires_at: timestamp
+    input created_at: timestamp
+    input updated_at: timestamp
+    idempotency_key request_id
+    create Verification(organization_id, id) as verification else VerificationAlreadyExists {}
+    set verification.identifier = identifier
+    set verification.value = value
+    set verification.expires_at = expires_at
+    set verification.created_at = created_at
+    set verification.updated_at = updated_at
+    set verification.revision = 1
+    return VerificationCreated {}
+  }
+
+  command CreateSignupGraph {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input user_name: string<256>
+    input user_email: string<320>
+    input user_email_verified: bool
+    input user_image: optional<string<2048>>
+    input user_created_at: timestamp
+    input user_updated_at: timestamp
+    input account_id: uuid
+    input external_account_id: string<256>
+    input provider_id: string<64>
+    input account_password: optional<string<1024>>
+    input account_created_at: timestamp
+    input account_updated_at: timestamp
+    input session_id: uuid
+    input session_token: string<512>
+    input session_expires_at: timestamp
+    input session_ip_address: optional<string<128>>
+    input session_user_agent: optional<string<2048>>
+    input session_created_at: timestamp
+    input session_updated_at: timestamp
+    input user_date_field: optional<timestamp>
+    input user_locale: optional<string<2048>>
+    input user_two_factor_enabled: optional<bool>
+    input session_active_organization_id: optional<string<2048>>
+    idempotency_key request_id
+    create User(organization_id, user_id) as user else SignupUserExists {}
+    create Account(organization_id, user_id, account_id) as account else SignupAccountExists {}
+    create Session(organization_id, user_id, session_id) as session else SignupSessionExists {}
+    set user.name = user_name
+    set user.email = user_email
+    set user.email_verified = user_email_verified
+    set user.image = user_image
+    set user.created_at = user_created_at
+    set user.updated_at = user_updated_at
+    set user.date_field = user_date_field
+    set user.locale = user_locale
+    set user.two_factor_enabled = user_two_factor_enabled
+    set user.revision = 1
+    set account.account_id = external_account_id
+    set account.provider_id = provider_id
+    set account.access_token = null
+    set account.refresh_token = null
+    set account.access_token_expires_at = null
+    set account.refresh_token_expires_at = null
+    set account.scope = null
+    set account.id_token = null
+    set account.password = account_password
+    set account.created_at = account_created_at
+    set account.updated_at = account_updated_at
+    set account.revision = 1
+    set session.token = session_token
+    set session.expires_at = session_expires_at
+    set session.ip_address = session_ip_address
+    set session.user_agent = session_user_agent
+    set session.created_at = session_created_at
+    set session.updated_at = session_updated_at
+    set session.active_organization_id = session_active_organization_id
+    set session.revision = 1
+    return SignupGraphCreated {}
+  }
+
+  command CreateOAuthUserGraph {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input user_name: string<256>
+    input user_email: string<320>
+    input user_email_verified: bool
+    input user_image: optional<string<2048>>
+    input user_created_at: timestamp
+    input user_updated_at: timestamp
+    input account_id: uuid
+    input external_account_id: string<256>
+    input provider_id: string<64>
+    input access_token: optional<string<4096>>
+    input refresh_token: optional<string<4096>>
+    input access_token_expires_at: optional<timestamp>
+    input refresh_token_expires_at: optional<timestamp>
+    input scope: optional<string<2048>>
+    input id_token: optional<string<8192>>
+    input password: optional<string<1024>>
+    input account_created_at: timestamp
+    input account_updated_at: timestamp
+    input user_date_field: optional<timestamp>
+    input user_locale: optional<string<2048>>
+    input user_two_factor_enabled: optional<bool>
+    idempotency_key request_id
+    create User(organization_id, user_id) as user else OAuthUserExists {}
+    create Account(organization_id, user_id, account_id) as account else OAuthAccountExists {}
+    set user.name = user_name
+    set user.email = user_email
+    set user.email_verified = user_email_verified
+    set user.image = user_image
+    set user.created_at = user_created_at
+    set user.updated_at = user_updated_at
+    set user.date_field = user_date_field
+    set user.locale = user_locale
+    set user.two_factor_enabled = user_two_factor_enabled
+    set user.revision = 1
+    set account.account_id = external_account_id
+    set account.provider_id = provider_id
+    set account.access_token = access_token
+    set account.refresh_token = refresh_token
+    set account.access_token_expires_at = access_token_expires_at
+    set account.refresh_token_expires_at = refresh_token_expires_at
+    set account.scope = scope
+    set account.id_token = id_token
+    set account.password = password
+    set account.created_at = account_created_at
+    set account.updated_at = account_updated_at
+    set account.revision = 1
+    return OAuthUserGraphCreated {}
+  }
+
+  command UpdateUser {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input expected_revision: u64
+    input name: string<256>
+    input email: string<320>
+    input email_verified: bool
+    input image: optional<string<2048>>
+    input updated_at: timestamp
+    input date_field: optional<timestamp>
+    input locale: optional<string<2048>>
+    input two_factor_enabled: optional<bool>
+    idempotency_key request_id
+    mutate User(organization_id, user_id) as user else UserUpdateMissing {}
+    require current_revision: user.revision == expected_revision else UserUpdateStale {}
+    set user.name = name checked_by current_revision
+    set user.email = email checked_by current_revision
+    set user.email_verified = email_verified checked_by current_revision
+    set user.image = image checked_by current_revision
+    set user.updated_at = updated_at checked_by current_revision
+    set user.date_field = date_field checked_by current_revision
+    set user.locale = locale checked_by current_revision
+    set user.two_factor_enabled = two_factor_enabled checked_by current_revision
+    set user.revision = user.revision + 1
+    return UserUpdated {}
+  }
+
+  command UpdateSession {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input session_id: uuid
+    input expected_revision: u64
+    input expires_at: timestamp
+    input ip_address: optional<string<128>>
+    input user_agent: optional<string<2048>>
+    input updated_at: timestamp
+    input active_organization_id: optional<string<2048>>
+    idempotency_key request_id
+    mutate Session(organization_id, user_id, session_id) as session else SessionUpdateMissing {}
+    require current_revision: session.revision == expected_revision else SessionUpdateStale {}
+    set session.expires_at = expires_at checked_by current_revision
+    set session.ip_address = ip_address checked_by current_revision
+    set session.user_agent = user_agent checked_by current_revision
+    set session.updated_at = updated_at checked_by current_revision
+    set session.active_organization_id = active_organization_id checked_by current_revision
+    set session.revision = session.revision + 1
+    return SessionUpdated {}
+  }
+
+  command UpdateAccount {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input account_id: uuid
+    input expected_revision: u64
+    input external_account_id: string<256>
+    input provider_id: string<64>
+    input access_token: optional<string<4096>>
+    input refresh_token: optional<string<4096>>
+    input access_token_expires_at: optional<timestamp>
+    input refresh_token_expires_at: optional<timestamp>
+    input scope: optional<string<2048>>
+    input id_token: optional<string<8192>>
+    input password: optional<string<1024>>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Account(organization_id, user_id, account_id) as account else AccountUpdateMissing {}
+    require current_revision: account.revision == expected_revision else AccountUpdateStale {}
+    set account.account_id = external_account_id checked_by current_revision
+    set account.provider_id = provider_id checked_by current_revision
+    set account.access_token = access_token checked_by current_revision
+    set account.refresh_token = refresh_token checked_by current_revision
+    set account.access_token_expires_at = access_token_expires_at checked_by current_revision
+    set account.refresh_token_expires_at = refresh_token_expires_at checked_by current_revision
+    set account.scope = scope checked_by current_revision
+    set account.id_token = id_token checked_by current_revision
+    set account.password = password checked_by current_revision
+    set account.updated_at = updated_at checked_by current_revision
+    set account.revision = account.revision + 1
+    return AccountUpdated {}
+  }
+
+  command UpdateVerification {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_id: uuid
+    input expected_revision: u64
+    input value: string<4096>
+    input expires_at: timestamp
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Verification(organization_id, verification_id) as verification else VerificationUpdateMissing {}
+    require current_revision: verification.revision == expected_revision else VerificationUpdateStale {}
+    set verification.value = value checked_by current_revision
+    set verification.expires_at = expires_at checked_by current_revision
+    set verification.updated_at = updated_at checked_by current_revision
+    set verification.revision = verification.revision + 1
+    return VerificationUpdated {}
+  }
+
+  bulk command DeleteSession {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input session_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for session_id in session_ids {
+      delete Session(organization_id, user_id, session_id) as session else SessionMissing {}
+    }
+    return SessionDeleted {}
+  }
+
+  bulk command DeleteAccount {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input account_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for account_id in account_ids {
+      delete Account(organization_id, user_id, account_id) as account else AccountMissing {}
+    }
+    return AccountDeleted {}
+  }
+
+  bulk command DeleteVerification {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for verification_id in verification_ids {
+      delete Verification(organization_id, verification_id) as verification else VerificationMissing {}
+    }
+    return VerificationDeleted {}
+  }
+
+  bulk command ConsumeVerificationSet {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_ids: list<uuid, 1..32>
+    idempotency_key request_id
+    for verification_id in verification_ids {
+      delete Verification(organization_id, verification_id) as verification else VerificationConsumeMissing {}
+    }
+    return VerificationSetConsumed {}
+  }
+
+  command ConsumeVerification {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_id: uuid
+    idempotency_key request_id
+    delete Verification(organization_id, verification_id) as verification else VerificationConsumeMissing {}
+    return VerificationConsumed {
+      verification_id: verification.verification_id,
+      identifier: verification.identifier,
+      value: verification.value reveals verification.value,
+      expires_at: verification.expires_at,
+      created_at: verification.created_at,
+      updated_at: verification.updated_at,
+      revision: verification.revision
+    }
+  }
+
+  bulk command UpdateAccountPasswords {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input updates: list<AccountPasswordUpdate, 1..8>
+    idempotency_key request_id
+    for update in updates {
+      mutate Account(organization_id, user_id, update.account_id) as account else PasswordAccountMissing {}
+      require provider_matches: account.provider_id == update.provider_id else PasswordProviderMismatch {}
+      require current_revision: account.revision == update.expected_revision else PasswordAccountStale {}
+      set account.password = update.password checked_by current_revision
+      set account.updated_at = update.updated_at checked_by current_revision
+      set account.revision = account.revision + 1
+    }
+    return AccountPasswordsUpdated {}
+  }
+
+  command ConsumeVerificationSnapshot {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_id: uuid
+    input expected_revision: u64
+    idempotency_key request_id
+    delete Verification(organization_id, verification_id) as verification else VerificationConsumeMissing {}
+    require snapshot: verification.revision == expected_revision else VerificationConsumeStale {}
+    return VerificationConsumed {}
+  }
+
+  bulk command ResetCredentialPassword {
+    input request_id: uuid
+    input organization_id: uuid
+    input verification_ids: list<uuid, 1..1>
+    input verification_revision: u64
+    input user_id: uuid
+    input external_account_id: string<256>
+    input account_id: uuid
+    input account_revision: u64
+    input password: string<1024>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Account(organization_id, user_id, account_id) as account else PasswordAccountMissing {}
+    for verification_id in verification_ids {
+      delete Verification(organization_id, verification_id) as verification else VerificationConsumeMissing {}
+      require verification_snapshot: verification.revision == verification_revision else VerificationConsumeStale {}
+    }
+    require credential_provider: account.provider_id == "credential" else PasswordProviderMismatch {}
+    require credential_identity: account.account_id == external_account_id else PasswordProviderMismatch {}
+    require account_snapshot: account.revision == account_revision else PasswordAccountStale {}
+    set account.password = password checked_by account_snapshot
+    set account.updated_at = updated_at checked_by account_snapshot
+    set account.revision = account.revision + 1
+    return CredentialPasswordReset {}
+  }
+
+  command UpdateCredentialPassword {
+    input request_id: uuid
+    input organization_id: uuid
+    input user_id: uuid
+    input account_id: uuid
+    input external_account_id: string<256>
+    input expected_revision: u64
+    input password: string<1024>
+    input updated_at: timestamp
+    idempotency_key request_id
+    mutate Account(organization_id, user_id, account_id) as account else PasswordAccountMissing {}
+    require credential_provider: account.provider_id == "credential" else PasswordProviderMismatch {}
+    require credential_identity: account.account_id == external_account_id else PasswordProviderMismatch {}
+    require account_snapshot: account.revision == expected_revision else PasswordAccountStale {}
+    set account.password = password checked_by account_snapshot
+    set account.updated_at = updated_at checked_by account_snapshot
+    set account.revision = account.revision + 1
+    return CredentialPasswordUpdated {}
+  }
+
+  command CreateInvitation {
+    input request_id: uuid
+    input organization_id: uuid
+    input invitation_id: uuid
+    input created_at: timestamp
+    input email: string<320>
+    input expires_at: timestamp
+    input inviter_id: uuid
+    input org_id: uuid
+    input role: optional<string<256>>
+    input status: string<32>
+    idempotency_key request_id
+    read User(organization_id, inviter_id) as parent_inviter_id else InvitationParentMissing {}
+    mutate Organization(organization_id, org_id) as parent_org_id else InvitationParentMissing {}
+    create Invitation(organization_id, invitation_id) as record else InvitationAlreadyExists {}
+    require capacity: parent_org_id.invitation_count < 100 else CapacityExceeded {}
+    set record.created_at = created_at
+    set record.email = email
+    set record.expires_at = expires_at
+    set record.inviter_id = inviter_id
+    set record.org_id = org_id
+    set record.role = role
+    set record.status = status
+    set record.revision = 1
+    set parent_org_id.invitation_count = parent_org_id.invitation_count + 1
+    set parent_org_id.revision = parent_org_id.revision + 1
+    return InvitationCreated {}
+  }
+
+  command UpdateInvitation {
+    input request_id: uuid
+    input organization_id: uuid
+    input invitation_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input email: string<320>
+    input expires_at: timestamp
+    input inviter_id: uuid
+    input org_id: uuid
+    input role: optional<string<256>>
+    input status: string<32>
+    idempotency_key request_id
+    read User(organization_id, inviter_id) as parent_inviter_id else InvitationParentMissing {}
+    read Organization(organization_id, org_id) as parent_org_id else InvitationParentMissing {}
+    mutate Invitation(organization_id, invitation_id) as record else InvitationMissing {}
+    require current_revision: record.revision == expected_revision else Stale {}
+    set record.created_at = created_at checked_by current_revision
+    set record.email = email checked_by current_revision
+    set record.expires_at = expires_at checked_by current_revision
+    set record.inviter_id = inviter_id checked_by current_revision
+    set record.org_id = org_id checked_by current_revision
+    set record.role = role checked_by current_revision
+    set record.status = status checked_by current_revision
+    set record.revision = record.revision + 1
+    return InvitationUpdated {}
+  }
+
+  bulk command DeleteInvitation {
+    input request_id: uuid
+    input organization_id: uuid
+    input org_id: uuid
+    input ids: list<uuid, 1..1>
+    idempotency_key request_id
+    mutate Organization(organization_id, org_id) as parent else OrganizationMissing {}
+    for id in ids {
+      delete Invitation(organization_id, id) as record else InvitationMissing {}
+      require same_organization: record.org_id == org_id else OrganizationMismatch {}
+    }
+    require counted: parent.invitation_count > 0 else CounterInconsistent {}
+    set parent.invitation_count = parent.invitation_count - 1 checked_by counted
+    set parent.revision = parent.revision + 1
+    return InvitationDeleted {}
+  }
+
+  command CreateMember {
+    input request_id: uuid
+    input organization_id: uuid
+    input member_id: uuid
+    input created_at: timestamp
+    input org_id: uuid
+    input role: string<256>
+    input user_id: uuid
+    idempotency_key request_id
+    mutate Organization(organization_id, org_id) as parent_org_id else MemberParentMissing {}
+    read User(organization_id, user_id) as parent_user_id else MemberParentMissing {}
+    create Member(organization_id, member_id) as record else MemberAlreadyExists {}
+    require capacity: parent_org_id.member_count < 100 else CapacityExceeded {}
+    set record.created_at = created_at
+    set record.org_id = org_id
+    set record.role = role
+    set record.user_id = user_id
+    set record.revision = 1
+    set parent_org_id.member_count = parent_org_id.member_count + 1
+    set parent_org_id.revision = parent_org_id.revision + 1
+    return MemberCreated {}
+  }
+
+  command UpdateMember {
+    input request_id: uuid
+    input organization_id: uuid
+    input member_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input org_id: uuid
+    input role: string<256>
+    input user_id: uuid
+    idempotency_key request_id
+    read Organization(organization_id, org_id) as parent_org_id else MemberParentMissing {}
+    read User(organization_id, user_id) as parent_user_id else MemberParentMissing {}
+    mutate Member(organization_id, member_id) as record else MemberMissing {}
+    require current_revision: record.revision == expected_revision else Stale {}
+    set record.created_at = created_at checked_by current_revision
+    set record.org_id = org_id checked_by current_revision
+    set record.role = role checked_by current_revision
+    set record.user_id = user_id checked_by current_revision
+    set record.revision = record.revision + 1
+    return MemberUpdated {}
+  }
+
+  bulk command DeleteMember {
+    input request_id: uuid
+    input organization_id: uuid
+    input org_id: uuid
+    input ids: list<uuid, 1..1>
+    idempotency_key request_id
+    mutate Organization(organization_id, org_id) as parent else OrganizationMissing {}
+    for id in ids {
+      delete Member(organization_id, id) as record else MemberMissing {}
+      require same_organization: record.org_id == org_id else OrganizationMismatch {}
+    }
+    require counted: parent.member_count > 0 else CounterInconsistent {}
+    set parent.member_count = parent.member_count - 1 checked_by counted
+    set parent.revision = parent.revision + 1
+    return MemberDeleted {}
+  }
+
+  command CreateOrganization {
+    input request_id: uuid
+    input organization_id: uuid
+    input org_id: uuid
+    input created_at: timestamp
+    input logo: optional<string<2048>>
+    input metadata: optional<string<2048>>
+    input name: string<256>
+    input slug: string<256>
+    idempotency_key request_id
+    create Organization(organization_id, org_id) as record else OrganizationAlreadyExists {}
+    set record.created_at = created_at
+    set record.logo = logo
+    set record.metadata = metadata
+    set record.name = name
+    set record.slug = slug
+    set record.member_count = 0
+    set record.invitation_count = 0
+    set record.revision = 1
+    return OrganizationCreated {}
+  }
+
+  command UpdateOrganization {
+    input request_id: uuid
+    input organization_id: uuid
+    input org_id: uuid
+    input expected_revision: u64
+    input created_at: timestamp
+    input logo: optional<string<2048>>
+    input metadata: optional<string<2048>>
+    input name: string<256>
+    input slug: string<256>
+    idempotency_key request_id
+    mutate Organization(organization_id, org_id) as record else OrganizationMissing {}
+    require current_revision: record.revision == expected_revision else Stale {}
+    set record.created_at = created_at checked_by current_revision
+    set record.logo = logo checked_by current_revision
+    set record.metadata = metadata checked_by current_revision
+    set record.name = name checked_by current_revision
+    set record.slug = slug checked_by current_revision
+    set record.revision = record.revision + 1
+    return OrganizationUpdated {}
+  }
+
+  bulk command DeleteOrganization {
+    input request_id: uuid
+    input organization_id: uuid
+    input ids: list<uuid, 1..1>
+    idempotency_key request_id
+    for id in ids {
+      delete Organization(organization_id, id) as record else OrganizationMissing {}
+        cascade CascadeLimitExceeded {}
+    }
+    return OrganizationDeleted {}
+  }
+
+  command CreateTwoFactor {
+    input request_id: uuid
+    input organization_id: uuid
+    input two_factor_id: uuid
+    input backup_codes: string<2048>
+    input failed_verification_count: i64
+    input locked_until: optional<timestamp>
+    input secret: string<2048>
+    input user_id: uuid
+    input verified: bool
+    input locked_until_millis: i64
+    idempotency_key request_id
+    read User(organization_id, user_id) as parent_user_id else TwoFactorParentMissing {}
+    create TwoFactor(organization_id, two_factor_id) as record else TwoFactorAlreadyExists {}
+    set record.backup_codes = backup_codes
+    set record.failed_verification_count = failed_verification_count
+    set record.locked_until = locked_until
+    set record.secret = secret
+    set record.user_id = user_id
+    set record.verified = verified
+    set record.locked_until_millis = locked_until_millis
+    set record.revision = 1
+    return TwoFactorCreated {}
+  }
+
+  command UpdateTwoFactor {
+    input request_id: uuid
+    input organization_id: uuid
+    input two_factor_id: uuid
+    input expected_revision: u64
+    input backup_codes: string<2048>
+    input failed_verification_count: i64
+    input locked_until: optional<timestamp>
+    input secret: string<2048>
+    input user_id: uuid
+    input verified: bool
+    input locked_until_millis: i64
+    idempotency_key request_id
+    read User(organization_id, user_id) as parent_user_id else TwoFactorParentMissing {}
+    mutate TwoFactor(organization_id, two_factor_id) as record else TwoFactorMissing {}
+    require current_revision: record.revision == expected_revision else Stale {}
+    set record.backup_codes = backup_codes checked_by current_revision
+    set record.failed_verification_count = failed_verification_count checked_by current_revision
+    set record.locked_until = locked_until checked_by current_revision
+    set record.secret = secret checked_by current_revision
+    set record.user_id = user_id checked_by current_revision
+    set record.verified = verified checked_by current_revision
+    set record.locked_until_millis = locked_until_millis checked_by current_revision
+    set record.revision = record.revision + 1
+    return TwoFactorUpdated {}
+  }
+
+  bulk command DeleteTwoFactor {
+    input request_id: uuid
+    input organization_id: uuid
+    input ids: list<uuid, 1..100>
+    idempotency_key request_id
+    for id in ids {
+      delete TwoFactor(organization_id, id) as record else TwoFactorMissing {}
+    }
+    return TwoFactorDeleted {}
+  }
+
+  command IncrementTwoFactorFailure {
+    input request_id: uuid
+    input organization_id: uuid
+    input two_factor_id: uuid
+    idempotency_key request_id
+    mutate TwoFactor(organization_id, two_factor_id) as record else Missing {}
+    require guard_0: record.failed_verification_count < 1000000 else GuardFailed {}
+    set record.failed_verification_count = record.failed_verification_count + 1 checked_by guard_0
+    set record.revision = record.revision + 1
+    return Changed {
+      two_factor_id: record.two_factor_id,
+      backup_codes: record.backup_codes reveals record.backup_codes,
+      failed_verification_count: record.failed_verification_count reveals record.failed_verification_count,
+      locked_until: record.locked_until reveals record.locked_until,
+      secret: record.secret reveals record.secret,
+      user_id: record.user_id,
+      verified: record.verified,
+      revision: record.revision
+    }
+  }
+
+  command LockTwoFactor {
+    input request_id: uuid
+    input organization_id: uuid
+    input two_factor_id: uuid
+    input minimum_failures: i64
+    input locked_until: optional<timestamp>
+    input locked_until_millis: i64
+    idempotency_key request_id
+    mutate TwoFactor(organization_id, two_factor_id) as record else Missing {}
+    require guard_0: record.failed_verification_count >= minimum_failures else GuardFailed {}
+    set record.locked_until = locked_until checked_by guard_0
+    set record.locked_until_millis = locked_until_millis checked_by guard_0
+    set record.revision = record.revision + 1
+    return Changed {
+      two_factor_id: record.two_factor_id,
+      backup_codes: record.backup_codes reveals record.backup_codes,
+      failed_verification_count: record.failed_verification_count reveals record.failed_verification_count,
+      locked_until: record.locked_until reveals record.locked_until,
+      secret: record.secret reveals record.secret,
+      user_id: record.user_id,
+      verified: record.verified,
+      revision: record.revision
+    }
+  }
+
+  command ResetExpiredTwoFactor {
+    input request_id: uuid
+    input organization_id: uuid
+    input two_factor_id: uuid
+    input before_millis: i64
+    idempotency_key request_id
+    mutate TwoFactor(organization_id, two_factor_id) as record else Missing {}
+    require guard_0: record.locked_until_millis > 0 && record.locked_until_millis <= before_millis else GuardFailed {}
+    set record.failed_verification_count = 0 checked_by guard_0
+    set record.locked_until = null checked_by guard_0
+    set record.locked_until_millis = 0 checked_by guard_0
+    set record.revision = record.revision + 1
+    return Changed {
+      two_factor_id: record.two_factor_id,
+      backup_codes: record.backup_codes reveals record.backup_codes,
+      failed_verification_count: record.failed_verification_count reveals record.failed_verification_count,
+      locked_until: record.locked_until reveals record.locked_until,
+      secret: record.secret reveals record.secret,
+      user_id: record.user_id,
+      verified: record.verified,
+      revision: record.revision
+    }
+  }
+
+  command ReplaceTwoFactorBackupCodes {
+    input request_id: uuid
+    input organization_id: uuid
+    input two_factor_id: uuid
+    input expected: string<2048>
+    input replacement: string<2048>
+    idempotency_key request_id
+    mutate TwoFactor(organization_id, two_factor_id) as record else Missing {}
+    require guard_0: record.backup_codes == expected else GuardFailed {}
+    set record.backup_codes = replacement checked_by guard_0
+    set record.revision = record.revision + 1
+    return Changed {
+      two_factor_id: record.two_factor_id,
+      backup_codes: record.backup_codes reveals record.backup_codes,
+      failed_verification_count: record.failed_verification_count reveals record.failed_verification_count,
+      locked_until: record.locked_until reveals record.locked_until,
+      secret: record.secret reveals record.secret,
+      user_id: record.user_id,
+      verified: record.verified,
+      revision: record.revision
+    }
+  }
+
+  command TransitionInvitation {
+    input request_id: uuid
+    input organization_id: uuid
+    input invitation_id: uuid
+    input expected: string<32>
+    input replacement: string<32>
+    idempotency_key request_id
+    mutate Invitation(organization_id, invitation_id) as record else Missing {}
+    require guard_0: record.status == expected else GuardFailed {}
+    set record.status = replacement checked_by guard_0
+    set record.revision = record.revision + 1
+    return Changed {
+      invitation_id: record.invitation_id,
+      created_at: record.created_at,
+      email: record.email,
+      expires_at: record.expires_at,
+      inviter_id: record.inviter_id,
+      org_id: record.org_id,
+      role: record.role,
+      status: record.status,
+      revision: record.revision
+    }
+  }
+
+  command CreateMemberAndActivateOrganization {
+    input request_id: uuid
+    input organization_id: uuid
+    input member_id: uuid
+    input created_at: timestamp
+    input org_id: uuid
+    input role: string<256>
+    input user_id: uuid
+    input session_user_id: uuid
+    input session_id: uuid
+    input session_revision: u64
+    input session_updated_at: timestamp
+    input session_active_organization_id: optional<string<2048>>
+    idempotency_key request_id
+    mutate Organization(organization_id, org_id) as parent_org_id else MemberParentMissing {}
+    read User(organization_id, user_id) as parent_user_id else MemberParentMissing {}
+    create Member(organization_id, member_id) as record else MemberAlreadyExists {}
+    mutate Session(organization_id, session_user_id, session_id) as session else SessionMissing {}
+    require session_snapshot: session.revision == session_revision else Stale {}
+    require session_owner: session.user_id == user_id else SessionOwnerMismatch {}
+    require capacity: parent_org_id.member_count < 100 else CapacityExceeded {}
+    set record.created_at = created_at
+    set record.org_id = org_id
+    set record.role = role
+    set record.user_id = user_id
+    set record.revision = 1
+    set parent_org_id.member_count = parent_org_id.member_count + 1
+    set parent_org_id.revision = parent_org_id.revision + 1
+    set session.active_organization_id = session_active_organization_id checked_by session_snapshot
+    set session.updated_at = session_updated_at checked_by session_snapshot
+    set session.revision = session.revision + 1
+    return MemberCreated {}
+  }
+
+}

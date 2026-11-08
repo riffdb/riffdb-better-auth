@@ -113,7 +113,7 @@ function validateGeneratorConfig(
 }
 
 function pluginIds(options: BetterAuthOptions): readonly string[] {
-  const ids = (options.plugins ?? []).map((plugin) => plugin.id);
+  const ids = (options.plugins ?? []).filter((plugin) => plugin.id !== "next-cookies").map((plugin) => plugin.id);
   if (ids.some((id) => !SYMBOL_PATTERN.test(id.replaceAll("-", "_")))) {
     reject("invalid_generator_configuration");
   }

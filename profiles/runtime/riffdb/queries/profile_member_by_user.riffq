@@ -1,0 +1,27 @@
+query ProfileMemberByUser(
+    $organization_id: Member.organization_id,
+    $user_id: Member.user_id,
+    $after: Cursor?,
+    $limit: Limit<100> = 100,
+    $offset: u64 = 0
+) {
+    many rows from Member
+        where organization_id == $organization_id && user_id == $user_id
+        order by member_id asc
+        take $limit after $after
+
+    many organizations from Organization
+        where organization_id == $organization_id && org_id in distinct(rows.org_id)
+        take 100
+
+    many users from User
+        where organization_id == $organization_id && user_id in distinct(rows.user_id)
+        take 100
+
+    return Found {
+        rows: rows { member_id created_at org_id role user_id revision }
+        organizations: organizations { org_id created_at logo metadata name slug revision }
+        users: users { user_id name email email_verified image created_at updated_at revision date_field locale two_factor_enabled }
+    }
+    outcomes Found
+}
