@@ -58,7 +58,7 @@ export interface RiffDBBetterAuthProfileModelPlan {
 
 export interface RiffDBBetterAuthProfilePlan {
   readonly schema: typeof RIFFDB_BETTER_AUTH_PROFILE_PLAN_SCHEMA;
-  readonly betterAuthVersion: typeof BETTER_AUTH_PINNED_VERSION;
+  readonly betterAuthVersion: string;
   readonly idGeneration: "uuid";
   readonly name: string;
   readonly contract: Readonly<{ lineage: string; applicationRole: string }>;

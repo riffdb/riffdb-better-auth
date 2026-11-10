@@ -1,7 +1,7 @@
 import type { BetterAuthOptions } from "better-auth";
 import type { BetterAuthDBSchema } from "better-auth/db";
 import type { ApplicationTransport } from "./generated/client.js";
-import { BETTER_AUTH_PINNED_VERSION, BETTER_AUTH_CORE_FIELDS } from "./profile.js";
+import { BETTER_AUTH_CORE_FIELDS, isSupportedBetterAuthVersion } from "./profile.js";
 import { defineRiffDBBetterAuthProfilePlan, type RiffDBBetterAuthProfilePlan,
   type RiffDBBetterAuthProfileFieldPlan } from "./profile-plan.js";
 
@@ -39,7 +39,7 @@ export function defineRiffDBCompiledProfile(input: RiffDBCompiledProfileInput): 
   const bindings = input.bindings as Readonly<Record<string, unknown>>;
   const contractBundleHash = bindings.CONTRACT_BUNDLE_HASH;
   const Client = bindings[`${input.plan.contract.lineage.replace(/[^a-zA-Z0-9]/gu, "")}Client`];
-  if (input.plan.betterAuthVersion !== BETTER_AUTH_PINNED_VERSION ||
+  if (!isSupportedBetterAuthVersion(input.plan.betterAuthVersion) ||
       typeof contractBundleHash !== "string" || !/^[a-f0-9]{64}$/u.test(contractBundleHash) ||
       bindings.CONTRACT_LINEAGE !== input.plan.contract.lineage || bindings.CONTRACT_VERSION !== 1 ||
       input.plan.models.length > 32 || input.queries.length > 128 || typeof Client !== "function") {
@@ -135,12 +135,12 @@ export function validateRuntimeProfile(
     plugins: options.plugins?.filter((plugin) => plugin.id !== "next-cookies") ?? [],
   }, tables, { name: profile.plan.name, contractLineage: profile.plan.contract.lineage,
     applicationRole: profile.plan.contract.applicationRole });
-  if (JSON.stringify(plan) !== JSON.stringify(profile.plan)) throw new Error("compiled Better Auth schema mismatch");
+  if (JSON.stringify({ ...plan, betterAuthVersion: profile.plan.betterAuthVersion }) !== JSON.stringify(profile.plan)) throw new Error("compiled Better Auth schema mismatch");
   if (new Set((options.plugins ?? []).map((plugin) => plugin.id)).size !== (options.plugins ?? []).length) {
     throw new Error("duplicate Better Auth plugins");
   }
   for (const plugin of options.plugins ?? []) {
-    if (plugin.version !== BETTER_AUTH_PINNED_VERSION ||
+    if ((plugin.version !== undefined && !isSupportedBetterAuthVersion(plugin.version)) ||
         ![...profile.plan.plugins, "next-cookies"].includes(plugin.id)) {
       throw new Error("unsupported Better Auth plugin");
     }

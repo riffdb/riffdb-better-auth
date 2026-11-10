@@ -1,5 +1,12 @@
 export const BETTER_AUTH_PINNED_VERSION = "1.7.18" as const;
+export const BETTER_AUTH_VERSION_RANGE = "~1.7.18" as const;
 export const SUPPORTED_BETTER_AUTH_VERSIONS = Object.freeze([BETTER_AUTH_PINNED_VERSION] as const);
+
+const SUPPORTED_BETTER_AUTH_VERSION_PATTERN = /^1\.7\.(?:1[89]|[2-9]\d|\d{3,})$/u;
+
+export function isSupportedBetterAuthVersion(version: unknown): version is string {
+  return typeof version === "string" && SUPPORTED_BETTER_AUTH_VERSION_PATTERN.test(version);
+}
 export const RIFFDB_BETTER_AUTH_PROFILE_SCHEMA =
   "riffdb.better-auth-core-profile/v1" as const;
 
@@ -84,7 +91,7 @@ export interface RiffDBBetterAuthCoreProfileInput {
 
 export interface RiffDBBetterAuthCoreProfile {
   readonly schema: typeof RIFFDB_BETTER_AUTH_PROFILE_SCHEMA;
-  readonly betterAuthVersion: typeof BETTER_AUTH_PINNED_VERSION;
+  readonly betterAuthVersion: string;
   readonly idGeneration: "uuid";
   readonly plugins: readonly [];
   readonly models: Readonly<
@@ -152,7 +159,7 @@ export function defineRiffDBBetterAuthCoreProfile(
   if (input.schema !== RIFFDB_BETTER_AUTH_PROFILE_SCHEMA) {
     reject("invalid_profile_schema");
   }
-  if (input.betterAuthVersion !== BETTER_AUTH_PINNED_VERSION) {
+  if (!isSupportedBetterAuthVersion(input.betterAuthVersion)) {
     reject("unsupported_better_auth_version");
   }
   if (input.idGeneration !== "uuid") {
@@ -190,7 +197,7 @@ export function defineRiffDBBetterAuthCoreProfile(
 
   return Object.freeze({
     schema: RIFFDB_BETTER_AUTH_PROFILE_SCHEMA,
-    betterAuthVersion: BETTER_AUTH_PINNED_VERSION,
+    betterAuthVersion: input.betterAuthVersion,
     idGeneration: "uuid",
     plugins: Object.freeze([]) as readonly [],
     models: Object.freeze(models),

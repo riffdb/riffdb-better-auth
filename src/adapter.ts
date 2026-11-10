@@ -34,7 +34,7 @@ import {
   type FindVerificationsByIdentifierFound,
   type TypedCommandResult,
 } from "./generated/client.js";
-import { BETTER_AUTH_PINNED_VERSION, SUPPORTED_BETTER_AUTH_VERSIONS } from "./profile.js";
+import { isSupportedBetterAuthVersion } from "./profile.js";
 import { validateRuntimeProfile, instantiateProfileClient, encodeProfileField, decodeProfileField, storageField,
   type RiffDBCompiledProfile } from "./runtime-profile.js";
 import { ProfilePluginDispatcher } from "./plugin-dispatch.js";
@@ -154,7 +154,7 @@ function validateConfiguration(config: InternalAdapterConfig): void {
 export function assertSupportedBetterAuthInstallation(
   installedVersion = resolveInstalledBetterAuthVersion(),
 ): void {
-  if (!SUPPORTED_BETTER_AUTH_VERSIONS.some((version) => version === installedVersion)) {
+  if (!isSupportedBetterAuthVersion(installedVersion)) {
     fail("invalid_configuration", "betterAuthVersion");
   }
 }
@@ -197,7 +197,7 @@ function validateResolvedSchema(
     return;
   }
   for (const plugin of options.plugins ?? []) {
-    if (plugin.id !== "next-cookies" || plugin.version !== BETTER_AUTH_PINNED_VERSION || plugin.schema !== undefined) {
+    if (plugin.id !== "next-cookies" || (plugin.version !== undefined && !isSupportedBetterAuthVersion(plugin.version)) || plugin.schema !== undefined) {
       fail("invalid_configuration", "plugins");
     }
   }

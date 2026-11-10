@@ -3,7 +3,7 @@
 An external Better Auth database adapter for RiffDB.
 
 Status: core and compiled runtime profiles are implemented for Better Auth
-`1.7.18`. The default core profile, a custom-field profile, and an organization
+`~1.7.18` (`1.7.18+` in the `1.7.x` line). The default core profile, a custom-field profile, and an organization
 plus 2FA profile run through Better Auth's official authentication-flow suite
 against a real TLS loopback RiffDB service. The custom-field profile also runs
 the official additional-fields test.
@@ -23,7 +23,7 @@ silently fall back for unknown models, fields, joins, predicates, or plugins.
 
 The default core runtime profile is deliberately exact:
 
-- Better Auth `1.7.18`;
+- Better Auth `~1.7.18` (`>=1.7.18 <1.8.0`);
 - the four default core models and their default field names;
 - UUID identifiers for every model;
 - the reviewed `nextCookies()` integration, with no storage plugins or additional fields; and
@@ -34,7 +34,7 @@ profile requires its own generated contract, named operations, client facade,
 and conformance tests. `materializeRiffDBBetterAuthRuntimeProfile` emits the
 reviewable runtime sources and binding; RiffDB compiles and locks their client.
 Adapter construction also verifies that the resolved
-`better-auth` installation is exactly `1.7.18`; package-manager overrides do
+`better-auth` installation is in the compatible `~1.7.18` range (`1.7.18+` within `1.7.x`); package-manager overrides outside `~1.7.18` do
 not bypass that runtime check. Secret-bearing Better Auth debug logging is
 rejected rather than forwarded to the factory logger.
 
@@ -45,10 +45,7 @@ import { DriverApplicationTransport } from "@riffdb/client";
 import { betterAuth } from "better-auth";
 import { riffdbAdapter } from "@riffdb/better-auth";
 
-const driver = await DriverApplicationTransport.connect({
-  socketPath,
-  identity,
-});
+const driver = await DriverApplicationTransport.connectFromEnv();
 
 export const auth = betterAuth({
   database: riffdbAdapter({
@@ -279,23 +276,13 @@ npm run test:loopback
 ```
 
 This runs the core, custom-field, and organization/2FA profiles. It requires
-`riffdbd` and `riffdb-driverd` from the immutable RiffDB build in
-`.github/riffdb-revision` on PATH. `RIFFDB_CLI`, `RIFFDB_SERVER_BIN`, and
-`RIFFDB_DRIVERD` can select exact local binaries. The published RiffDB `0.2.1`
-release bundle includes the CLI and service, but omits the driver host. Build
-that host from a separate RiffDB checkout at the full revision recorded in
-`.github/riffdb-revision`:
+`riffdbd` and `riffdb-driverd` from the RiffDB `0.2.1` release bundle (or a
+checkout at the full revision recorded in `.github/riffdb-revision`) on `PATH`.
+`RIFFDB_CLI`, `RIFFDB_SERVER_BIN`, and `RIFFDB_DRIVERD` can also select exact
+local binary paths.
 
-```bash
-# In that separate, pinned RiffDB checkout:
-RUSTC_WRAPPER= cargo build --locked --release -p riffdb-driver-host --bin riffdb-driverd
-
-# Back in this adapter checkout, with riffdbd on PATH:
-RIFFDB_DRIVERD=/path/to/riffdb/target/release/riffdb-driverd npm run test:loopback
-```
-
-Release CI verifies the bundle checksum and revision, then builds the driver
-from that same revision. Certificates, capabilities, sockets, and databases
+Release CI verifies the bundle checksum and revision before running the
+loopback suite. Certificates, capabilities, sockets, and databases
 are disposable and removed at the end. The official
 harness's cleanup hook is scoped to that disposable service; it is never a
 public delete-all operation.

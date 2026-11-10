@@ -719,7 +719,13 @@ describe("compiled transaction dispatch", () => {
         debugLogs: true,
       }),
     ).toThrow(expect.objectContaining({ code: "invalid_configuration" }));
+    expect(() => assertSupportedBetterAuthInstallation("1.7.18")).not.toThrow();
+    expect(() => assertSupportedBetterAuthInstallation("1.7.19")).not.toThrow();
+    expect(() => assertSupportedBetterAuthInstallation("1.7.25")).not.toThrow();
     expect(() => assertSupportedBetterAuthInstallation("1.6.30")).toThrow(
+      expect.objectContaining({ code: "invalid_configuration" }),
+    );
+    expect(() => assertSupportedBetterAuthInstallation("1.8.0")).toThrow(
       expect.objectContaining({ code: "invalid_configuration" }),
     );
   });

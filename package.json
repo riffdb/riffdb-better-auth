@@ -57,11 +57,11 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@riffdb/client": "0.2.1",
-    "better-auth": "1.7.18"
+    "@riffdb/client": "^0.2.1",
+    "better-auth": "~1.7.18"
   },
   "dependencies": {
-    "@riffdb/client": "0.2.1"
+    "@riffdb/client": "^0.2.1"
   },
   "devDependencies": {
     "@better-auth/test-utils": "1.7.18",

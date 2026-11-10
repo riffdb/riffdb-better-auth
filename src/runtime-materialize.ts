@@ -3,7 +3,7 @@ import { getAuthTables } from "better-auth/db";
 import { organization, twoFactor as twoFactorPlugin } from "better-auth/plugins";
 import { defineRiffDBBetterAuthProfilePlan } from "./profile-plan.js";
 import type { RiffDBBetterAuthProfilePlan, RiffDBBetterAuthProfileFieldPlan } from "./profile-plan.js";
-import { BETTER_AUTH_CORE_FIELDS, BETTER_AUTH_PINNED_VERSION } from "./profile.js";
+import { BETTER_AUTH_CORE_FIELDS, isSupportedBetterAuthVersion } from "./profile.js";
 import { storageField, type RiffDBProfileQuery } from "./runtime-profile.js";
 
 export interface RiffDBRuntimeMaterialization {
@@ -26,7 +26,7 @@ function fieldType(field: RiffDBBetterAuthProfileFieldPlan): string {
 
 /** Complete runtime sources for reviewed core extensions, organization (without teams), and 2FA. */
 export function materializeRiffDBBetterAuthRuntimeProfile(plan: RiffDBBetterAuthProfilePlan): RiffDBRuntimeMaterialization {
-  if (plan.betterAuthVersion !== BETTER_AUTH_PINNED_VERSION || plan.plugins.some((id) => !["organization", "two-factor"].includes(id)) ||
+  if (!isSupportedBetterAuthVersion(plan.betterAuthVersion) || plan.plugins.some((id) => !["organization", "two-factor"].includes(id)) ||
       plan.models.some((model) => ![...coreModels, "organization", "member", "invitation", "twoFactor"].includes(model.name))) {
     throw new Error("unsupported runtime profile");
   }

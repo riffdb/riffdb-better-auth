@@ -38,7 +38,7 @@ function expectCode(run: () => unknown, code: UnsupportedBetterAuthProfileError[
 }
 
 describe("defineRiffDBBetterAuthCoreProfile", () => {
-  it("accepts and freezes the exact core-only profile", () => {
+  it("accepts and freezes the exact core-only profile across ~1.7.18 patch releases", () => {
     const profile = defineRiffDBBetterAuthCoreProfile(coreInput());
 
     expect(profile.betterAuthVersion).toBe("1.7.18");
@@ -46,6 +46,12 @@ describe("defineRiffDBBetterAuthCoreProfile", () => {
     expect(Object.isFrozen(profile)).toBe(true);
     expect(Object.isFrozen(profile.models.user.fields)).toBe(true);
     expect(Object.isFrozen(profile.contract)).toBe(true);
+
+    const patchProfile = defineRiffDBBetterAuthCoreProfile({
+      ...coreInput(),
+      betterAuthVersion: "1.7.19",
+    });
+    expect(patchProfile.betterAuthVersion).toBe("1.7.19");
   });
 
   it("rejects plugins instead of silently creating generic tables", () => {
