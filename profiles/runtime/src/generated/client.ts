@@ -3272,10 +3272,10 @@ export class BetterAuthRuntimeClient {
 
   public static async connect(
     driver: { connect(config: { readonly socketPath: string; readonly identity: ContractDriverIdentity }): Promise<ApplicationTransport> } | ((config: { readonly socketPath: string; readonly identity: ContractDriverIdentity }) => Promise<ApplicationTransport>),
-    options: { readonly socketPath: string; readonly role: string; readonly database?: string; readonly commandAttemptBudget?: number },
+    options: { readonly socketPath: string; readonly role?: string; readonly database?: string; readonly commandAttemptBudget?: number },
   ): Promise<BetterAuthRuntimeClient> {
-    const identity = driverIdentity(options.role, options.database);
-    const transport = typeof driver === "function" ? await driver({ socketPath: options.socketPath, identity }) : await driver.connect({ socketPath: options.socketPath, identity });
+    const identity = driverIdentity(options.role ?? "", options.database);
+    const transport = "connect" in driver ? await driver.connect({ socketPath: options.socketPath, identity }) : await driver({ socketPath: options.socketPath, identity });
     return new BetterAuthRuntimeClient(transport, options.commandAttemptBudget ?? DEFAULT_COMMAND_ATTEMPT_BUDGET);
   }
 
@@ -3285,7 +3285,7 @@ export class BetterAuthRuntimeClient {
   ): Promise<BetterAuthRuntimeClient> {
     const { commandAttemptBudget, ...envOptions } = options;
     const connectInput = { ...envOptions, identity: CONTRACT_DRIVER_IDENTITY };
-    const transport = typeof driver === "function" ? await driver(connectInput) : await driver.connectFromEnv(connectInput);
+    const transport = "connectFromEnv" in driver ? await driver.connectFromEnv(connectInput) : await driver(connectInput);
     return new BetterAuthRuntimeClient(transport, commandAttemptBudget ?? DEFAULT_COMMAND_ATTEMPT_BUDGET);
   }
 
@@ -3614,6 +3614,8 @@ export class BetterAuthRuntimeClient {
     if (options.cursor !== undefined) throw new Error("findSessionsByTokenSetAll does not accept an initial cursor");
     const items = Array.from(new Set(parameters.tokens));
     if (items.length === 0) throw new RangeError("tokens must contain at least 1 item");
+    if (items.length > maxPages * FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS) throw new RangeError("findSessionsByTokenSetAll exceeded maxPages (1..=1024)");
+    items.sort((left, right) => { const lb = Buffer.from(left, "utf8"); const rb = Buffer.from(right, "utf8"); return lb.length !== rb.length ? lb.length - rb.length : lb.compare(rb); });
     const merged: Array<FindSessionsByTokenSetFound["sessions"][number]> = [];
     let latestIdentity: QueryResponseIdentity | undefined;
     let pinnedHead: bigint | undefined = options.readAfterCommit ?? this.lastCommitSeq;
@@ -4196,6 +4198,8 @@ export class BetterAuthRuntimeClient {
     if (options.cursor !== undefined) throw new Error("profileUsersByIdSetAll does not accept an initial cursor");
     const items = Array.from(new Set(parameters.ids));
     if (items.length === 0) throw new RangeError("ids must contain at least 1 item");
+    if (items.length > maxPages * PROFILE_USERS_BY_ID_SET_IDS_MAX_ITEMS) throw new RangeError("profileUsersByIdSetAll exceeded maxPages (1..=1024)");
+    items.sort((left, right) => { const l = left.toLowerCase(); const r = right.toLowerCase(); return l < r ? -1 : l > r ? 1 : 0; });
     const merged: Array<ProfileUsersByIdSetFound["users"][number]> = [];
     let latestIdentity: QueryResponseIdentity | undefined;
     let pinnedHead: bigint | undefined = options.readAfterCommit ?? this.lastCommitSeq;

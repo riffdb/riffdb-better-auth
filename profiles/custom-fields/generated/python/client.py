@@ -3175,6 +3175,9 @@ class BetterAuthCustomFieldsClient:
         items = tuple(dict.fromkeys(parameters.tokens))
         if not items:
             raise ValueError("tokens must contain at least 1 item")
+        if len(items) > max_pages * FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS:
+            raise ValueError("find_sessions_by_token_set_all exceeded max_pages (1..=1024)")
+        items = tuple(sorted(items, key=lambda item: (len(item.encode("utf-8")), item.encode("utf-8"))))
         pinned_head = options.read_after_commit if options.read_after_commit is not None else self._read_after_commit
         highest_head = 0
         merged: list[FindSessionsByTokenSetFoundSessions] = []
@@ -4397,6 +4400,9 @@ class AsyncBetterAuthCustomFieldsClient:
         items = tuple(dict.fromkeys(parameters.tokens))
         if not items:
             raise ValueError("tokens must contain at least 1 item")
+        if len(items) > max_pages * FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS:
+            raise ValueError("find_sessions_by_token_set_all exceeded max_pages (1..=1024)")
+        items = tuple(sorted(items, key=lambda item: (len(item.encode("utf-8")), item.encode("utf-8"))))
         pinned_head = options.read_after_commit if options.read_after_commit is not None else self._read_after_commit
         highest_head = 0
         merged: list[FindSessionsByTokenSetFoundSessions] = []
