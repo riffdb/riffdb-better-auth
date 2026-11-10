@@ -38,6 +38,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/consumeverification (inputs: organization_id, request_id, verification_id; outcomes: VerificationConsumed, VerificationConsumeMissing).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -335,7 +336,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/consumeverification"
       },
       "mcp_identity": {
         "command_id": 14,
@@ -422,6 +424,7 @@
             "type": "object"
           }
         ],
+        "type": "object",
         "x-riffdb-secretOutputs": [
           {
             "entity": "Verification",
@@ -475,6 +478,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/consumeverificationset (inputs: organization_id, request_id, verification_ids; outcomes: VerificationSetConsumed, VerificationConsumeMissing).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -692,7 +696,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/consumeverificationset"
       },
       "mcp_identity": {
         "command_id": 16,
@@ -750,7 +755,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run ConsumeVerificationSet"
     },
@@ -795,6 +801,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/consumeverificationsnapshot (inputs: expected_revision, organization_id, request_id, verification_id; outcomes: VerificationConsumed, VerificationConsum...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -1026,7 +1033,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/consumeverificationsnapshot"
       },
       "mcp_identity": {
         "command_id": 20,
@@ -1097,7 +1105,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run ConsumeVerificationSnapshot"
     },
@@ -1235,6 +1244,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/createaccount (inputs: access_token, access_token_expires_at, account_id, created_at, id, id_token, organization_id, password, provider_id, refresh_toke...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -1633,7 +1643,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/createaccount"
       },
       "mcp_identity": {
         "command_id": 4,
@@ -1704,7 +1715,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run CreateAccount"
     },
@@ -1873,6 +1885,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/createoauthusergraph (inputs: access_token, access_token_expires_at, account_created_at, account_id, account_updated_at, external_account_id, id_token, ...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -2339,7 +2352,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/createoauthusergraph"
       },
       "mcp_identity": {
         "command_id": 15,
@@ -2410,7 +2424,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run CreateOAuthUserGraph"
     },
@@ -2493,6 +2508,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/createsession (inputs: created_at, expires_at, id, ip_address, organization_id, request_id, token, updated_at, user_agent, user_id; outcomes: SessionCre...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -2815,7 +2831,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/createsession"
       },
       "mcp_identity": {
         "command_id": 5,
@@ -2886,7 +2903,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run CreateSession"
     },
@@ -3031,6 +3049,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/createsignupgraph (inputs: account_created_at, account_id, account_password, account_updated_at, external_account_id, organization_id, provider_id, requ...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -3502,7 +3521,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/createsignupgraph"
       },
       "mcp_identity": {
         "command_id": 10,
@@ -3586,7 +3606,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run CreateSignupGraph"
     },
@@ -3658,6 +3679,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/createuser (inputs: created_at, email, email_verified, id, image, name, organization_id, request_id, updated_at; outcomes: UserCreated, UserAlreadyExists).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -3939,7 +3961,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/createuser"
       },
       "mcp_identity": {
         "command_id": 1,
@@ -3997,7 +4020,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run CreateUser"
     },
@@ -4058,6 +4082,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/createverification (inputs: created_at, expires_at, id, identifier, organization_id, request_id, updated_at, value; outcomes: VerificationCreated, Verif...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -4344,7 +4369,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/createverification"
       },
       "mcp_identity": {
         "command_id": 11,
@@ -4402,7 +4428,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run CreateVerification"
     },
@@ -4452,6 +4479,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/deleteaccount (inputs: account_ids, organization_id, request_id, user_id; outcomes: AccountDeleted, AccountMissing).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -4674,7 +4702,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/deleteaccount"
       },
       "mcp_identity": {
         "command_id": 6,
@@ -4732,7 +4761,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run DeleteAccount"
     },
@@ -4782,6 +4812,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/deletesession (inputs: organization_id, request_id, session_ids, user_id; outcomes: SessionDeleted, SessionMissing).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -5004,7 +5035,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/deletesession"
       },
       "mcp_identity": {
         "command_id": 7,
@@ -5062,7 +5094,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run DeleteSession"
     },
@@ -5108,6 +5141,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/deleteuser (inputs: organization_id, request_id, user_ids; outcomes: UserDeleted, DeleteUserMissing, DeleteUserCascadeLimitExceeded).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -5337,7 +5371,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/deleteuser"
       },
       "mcp_identity": {
         "command_id": 2,
@@ -5408,7 +5443,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run DeleteUser"
     },
@@ -5454,6 +5490,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/deleteverification (inputs: organization_id, request_id, verification_ids; outcomes: VerificationDeleted, VerificationMissing).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -5671,7 +5708,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/deleteverification"
       },
       "mcp_identity": {
         "command_id": 12,
@@ -5729,7 +5767,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run DeleteVerification"
     },
@@ -5803,6 +5842,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/resetcredentialpassword (inputs: account_id, account_revision, external_account_id, organization_id, password, request_id, updated_at, user_id, verifica...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -6121,7 +6161,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/resetcredentialpassword"
       },
       "mcp_identity": {
         "command_id": 18,
@@ -6231,7 +6272,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run ResetCredentialPassword"
     },
@@ -6369,6 +6411,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/updateaccount (inputs: access_token, access_token_expires_at, account_id, expected_revision, external_account_id, id_token, organization_id, password, p...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -6752,7 +6795,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/updateaccount"
       },
       "mcp_identity": {
         "command_id": 8,
@@ -6823,7 +6867,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run UpdateAccount"
     },
@@ -6913,6 +6958,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/updateaccountpasswords (inputs: organization_id, request_id, updates, user_id; outcomes: PasswordAccountStale, PasswordAccountMissing, AccountPasswordsU...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -7222,7 +7268,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/updateaccountpasswords"
       },
       "mcp_identity": {
         "command_id": 17,
@@ -7306,7 +7353,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run UpdateAccountPasswords"
     },
@@ -7367,6 +7415,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/updatecredentialpassword (inputs: account_id, expected_revision, external_account_id, organization_id, password, request_id, updated_at, user_id; outcom...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -7646,7 +7695,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/updatecredentialpassword"
       },
       "mcp_identity": {
         "command_id": 19,
@@ -7730,7 +7780,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run UpdateCredentialPassword"
     },
@@ -7809,6 +7860,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/updatesession (inputs: expected_revision, expires_at, ip_address, organization_id, request_id, session_id, updated_at, user_agent, user_id; outcomes: Se...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -8111,7 +8163,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/updatesession"
       },
       "mcp_identity": {
         "command_id": 9,
@@ -8182,7 +8235,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run UpdateSession"
     },
@@ -8254,6 +8308,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/updateuser (inputs: email, email_verified, expected_revision, image, name, organization_id, request_id, updated_at, user_id; outcomes: UserUpdated, User...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -8532,7 +8587,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/updateuser"
       },
       "mcp_identity": {
         "command_id": 3,
@@ -8603,7 +8659,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run UpdateUser"
     },
@@ -8660,6 +8717,7 @@
           "openWorldHint": false,
           "readOnlyHint": false
         },
+        "description": "Executes RiffDB command riffdbbetterauthcore/updateverification (inputs: expected_revision, expires_at, organization_id, request_id, updated_at, value, verification_id; outcomes: VerificationUpdate...",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -8938,7 +8996,8 @@
             }
           ],
           "type": "object"
-        }
+        },
+        "title": "Command riffdbbetterauthcore/updateverification"
       },
       "mcp_identity": {
         "command_id": 13,
@@ -9009,7 +9068,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run UpdateVerification"
     }
@@ -9129,7 +9189,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "scope": {
                       "anyOf": [
@@ -9180,7 +9240,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindAccountById"
     },
@@ -9299,7 +9360,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "scope": {
                       "anyOf": [
@@ -9350,7 +9411,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindAccountByProvider"
     },
@@ -9478,7 +9540,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "scope": {
                       "anyOf": [
@@ -9529,7 +9591,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindAccountsByUserId"
     },
@@ -9661,7 +9724,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "scope": {
                       "anyOf": [
@@ -9712,7 +9775,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindAccountsByUserProvider"
     },
@@ -9795,7 +9859,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "token": {
                       "type": "string"
@@ -9840,7 +9904,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindActiveSessionsByUserId"
     },
@@ -9966,7 +10031,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "scope": {
                       "anyOf": [
@@ -10018,7 +10083,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindCredentialAccount"
     },
@@ -10074,7 +10140,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -10107,7 +10173,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindLatestVerification"
     },
@@ -10173,7 +10240,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "token": {
                       "type": "string"
@@ -10218,7 +10285,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindSessionById"
     },
@@ -10284,7 +10352,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "token": {
                       "type": "string"
@@ -10329,7 +10397,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindSessionByToken"
     },
@@ -10400,7 +10469,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "token": {
                       "type": "string"
@@ -10445,7 +10514,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindSessionsByTokenSet"
     },
@@ -10524,7 +10594,7 @@
                       ]
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "token": {
                       "type": "string"
@@ -10569,7 +10639,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindSessionsByUserId"
     },
@@ -10624,7 +10695,7 @@
                     "type": "string"
                   },
                   "revision": {
-                    "type": "string"
+                    "type": "integer"
                   },
                   "updated_at": {
                     "type": "string"
@@ -10667,7 +10738,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindVerificationById"
     },
@@ -10736,7 +10808,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -10769,7 +10841,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindVerificationsByIdentifier"
     }
@@ -10796,7 +10869,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -10825,6 +10898,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_all_email_asc (inputs: limit, minimum_email, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -10838,7 +10912,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -10875,7 +10949,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -10894,7 +10968,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -10913,7 +10987,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -10946,8 +11020,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_all_email_asc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_all_email_asc",
@@ -10966,7 +11042,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -10985,7 +11061,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -11004,7 +11080,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -11037,7 +11113,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersAllEmailAsc"
     },
@@ -11062,7 +11139,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -11091,6 +11168,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_contains_asc (inputs: limit, needle, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -11104,7 +11182,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -11141,7 +11219,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -11160,7 +11238,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -11179,7 +11257,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -11212,8 +11290,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_contains_asc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_contains_asc",
@@ -11232,7 +11312,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -11251,7 +11331,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -11270,7 +11350,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -11303,7 +11383,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersContainsAsc"
     },
@@ -11328,7 +11409,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -11357,6 +11438,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_contains_desc (inputs: limit, needle, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -11370,7 +11452,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -11407,7 +11489,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -11426,7 +11508,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -11445,7 +11527,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -11478,8 +11560,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_contains_desc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_contains_desc",
@@ -11498,7 +11582,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -11517,7 +11601,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -11536,7 +11620,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -11569,7 +11653,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersContainsDesc"
     },
@@ -11594,7 +11679,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -11623,6 +11708,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_email_contains_created_desc (inputs: limit, needle, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -11636,7 +11722,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -11673,7 +11759,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -11692,7 +11778,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -11711,7 +11797,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -11744,8 +11830,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_email_contains_created_desc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_email_contains_created_desc",
@@ -11764,7 +11852,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -11783,7 +11871,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -11802,7 +11890,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -11835,7 +11923,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersEmailContainsCreatedDesc"
     },
@@ -11860,7 +11949,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -11889,6 +11978,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_email_contains_image_asc (inputs: limit, needle, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -11902,7 +11992,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -11939,7 +12029,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -11958,7 +12048,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -11977,7 +12067,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -12010,8 +12100,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_email_contains_image_asc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_email_contains_image_asc",
@@ -12030,7 +12122,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -12049,7 +12141,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -12068,7 +12160,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -12101,7 +12193,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersEmailContainsImageAsc"
     },
@@ -12126,7 +12219,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -12155,6 +12248,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_ends_with_asc (inputs: limit, needle, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -12168,7 +12262,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -12205,7 +12299,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -12224,7 +12318,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -12243,7 +12337,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -12276,8 +12370,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_ends_with_asc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_ends_with_asc",
@@ -12296,7 +12392,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -12315,7 +12411,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -12334,7 +12430,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -12367,7 +12463,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersEndsWithAsc"
     },
@@ -12392,7 +12489,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -12421,6 +12518,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_ends_with_desc (inputs: limit, needle, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -12434,7 +12532,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -12471,7 +12569,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -12490,7 +12588,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -12509,7 +12607,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -12542,8 +12640,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_ends_with_desc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_ends_with_desc",
@@ -12562,7 +12662,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -12581,7 +12681,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -12600,7 +12700,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -12633,7 +12733,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersEndsWithDesc"
     },
@@ -12658,7 +12759,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -12687,6 +12788,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_starts_with_asc (inputs: limit, needle, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -12700,7 +12802,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -12737,7 +12839,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -12756,7 +12858,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -12775,7 +12877,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -12808,8 +12910,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_starts_with_asc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_starts_with_asc",
@@ -12828,7 +12932,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -12847,7 +12951,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -12866,7 +12970,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -12899,7 +13003,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersStartsWithAsc"
     },
@@ -12924,7 +13029,7 @@
             "type": "string"
           },
           "offset": {
-            "type": "string"
+            "type": "integer"
           },
           "organization_id": {
             "type": "string"
@@ -12953,6 +13058,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_admin_users_starts_with_desc (inputs: limit, needle, offset, organization_id, user_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -12966,7 +13072,7 @@
               "type": "string"
             },
             "offset": {
-              "type": "string"
+              "type": "integer"
             },
             "organization_id": {
               "type": "string"
@@ -13003,7 +13109,7 @@
                   "additionalProperties": false,
                   "properties": {
                     "value": {
-                      "type": "string"
+                      "type": "integer"
                     }
                   },
                   "required": [
@@ -13022,7 +13128,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -13041,7 +13147,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -13074,8 +13180,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_admin_users_starts_with_desc"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_admin_users_starts_with_desc",
@@ -13094,7 +13202,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "value": {
-                    "type": "string"
+                    "type": "integer"
                   }
                 },
                 "required": [
@@ -13113,7 +13221,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -13132,7 +13240,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -13165,7 +13273,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run AdminUsersStartsWithDesc"
     },
@@ -13215,6 +13324,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_find_expired_verification_ids (inputs: after, expires_before, organization_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -13314,7 +13424,8 @@
           ],
           "type": "object",
           "x-riffdb-resultProfile": "paginated-envelope-v1"
-        }
+        },
+        "title": "Query riffdb/better_auth_core_find_expired_verification_ids"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_find_expired_verification_ids",
@@ -13421,6 +13532,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_find_user_by_email (inputs: email, organization_id; outcomes: Found).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -13460,7 +13572,7 @@
                         "type": "string"
                       },
                       "email_verified": {
-                        "type": "string"
+                        "type": "boolean"
                       },
                       "image": {
                         "anyOf": [
@@ -13476,7 +13588,7 @@
                         "type": "string"
                       },
                       "revision": {
-                        "type": "string"
+                        "type": "integer"
                       },
                       "updated_at": {
                         "type": "string"
@@ -13507,8 +13619,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_find_user_by_email"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_find_user_by_email",
@@ -13534,7 +13648,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -13550,7 +13664,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -13581,7 +13695,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindUserByEmail"
     },
@@ -13617,6 +13732,7 @@
           "openWorldHint": false,
           "readOnlyHint": true
         },
+        "description": "Executes read-only RiffDB named query riffdb/better_auth_core_find_user_by_id (inputs: id, organization_id; outcomes: Found, Missing).",
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "additionalProperties": false,
@@ -13655,7 +13771,7 @@
                       "type": "string"
                     },
                     "email_verified": {
-                      "type": "string"
+                      "type": "boolean"
                     },
                     "image": {
                       "anyOf": [
@@ -13671,7 +13787,7 @@
                       "type": "string"
                     },
                     "revision": {
-                      "type": "string"
+                      "type": "integer"
                     },
                     "updated_at": {
                       "type": "string"
@@ -13712,8 +13828,10 @@
               ],
               "type": "object"
             }
-          ]
-        }
+          ],
+          "type": "object"
+        },
+        "title": "Query riffdb/better_auth_core_find_user_by_id"
       },
       "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
       "name": "riffdb_better_auth_core_find_user_by_id",
@@ -13738,7 +13856,7 @@
                     "type": "string"
                   },
                   "email_verified": {
-                    "type": "string"
+                    "type": "boolean"
                   },
                   "image": {
                     "anyOf": [
@@ -13754,7 +13872,7 @@
                     "type": "string"
                   },
                   "revision": {
-                    "type": "string"
+                    "type": "integer"
                   },
                   "updated_at": {
                     "type": "string"
@@ -13795,7 +13913,8 @@
             ],
             "type": "object"
           }
-        ]
+        ],
+        "type": "object"
       },
       "title": "Run FindUserById"
     }

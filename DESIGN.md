@@ -236,7 +236,7 @@ above provide reviewed extensions. Each addition needs an explicit bounded contr
 
 The loopback conformance run deploys the exact contract and role and connects
 through `riffdb-driverd`. The initial empty `FindUserByEmail` result carries the
-valid application head `0`; `@riffdb/client@0.2.0` preserves it
+valid application head `0`; `@riffdb/client@0.2.1` preserves it
 as `0n`. The adapter does not issue an unrelated warmup write, so the first
 application-visible mutation remains the compiled signup graph.
 

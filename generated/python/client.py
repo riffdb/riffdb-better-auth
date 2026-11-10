@@ -846,6 +846,7 @@ class FindSessionByTokenFound:
 FindSessionByTokenResult: TypeAlias = FindSessionByTokenFound
 
 FIND_SESSIONS_BY_TOKEN_SET_QUERY_PLAN_HASH: Final[str] = "7e23187b537599c4c2361d34ea866b5b719f63feda0135587b5ec6afd5ce62f6"
+FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS: Final[int] = 32
 FIND_SESSIONS_BY_TOKEN_SET_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindSessionsByTokenSet", "Session", "token"),
 )
@@ -2695,6 +2696,41 @@ class RiffDBBetterAuthCoreClient:
     def find_sessions_by_token_set_after_commit(self, parameters: FindSessionsByTokenSetParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetResult]:
         return self.find_sessions_by_token_set(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
 
+    def find_sessions_by_token_set_all(self, parameters: FindSessionsByTokenSetParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetFound]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if options.cursor is not None:
+            raise ValueError("find_sessions_by_token_set_all does not accept an initial cursor")
+        items = tuple(dict.fromkeys(parameters.tokens))
+        if not items:
+            raise ValueError("tokens must contain at least 1 item")
+        pinned_head = options.read_after_commit if options.read_after_commit is not None else self._read_after_commit
+        highest_head = 0
+        merged: list[FindSessionsByTokenSetFoundSessions] = []
+        latest_page: TypedQueryResult[FindSessionsByTokenSetResult] | None = None
+        pages_remaining = max_pages
+        for offset in range(0, len(items), FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS):
+            chunk = items[offset:offset + FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS]
+            chunk_cursor: str | None = None
+            while True:
+                if pages_remaining < 1:
+                    raise ValueError("find_sessions_by_token_set_all exceeded max_pages (1..=1024)")
+                pages_remaining -= 1
+                chunk_parameters = FindSessionsByTokenSetParams(organization_id=parameters.organization_id, tokens=chunk)
+                page = self.find_sessions_by_token_set(chunk_parameters, QueryOptions(cursor=chunk_cursor, read_after_commit=pinned_head, consistency=options.consistency))
+                found = page.value.unwrap_found()
+                merged.extend(found.sessions)
+                latest_page = page
+                if page.application_head > highest_head:
+                    highest_head = page.application_head
+                if pinned_head is None or page.application_head > pinned_head:
+                    pinned_head = page.application_head
+                if not page.next_cursor:
+                    break
+                chunk_cursor = page.next_cursor
+        assert latest_page is not None
+        return TypedQueryResult(identity=latest_page.identity, value=FindSessionsByTokenSetFound(sessions=tuple(merged)), application_head=highest_head, next_cursor=None)
+
     def find_sessions_by_user_id(self, parameters: FindSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByUserIdResult]:
         encoded_parameters = encode_record(parameters)
         generated_cursor = parameters.after
@@ -3773,6 +3809,41 @@ class AsyncRiffDBBetterAuthCoreClient:
 
     async def find_sessions_by_token_set_after_commit(self, parameters: FindSessionsByTokenSetParams, commit_sequence: int, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetResult]:
         return await self.find_sessions_by_token_set(parameters, QueryOptions(cursor=options.cursor, read_after_commit=commit_sequence, consistency=options.consistency))
+
+    async def find_sessions_by_token_set_all(self, parameters: FindSessionsByTokenSetParams, max_pages: int = 64, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByTokenSetFound]:
+        if isinstance(max_pages, bool) or not isinstance(max_pages, int) or max_pages < 1 or max_pages > 1024:
+            raise ValueError("max_pages must be an integer from 1 through 1024")
+        if options.cursor is not None:
+            raise ValueError("find_sessions_by_token_set_all does not accept an initial cursor")
+        items = tuple(dict.fromkeys(parameters.tokens))
+        if not items:
+            raise ValueError("tokens must contain at least 1 item")
+        pinned_head = options.read_after_commit if options.read_after_commit is not None else self._read_after_commit
+        highest_head = 0
+        merged: list[FindSessionsByTokenSetFoundSessions] = []
+        latest_page: TypedQueryResult[FindSessionsByTokenSetResult] | None = None
+        pages_remaining = max_pages
+        for offset in range(0, len(items), FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS):
+            chunk = items[offset:offset + FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS]
+            chunk_cursor: str | None = None
+            while True:
+                if pages_remaining < 1:
+                    raise ValueError("find_sessions_by_token_set_all exceeded max_pages (1..=1024)")
+                pages_remaining -= 1
+                chunk_parameters = FindSessionsByTokenSetParams(organization_id=parameters.organization_id, tokens=chunk)
+                page = await self.find_sessions_by_token_set(chunk_parameters, QueryOptions(cursor=chunk_cursor, read_after_commit=pinned_head, consistency=options.consistency))
+                found = page.value.unwrap_found()
+                merged.extend(found.sessions)
+                latest_page = page
+                if page.application_head > highest_head:
+                    highest_head = page.application_head
+                if pinned_head is None or page.application_head > pinned_head:
+                    pinned_head = page.application_head
+                if not page.next_cursor:
+                    break
+                chunk_cursor = page.next_cursor
+        assert latest_page is not None
+        return TypedQueryResult(identity=latest_page.identity, value=FindSessionsByTokenSetFound(sessions=tuple(merged)), application_head=highest_head, next_cursor=None)
 
     async def find_sessions_by_user_id(self, parameters: FindSessionsByUserIdParams, options: QueryOptions = QueryOptions()) -> TypedQueryResult[FindSessionsByUserIdResult]:
         encoded_parameters = encode_record(parameters)

@@ -265,7 +265,7 @@ npm ci --ignore-scripts
 npm run check
 ```
 
-The lock is pinned to `@riffdb/client@0.2.0` and `@riffdb/cli@0.2.0`.
+The lock is pinned to `@riffdb/client@0.2.1` and `@riffdb/cli@0.2.1`.
 
 `npm run check` performs strict type checking, semantic and upstream tests,
 profile-artifact freshness, a production build, and a package dry run.
@@ -281,7 +281,7 @@ npm run test:loopback
 This runs the core, custom-field, and organization/2FA profiles. It requires
 `riffdbd` and `riffdb-driverd` from the immutable RiffDB build in
 `.github/riffdb-revision` on PATH. `RIFFDB_CLI`, `RIFFDB_SERVER_BIN`, and
-`RIFFDB_DRIVERD` can select exact local binaries. The published RiffDB `0.2.0`
+`RIFFDB_DRIVERD` can select exact local binaries. The published RiffDB `0.2.1`
 release bundle includes the CLI and service, but omits the driver host. Build
 that host from a separate RiffDB checkout at the full revision recorded in
 `.github/riffdb-revision`:
