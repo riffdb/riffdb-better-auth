@@ -42,7 +42,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.profiles.json",
-    "check": "npm run typecheck && npm test && npm run profiles:check && node scripts/check-package.mjs",
+    "check": "npm run build && npm run typecheck && npm test && npm run profiles:check && node scripts/check-package.mjs",
     "prepack": "npm run build",
     "start": "node scripts/real-riffdb-runner.mjs",
     "profiles:check": "npm run build && node scripts/profile-example.mjs --check && node scripts/materialize-profile.mjs --check && node scripts/runtime-profiles.mjs --check && riffdb application check && riffdb application check profiles/custom-fields/riffdb.application.json && riffdb application check profiles/runtime/riffdb.application.json && riffdb application check profiles/organization-security/riffdb.application.json",
