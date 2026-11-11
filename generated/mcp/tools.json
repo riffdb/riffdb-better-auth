@@ -1,5 +1,5 @@
 {
-  "application_manifest_hash": "786906299288205645e2f56a3986d7e07177d36801f78e9ecd578a8f1360306a",
+  "application_manifest_hash": "ab80199d9bbba2ecca89219fd57557bc10c103ff90ad5fbec41f1fc48a887a03",
   "commands": [
     {
       "annotations": {
@@ -9103,7 +9103,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_account_by_id",
       "operation_name": "FindAccountById",
       "result_schema": {
@@ -9274,7 +9274,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_account_by_provider",
       "operation_name": "FindAccountByProvider",
       "result_schema": {
@@ -9454,7 +9454,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_accounts_by_user_id",
       "operation_name": "FindAccountsByUserId",
       "result_schema": {
@@ -9638,7 +9638,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_accounts_by_user_provider",
       "operation_name": "FindAccountsByUserProvider",
       "result_schema": {
@@ -9822,7 +9822,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_active_sessions_by_user_id",
       "operation_name": "FindActiveSessionsByUserId",
       "result_schema": {
@@ -9942,7 +9942,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_credential_account",
       "operation_name": "FindCredentialAccount",
       "result_schema": {
@@ -10113,7 +10113,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_latest_verification",
       "operation_name": "FindLatestVerification",
       "result_schema": {
@@ -10203,7 +10203,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_session_by_id",
       "operation_name": "FindSessionById",
       "result_schema": {
@@ -10315,7 +10315,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_session_by_token",
       "operation_name": "FindSessionByToken",
       "result_schema": {
@@ -10432,7 +10432,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_sessions_by_token_set",
       "operation_name": "FindSessionsByTokenSet",
       "result_schema": {
@@ -10557,7 +10557,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_sessions_by_user_id",
       "operation_name": "FindSessionsByUserId",
       "result_schema": {
@@ -10669,7 +10669,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_verification_by_id",
       "operation_name": "FindVerificationById",
       "result_schema": {
@@ -10781,7 +10781,7 @@
         ],
         "type": "object"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_verifications_by_identifier",
       "operation_name": "FindVerificationsByIdentifier",
       "result_schema": {
@@ -11025,7 +11025,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_all_email_asc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_all_email_asc",
       "operation_name": "AdminUsersAllEmailAsc",
       "result_schema": {
@@ -11295,7 +11295,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_contains_asc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_contains_asc",
       "operation_name": "AdminUsersContainsAsc",
       "result_schema": {
@@ -11565,7 +11565,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_contains_desc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_contains_desc",
       "operation_name": "AdminUsersContainsDesc",
       "result_schema": {
@@ -11835,7 +11835,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_email_contains_created_desc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_email_contains_created_desc",
       "operation_name": "AdminUsersEmailContainsCreatedDesc",
       "result_schema": {
@@ -12105,7 +12105,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_email_contains_image_asc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_email_contains_image_asc",
       "operation_name": "AdminUsersEmailContainsImageAsc",
       "result_schema": {
@@ -12375,7 +12375,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_ends_with_asc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_ends_with_asc",
       "operation_name": "AdminUsersEndsWithAsc",
       "result_schema": {
@@ -12645,7 +12645,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_ends_with_desc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_ends_with_desc",
       "operation_name": "AdminUsersEndsWithDesc",
       "result_schema": {
@@ -12915,7 +12915,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_starts_with_asc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_starts_with_asc",
       "operation_name": "AdminUsersStartsWithAsc",
       "result_schema": {
@@ -13185,7 +13185,7 @@
         },
         "title": "Query riffdb/better_auth_core_admin_users_starts_with_desc"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_admin_users_starts_with_desc",
       "operation_name": "AdminUsersStartsWithDesc",
       "result_schema": {
@@ -13427,7 +13427,7 @@
         },
         "title": "Query riffdb/better_auth_core_find_expired_verification_ids"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_expired_verification_ids",
       "operation_name": "FindExpiredVerificationIds",
       "result_schema": {
@@ -13624,7 +13624,7 @@
         },
         "title": "Query riffdb/better_auth_core_find_user_by_email"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_user_by_email",
       "operation_name": "FindUserByEmail",
       "result_schema": {
@@ -13833,7 +13833,7 @@
         },
         "title": "Query riffdb/better_auth_core_find_user_by_id"
       },
-      "module_hash": "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a",
+      "module_hash": "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29",
       "name": "riffdb_better_auth_core_find_user_by_id",
       "operation_name": "FindUserById",
       "result_schema": {

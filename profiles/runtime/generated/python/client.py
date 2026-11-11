@@ -23,7 +23,7 @@ def _compact_tag(value: object, tag: str, keys: frozenset[str]) -> dict[str, obj
 CONTRACT_LINEAGE: Final[str] = "BetterAuthRuntime"
 CONTRACT_VERSION: Final[int] = 1
 CONTRACT_BUNDLE_HASH: Final[str] = "f1761530a557c7df0d0281b25e389804f8b5a440c7a7bbc6cd9d578136a0222d"
-QUERY_MODULE_HASH: Final[str] = "3c8e68a03860526917dbb3a449b9f5c0729f3ae202c71bd3aac5f0b231ebbeab"
+QUERY_MODULE_HASH: Final[str] = "875c9353ddb5cf40221686de4fa34849e1b8cc4ab770e07a6c307439c3ffb200"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -622,7 +622,7 @@ class FindAccountByProviderFound:
 
 FindAccountByProviderResult: TypeAlias = FindAccountByProviderFound
 
-FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "00b1598eba893bcd29ff91e388f442ec69b2264882c1da8ee1f428a1100ac860"
+FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "81e851a08aaa24e2aa33de3c212b0df20e8dcc85ce5c8ab205079d71b352b857"
 FIND_ACCOUNTS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserId", "Account", "access_token"),
     ("FindAccountsByUserId", "Account", "refresh_token"),
@@ -667,7 +667,7 @@ class FindAccountsByUserIdFound:
 
 FindAccountsByUserIdResult: TypeAlias = FindAccountsByUserIdFound
 
-FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "48fc032895e3d1d2440d1d91e51b266c628f23c9f0747b5e0348d6f37ce6e725"
+FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "aa4153de0af2cc81071b27e300e5c1661acd8fe99b0ca20449685b6f25dd0a6d"
 FIND_ACCOUNTS_BY_USER_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserProvider", "Account", "access_token"),
     ("FindAccountsByUserProvider", "Account", "refresh_token"),
@@ -1168,7 +1168,7 @@ class FindVerificationByIdMissing:
 
 FindVerificationByIdResult: TypeAlias = FindVerificationByIdFound | FindVerificationByIdMissing
 
-FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "8b0cb368feeb6c9abe42e94699698878baff1f6e2ebf04c3662da6c2075a5260"
+FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "e7c3791d63ac9591e560ed42d17844f371eb75559f410084be81637273838cea"
 FIND_VERIFICATIONS_BY_IDENTIFIER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationsByIdentifier", "Verification", "value"),
 )
@@ -2257,7 +2257,7 @@ class ProfileTwoFactorByUserFound:
 
 ProfileTwoFactorByUserResult: TypeAlias = ProfileTwoFactorByUserFound
 
-PROFILE_USER_WITH_ACCOUNTS_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "f1711965874b1ab3caeb8d2dbcd330263851db15bd227e446a4afa4dfa07e679"
+PROFILE_USER_WITH_ACCOUNTS_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "09f2195c65bf8d2066f11c24183612dd12d1e14e1c4c96527135b557940b4a66"
 PROFILE_USER_WITH_ACCOUNTS_BY_EMAIL_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("ProfileUserWithAccountsByEmail", "Account", "access_token"),
     ("ProfileUserWithAccountsByEmail", "Account", "refresh_token"),
@@ -2332,7 +2332,7 @@ class ProfileUserWithAccountsByEmailMissing:
 
 ProfileUserWithAccountsByEmailResult: TypeAlias = ProfileUserWithAccountsByEmailFound | ProfileUserWithAccountsByEmailMissing
 
-PROFILE_USER_WITH_ACCOUNTS_BY_ID_QUERY_PLAN_HASH: Final[str] = "d13346a27444f7c43029f3931a2071787a50aa80854697947cd906755ee69aac"
+PROFILE_USER_WITH_ACCOUNTS_BY_ID_QUERY_PLAN_HASH: Final[str] = "f07bb4c6fa568d60fbc080337e7de6e30f3a95aab7d7da2795d42b7ecdf365d3"
 PROFILE_USER_WITH_ACCOUNTS_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("ProfileUserWithAccountsById", "Account", "access_token"),
     ("ProfileUserWithAccountsById", "Account", "refresh_token"),

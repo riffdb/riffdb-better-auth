@@ -23,7 +23,7 @@ def _compact_tag(value: object, tag: str, keys: frozenset[str]) -> dict[str, obj
 CONTRACT_LINEAGE: Final[str] = "RiffDBBetterAuthCore"
 CONTRACT_VERSION: Final[int] = 1
 CONTRACT_BUNDLE_HASH: Final[str] = "74fd255eefcf04f0b054dbb6c4a0bed43a7312d82f7755687c9229ee3206ddfc"
-QUERY_MODULE_HASH: Final[str] = "8dff3a38f6c0a915d7653e7571a2ef5795a89b452990d705f38fe0ac93b5ad9a"
+QUERY_MODULE_HASH: Final[str] = "31a64e16b850846690adaafc59eb66d6cb2e9e9a6650ca91a1758e55fd4acb29"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -538,7 +538,7 @@ class FindAccountByProviderFound:
 
 FindAccountByProviderResult: TypeAlias = FindAccountByProviderFound
 
-FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "ccdc524ca64ad667c209de25b4ce977f43b53ffdd8eb1b70fedf29fc99f27da6"
+FIND_ACCOUNTS_BY_USER_ID_QUERY_PLAN_HASH: Final[str] = "26cec7796a39013b990c8bc04515ac19bb39afda948d3d63e8bd0837d7bc39fc"
 FIND_ACCOUNTS_BY_USER_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserId", "Account", "access_token"),
     ("FindAccountsByUserId", "Account", "refresh_token"),
@@ -583,7 +583,7 @@ class FindAccountsByUserIdFound:
 
 FindAccountsByUserIdResult: TypeAlias = FindAccountsByUserIdFound
 
-FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "21d13b3c30b4a4059f3c436e290d11c20f0f1d1154e05fb48ae3dd0da882526d"
+FIND_ACCOUNTS_BY_USER_PROVIDER_QUERY_PLAN_HASH: Final[str] = "0d414d0f64c691d1b0480cab9c39e8557c1cecda351203487046cc42188068b5"
 FIND_ACCOUNTS_BY_USER_PROVIDER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindAccountsByUserProvider", "Account", "access_token"),
     ("FindAccountsByUserProvider", "Account", "refresh_token"),
@@ -1070,7 +1070,7 @@ class FindVerificationByIdMissing:
 
 FindVerificationByIdResult: TypeAlias = FindVerificationByIdFound | FindVerificationByIdMissing
 
-FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "4c768ae1d966454e9b791cd57a6311476947b5c457020943a50bc3cfee90765b"
+FIND_VERIFICATIONS_BY_IDENTIFIER_QUERY_PLAN_HASH: Final[str] = "4cd2aab142a3b862245a08682e20c96f68a7c7767b5021abc1606eae07ee3264"
 FIND_VERIFICATIONS_BY_IDENTIFIER_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("FindVerificationsByIdentifier", "Verification", "value"),
 )

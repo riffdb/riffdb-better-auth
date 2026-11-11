@@ -324,6 +324,7 @@ export function materializeRiffDBBetterAuthRuntimeProfile(plan: RiffDBBetterAuth
   application.contract.lineage = plan.contract.lineage;
   application.roles[0].name = plan.contract.applicationRole;
   application.roles[0].commands = [...declarations.keys()].filter((name) => /^  (?:bulk )?command/u.test(declarations.get(name)!));
+  application.roles = [application.roles[0]];
   files["riffdb.application.json"] = `${JSON.stringify(application, null, 2)}\n`;
   files["riffdb.toml"] = '[project]\nschema = "riffdb.application.json"\ngenerators = ["typescript"]\n';
   files["profile.ts"] = `// Generated profile binding. Review sources, then run riffdb application lock --write.\nimport { defineRiffDBCompiledProfile } from "@riffdb/better-auth";\nimport * as bindings from "./src/generated/client.js";\nexport default defineRiffDBCompiledProfile({\n  plan: ${JSON.stringify(plan, null, 2)},\n  queries: ${JSON.stringify(queries, null, 2)},\n  bindings,\n});\n`;
