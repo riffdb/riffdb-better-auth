@@ -50,6 +50,10 @@ try {
     advanced: { database: { generateId: "uuid" } },
     emailAndPassword: {
       enabled: true,
+      // WARNING: TEST-ONLY no-op password hasher used strictly to avoid scrypt
+      // CPU overhead inside this ephemeral loopback test harness. Never copy
+      // this `password` override into an application; omit `password` so
+      // Better Auth uses its default scrypt password hashing.
       password: {
         hash: async (password) => password,
         verify: async ({ hash, password }) => hash === password,
