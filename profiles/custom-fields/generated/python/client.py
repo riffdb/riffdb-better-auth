@@ -23,7 +23,7 @@ def _compact_tag(value: object, tag: str, keys: frozenset[str]) -> dict[str, obj
 CONTRACT_LINEAGE: Final[str] = "BetterAuthCustomFields"
 CONTRACT_VERSION: Final[int] = 1
 CONTRACT_BUNDLE_HASH: Final[str] = "78db5a4be0e3f6edb09d1e743703e53171b7cacea589a9fac33d2e1fea33c374"
-QUERY_MODULE_HASH: Final[str] = "4bffed6f819f5933a366dfb4d80fe717c2b06bf1894b2934045a932727d950a5"
+QUERY_MODULE_HASH: Final[str] = "82e7e00ea24ce30f4e68d54a7cedc44da66188f76db82e0fab89706d71d8b699"
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class User:
@@ -1420,7 +1420,7 @@ class ProfileSessionsWithUsersByTokenSetFound:
 
 ProfileSessionsWithUsersByTokenSetResult: TypeAlias = ProfileSessionsWithUsersByTokenSetFound
 
-PROFILE_USER_WITH_ACCOUNTS_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "6f77b9468e4b33eeeda791751c1e8ed1c76f594916b76faa0d031b697bf830cf"
+PROFILE_USER_WITH_ACCOUNTS_BY_EMAIL_QUERY_PLAN_HASH: Final[str] = "3cad29f13a66ea5688a7f403d330e090af32e118cb4c70683175987f1b7fea9f"
 PROFILE_USER_WITH_ACCOUNTS_BY_EMAIL_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("ProfileUserWithAccountsByEmail", "Account", "access_token"),
     ("ProfileUserWithAccountsByEmail", "Account", "refresh_token"),
@@ -1494,7 +1494,7 @@ class ProfileUserWithAccountsByEmailMissing:
 
 ProfileUserWithAccountsByEmailResult: TypeAlias = ProfileUserWithAccountsByEmailFound | ProfileUserWithAccountsByEmailMissing
 
-PROFILE_USER_WITH_ACCOUNTS_BY_ID_QUERY_PLAN_HASH: Final[str] = "243ad6e1148721605061516119134c65dcc5430a9e9ec42ae0d2490a28a6c47a"
+PROFILE_USER_WITH_ACCOUNTS_BY_ID_QUERY_PLAN_HASH: Final[str] = "3f956d2afae78effa75ba00d6ca557c8b1ebd98d971bf80daacefdfb4aa638d1"
 PROFILE_USER_WITH_ACCOUNTS_BY_ID_SECRET_OUTPUTS: Final[tuple[tuple[str, str, str], ...]] = (
     ("ProfileUserWithAccountsById", "Account", "access_token"),
     ("ProfileUserWithAccountsById", "Account", "refresh_token"),

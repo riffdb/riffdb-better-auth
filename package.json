@@ -1,6 +1,6 @@
 {
   "name": "@riffdb/better-auth",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A compiled-profile Better Auth adapter for RiffDB",
   "type": "module",
   "exports": {
@@ -57,16 +57,16 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@riffdb/client": "^0.2.2",
+    "@riffdb/client": "^0.2.3",
     "better-auth": "~1.7.18"
   },
   "dependencies": {
-    "@riffdb/client": "^0.2.2"
+    "@riffdb/client": "^0.2.3"
   },
   "devDependencies": {
     "@better-auth/test-utils": "1.7.18",
     "@better-auth/utils": "0.5.1",
-    "@riffdb/cli": "0.2.2",
+    "@riffdb/cli": "0.2.3",
     "@types/node": "26.2.0",
     "better-auth": "1.7.18",
     "next": "16.4.5",
