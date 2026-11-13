@@ -58,7 +58,29 @@ export const auth = betterAuth({
 ```
 
 The caller owns the RiffDB driver connection and application-defined
-organization ID. Better Auth continues to own users, sessions, passwords,
+organization ID. TypeScript applications connect through the local
+`riffdb-driverd` Unix-domain socket rather than opening direct remote TLS or
+bearer-file connections. `DriverApplicationTransport.connectFromEnv()` reads
+`RIFFDB_DRIVER_SOCKET` and the deployed application handshake identity emitted
+in `driver.env` (`RIFFDB_DATABASE`, `RIFFDB_ROLE`, `RIFFDB_CONTRACT_LINEAGE`,
+`RIFFDB_CONTRACT_VERSION`, `RIFFDB_CONTRACT_BUNDLE_HASH`, `RIFFDB_MANIFEST_HASH`,
+`RIFFDB_CATALOG_HASH`, `RIFFDB_ROLE_HASH`, `RIFFDB_REMOTE_HASH`, and optional
+`RIFFDB_TENANT`). When multiple RiffDB-backed applications run in the same
+Node.js process or share a multi-application `riffdb-driverd` host, pass the
+application's deployed driver environment or prefix to
+`DriverApplicationTransport.connectFromEnv({ env: betterAuthDriverEnv })` (or
+`connectFromEnv({ prefix: "BETTER_AUTH_RIFFDB_" })`), or call
+`DriverApplicationTransport.connect({ socketPath, identity, tenant })` with that
+application's `DriverApplicationIdentity` rather than sharing a single
+unscoped `process.env` configuration:
+
+```ts
+const driver = await DriverApplicationTransport.connectFromEnv({
+  env: betterAuthDriverEnv, // parsed from the application's deployed driver.env
+});
+```
+
+Better Auth continues to own users, sessions, passwords,
 sign-in, OAuth, and reset flows. The package contains the exact RiffDB
 application source, lock, contract bundle, and generated artifacts required to
 deploy the core profile. Better Auth development dependencies stay exactly
