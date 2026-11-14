@@ -62,8 +62,8 @@ organization ID. TypeScript applications connect through the local
 `riffdb-driverd` Unix-domain socket rather than opening direct remote TLS or
 bearer-file connections. `DriverApplicationTransport.connectFromEnv()` reads
 `RIFFDB_DRIVER_SOCKET` and the deployed application handshake identity emitted
-in `driver.env` (`RIFFDB_DATABASE`, `RIFFDB_ROLE`, `RIFFDB_CONTRACT_LINEAGE`,
-`RIFFDB_CONTRACT_VERSION`, `RIFFDB_CONTRACT_BUNDLE_HASH`, `RIFFDB_MANIFEST_HASH`,
+in `driver.env` (`RIFFDB_DATABASE`, `RIFFDB_ROLE`, `RIFFDB_LINEAGE`,
+`RIFFDB_CONTRACT_VERSION`, `RIFFDB_BUNDLE_HASH`, `RIFFDB_MANIFEST_HASH`,
 `RIFFDB_CATALOG_HASH`, `RIFFDB_ROLE_HASH`, `RIFFDB_REMOTE_HASH`, and optional
 `RIFFDB_TENANT`). When multiple RiffDB-backed applications run in the same
 Node.js process or share a multi-application `riffdb-driverd` host, pass the
