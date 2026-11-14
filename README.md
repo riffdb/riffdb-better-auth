@@ -284,7 +284,7 @@ npm ci --ignore-scripts
 npm run check
 ```
 
-The lock is pinned to `@riffdb/client@0.2.4` and `@riffdb/cli@0.2.4`.
+The lock is pinned to `@riffdb/client@0.2.5` and `@riffdb/cli@0.2.5`.
 
 `npm run check` performs strict type checking, semantic and upstream tests,
 profile-artifact freshness, a production build, and a package dry run.
@@ -298,7 +298,7 @@ npm run test:loopback
 ```
 
 This runs the core, custom-field, and organization/2FA profiles. It requires
-`riffdbd` and `riffdb-driverd` from the RiffDB `0.2.4` release bundle (or a
+`riffdbd` and `riffdb-driverd` from the RiffDB `0.2.5` release bundle (or a
 checkout at the full revision recorded in `.github/riffdb-revision`) on `PATH`.
 `RIFFDB_CLI`, `RIFFDB_SERVER_BIN`, and `RIFFDB_DRIVERD` can also select exact
 local binary paths.

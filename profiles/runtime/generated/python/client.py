@@ -6211,7 +6211,7 @@ class BetterAuthRuntimeClient:
             raise ValueError("ids must contain at least 1 item")
         if len(items) > max_pages * PROFILE_USERS_BY_ID_SET_IDS_MAX_ITEMS:
             raise ValueError("profile_users_by_id_set_all exceeded max_pages (1..=1024)")
-        items = tuple(sorted(items, key=lambda item: item.lower()))
+        items = tuple(sorted(items))
         pinned_head = options.read_after_commit if options.read_after_commit is not None else self._read_after_commit
         highest_head = 0
         merged: list[ProfileUsersByIdSetFoundUsers] = []
@@ -8446,7 +8446,7 @@ class AsyncBetterAuthRuntimeClient:
             raise ValueError("ids must contain at least 1 item")
         if len(items) > max_pages * PROFILE_USERS_BY_ID_SET_IDS_MAX_ITEMS:
             raise ValueError("profile_users_by_id_set_all exceeded max_pages (1..=1024)")
-        items = tuple(sorted(items, key=lambda item: item.lower()))
+        items = tuple(sorted(items))
         pinned_head = options.read_after_commit if options.read_after_commit is not None else self._read_after_commit
         highest_head = 0
         merged: list[ProfileUsersByIdSetFoundUsers] = []
