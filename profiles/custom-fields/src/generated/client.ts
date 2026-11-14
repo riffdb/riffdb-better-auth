@@ -2394,7 +2394,7 @@ export class BetterAuthCustomFieldsClient {
     const items = Array.from(new Set(parameters.tokens));
     if (items.length === 0) throw new RangeError("tokens must contain at least 1 item");
     if (items.length > maxPages * FIND_SESSIONS_BY_TOKEN_SET_TOKENS_MAX_ITEMS) throw new RangeError("findSessionsByTokenSetAll exceeded maxPages (1..=1024)");
-    items.sort((left, right) => { const lb = Buffer.from(left, "utf8"); const rb = Buffer.from(right, "utf8"); return lb.length !== rb.length ? lb.length - rb.length : lb.compare(rb); });
+    items.sort((left, right) => { const enc = new TextEncoder(); const lb = enc.encode(left); const rb = enc.encode(right); if (lb.length !== rb.length) return lb.length - rb.length; for (let i = 0; i < lb.length; i++) { const d = (lb[i] ?? 0) - (rb[i] ?? 0); if (d !== 0) return d; } return 0; });
     const merged: Array<FindSessionsByTokenSetFound["sessions"][number]> = [];
     let latestIdentity: QueryResponseIdentity | undefined;
     let pinnedHead: bigint | undefined = options.readAfterCommit ?? this.lastCommitSeq;

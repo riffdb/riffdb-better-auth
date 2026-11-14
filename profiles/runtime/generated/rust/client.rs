@@ -7187,7 +7187,7 @@ impl GeneratedQuery for ProfileUsersByIdSetQuery {
     fn named_query(self, options: QueryOptions) -> Result<NamedQuery, ApplicationClientError> {
         let mut parameters = BTreeMap::new();
         parameters.insert("organization_id".to_owned(), ApplicationValue::Uuid(ApplicationUuid::from_text(self.0.organization_id)?));
-        parameters.insert("ids".to_owned(), ApplicationValue::List(self.0.ids.into_iter().map(|value| ApplicationValue::Uuid(ApplicationUuid::from_text(value)?)).collect()));
+        parameters.insert("ids".to_owned(), ApplicationValue::List(self.0.ids.into_iter().map(|value| Ok::<ApplicationValue, ApplicationClientError>(ApplicationValue::Uuid(ApplicationUuid::from_text(value)?))).collect::<Result<Vec<_>, _>>()?));
         NamedQuery::new(
             ApplicationContract::Exact {
                 lineage: CONTRACT_LINEAGE.to_owned(),
